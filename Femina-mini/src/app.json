@@ -1,0 +1,18 @@
+{
+  "pages": [
+    "pages/index/main",
+    "pages/loading/main",
+    "pages/login/main",
+    "pages/description/main",
+    "pages/preview/main",
+    "pages/test/main",
+    "pages/item/main"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "white",
+    "navigationBarTitleText": "伊周杂志电子刊",
+    "navigationBarTextStyle": "black",
+    "onReachBottomDistance": 50
+  }
+}
