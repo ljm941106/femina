@@ -5,7 +5,6 @@
     "pages/login/main",
     "pages/description/main",
     "pages/preview/main",
-    "pages/test/main",
     "pages/item/main"
   ],
   "window": {
