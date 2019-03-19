@@ -91,7 +91,7 @@
               <span>￥{{i.price / 100}}</span>
             </label>
           <div class="custom">
-            其他本书：
+            其它数量：
             <input type="text" v-model.number="customNum" @input="inputChange" />&nbsp;本
             <span>￥{{custumPrice}}</span>
           </div>

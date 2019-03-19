@@ -15,7 +15,7 @@
 		      </label>
         </radio-group>
         <div class="custom">
-          其他本书：
+          其它数量：
           <input type="text" v-model.number="customNum" @input="inputChange" />&nbsp;本
           <span>￥{{custumPrice}}</span>
         </div>
@@ -134,19 +134,23 @@
 
 <style lang="scss">
   @import "../../mixin";
-  .fade-enter-active, .fade-leave-active {
+  .fade-enter-active,
+  .fade-leave-active {
     transition: 1s;
   }
   
-  .fade-enter, .fade-leave-to {
+  .fade-enter,
+  .fade-leave-to {
     opacity: 0;
   }
   
-  .slide-enter-active, .slide-leave-active {
+  .slide-enter-active,
+  .slide-leave-active {
     transition: .3s;
   }
   
-  .slide-enter, .slide-leave-to {
+  .slide-enter,
+  .slide-leave-to {
     transform: translateY(100%);
   }
   

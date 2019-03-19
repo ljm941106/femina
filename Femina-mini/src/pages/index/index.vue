@@ -17,23 +17,16 @@
       <!--<div class="button" v-if="!firstItem.buy" @click.stop="showCodeInputPopup(firstItem.id)">使用阅读码</div>-->
     </div>
     <div class="index-list">
-      <div class="menu" v-if="!isiOS">
+      <div class="menu">
         <div class="item" :class="{active:index==currentIndex}" v-for="(i,index) in menuList" :key="i.id" @click="munuItemClick(index)">
           {{i.value}}
-          <!--<img :src="i.icon" v-show="index!=currentIndex" />
-          <img :src="i.iconActive" v-show="index==currentIndex" />-->
-        </div>
-      </div>
-      <div class="menu" v-if="isiOS">
-        <div class="item single">
-          全部期刊
         </div>
       </div>
       <div class="list-box">
         <div v-show="currentIndex==0">
           <div class="pro-list">
             <div class="item" v-for="(i,index) in list" v-if="index>0" :key="i.id" @click="gotoItem(i.id,i.buy,i.name)">
-              <div class="tag" v-if="!i.buy">
+              <div class="tag" v-if="!i.buy&&!isiOS">
                 <div>购买</div>
               </div>
               <div class="cover">
@@ -45,41 +38,39 @@
           </div>
           <div class="no-data" v-if="list.length==1">暂无更多期刊...</div>
         </div>
-        <template v-if="!isiOS">
-          <div v-show="currentIndex==1">
-            <div class="pro-list">
-              <div class="item" v-for="i in myList" :key="i.id" @click="gotoItem(i.id,true,i.name)">
-                <div class="cover">
-                  <img :src="i.img" />
-                  <span>{{i.name}}</span>
-                </div>
-                <div class="intro">{{i.sale}}人订阅</div>
+        <div v-show="currentIndex==1">
+          <div class="pro-list">
+            <div class="item" v-for="i in myList" :key="i.id" @click="gotoItem(i.id,true,i.name)">
+              <div class="cover">
+                <img :src="i.img" />
+                <span>{{i.name}}</span>
               </div>
+              <div class="intro">{{i.sale}}人订阅</div>
             </div>
-            <div class="no-data" v-if="myList.length==0">您暂未购买期刊...</div>
           </div>
-          <div v-show="currentIndex==2">
-            <div class="coupon-list">
-              <div class="des-button" @click="viewDes">阅读码使用说明</div>
-              <div class="item" v-for="i in myCodeList" :key="i.id">
-                <div class="img">
-                  <img :src="i.img" />
-                </div>
-                <div class="intro">
-                  <h3>{{i.name}}</h3>
-                  <div class="code">阅读码<br/>{{i.code}}</div>
-                  <div class="operation">
-                    <div class="button" :class="{disabled:i.status}" @click="toUseCode(i.pid,i.code,i.status)">
-                      <template v-if="i.status">已使用</template>
-                      <template v-else>去使用</template>
-                    </div>
+          <div class="no-data" v-if="myList.length==0">暂无期刊...</div>
+        </div>
+        <div v-show="currentIndex==2">
+          <div class="coupon-list" v-if="!isiOS">
+            <div class="des-button" @click="viewDes">阅读码使用说明</div>
+            <div class="item" v-for="i in myCodeList" :key="i.id">
+              <div class="img">
+                <img :src="i.img" />
+              </div>
+              <div class="intro">
+                <h3>{{i.name}}</h3>
+                <div class="code">阅读码<br/>{{i.code}}</div>
+                <div class="operation">
+                  <div class="button" :class="{disabled:i.status}" @click="toUseCode(i.pid,i.code,i.status)">
+                    <template v-if="i.status">已使用</template>
+                    <template v-else>去使用</template>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="no-data" v-if="myCodeList.length==0">您暂未购买阅读码...</div>
           </div>
-        </template>
+          <!--<div class="no-data" v-if="myCodeList.length==0">您暂未阅读码...</div>-->
+        </div>
       </div>
     </div>
     <buy-popup :show='isBuyPopupShow' @show="buyPopupShow"></buy-popup>
@@ -104,12 +95,12 @@
       return {
         menuList: [{
           id: 'all',
-          value: '全部',
+          value: '全部杂志',
           icon: require('../../../static/icon-home.png'),
           iconActive: require('../../../static/icon-homed.png')
         }, {
           id: 'purchased',
-          value: '已购',
+          value: '我的杂志',
           icon: require('../../../static/icon-coupon-list.png'),
           iconActive: require('../../../static/icon-coupon-listd.png')
         }, {
@@ -308,11 +299,13 @@
 </script>
 
 <style lang="scss">
-  .fade-enter-active, .fade-leave-active {
+  .fade-enter-active,
+  .fade-leave-active {
     transition: opacity 1s;
   }
   
-  .fade-enter, .fade-leave-to {
+  .fade-enter,
+  .fade-leave-to {
     opacity: 0;
   }
   
@@ -576,11 +569,11 @@
         }
       }
     }
-    .no-data{
-    	text-align: center;
-    	color: #999999;
-    	font-size: 28rpx;
-    	line-height: 60rpx;
+    .no-data {
+      text-align: center;
+      color: #999999;
+      font-size: 28rpx;
+      line-height: 60rpx;
     }
   }
 </style>
