@@ -13,4 +13,6 @@ export default {
   getCurrentCode: 'api/index/getOneCode', //获取当前购买的阅读码
   preview: 'api/index/preview', //预览
   itemDetail: 'api/index/detail', //详情
+
+  rank: 'api/index/rank', //排行榜
 }
