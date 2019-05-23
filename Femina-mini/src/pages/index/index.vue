@@ -437,28 +437,29 @@ export default {
       }
     }
     .button-box {
-      height: 112rpx;
-      width: 100%;
+      margin: 0 auto;
+      height: 126rpx;
+      width: 612rpx;
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: space-around;
       .button {
         position: relative;
         // border: $pcolor solid 3rpx;
         // border-radius: 6rpx;
         color: $pcolor;
-        width: 167rpx;
-        height: 80rpx;
+        width: 233.8rpx;
+        height: 112rpx;
         display: flex;
         justify-content: center;
-        padding-top: 38rpx;
-        font-size: 24rpx;
+        padding-top: 53.2rpx;
+        font-size: 33.6rpx;
         background: url("https://ssl-yizhou.25bsx.com/public/icon/index-bg-none.png")
           center / cover;
         &:nth-child(2) {
           background-image: url("https://ssl-yizhou.25bsx.com/public/icon/index-bg-rank.png");
           text {
-            margin-left: 20rpx;
+            margin-left: 28rpx;
           }
         }
         text {
