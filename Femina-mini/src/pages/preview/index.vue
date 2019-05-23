@@ -82,19 +82,30 @@ export default {
       isiOS: false,
       windowHeight: "",
       buyTitle: "",
-      render: false
+      render: false,
+      currentUseCode: "",
+      currentMagazineId: ""
     };
   },
   mounted() {
     const systemRes = wx.getSystemInfoSync();
     if (systemRes.system.indexOf("iOS") > -1) this.isiOS = true;
-  },
-  onShow() {
-    const systemRes = wx.getSystemInfoSync();
-    this.windowHeight = systemRes.windowHeight;
+    this.reset();
     this.init();
   },
+  onShow() {
+    // const systemRes = wx.getSystemInfoSync();
+    // this.windowHeight = systemRes.windowHeight;
+  },
   methods: {
+    reset() {
+      this.swiperCurrentIndex = 0;
+      this.detail = "";
+      this.isCurrentVideo = false;
+      this.isCodeInputPopup = false; //输入code弹窗
+      this.videoUrl = "";
+      this.render = false;
+    },
     async init() {
       wx.showLoading();
       const _this = this;
@@ -145,6 +156,7 @@ export default {
     },
     showCodeInputPopup(id) {
       this.isCodeInputPopup = true;
+      this.currentUseCode = "";
       this.currentMagazineId = id;
     },
     //阅读码通过
@@ -240,10 +252,7 @@ export default {
       });
     }
   },
-  onUnload() {
-    this.swiperCurrentIndex = 0;
-    this.detail = "";
-  },
+  onUnload() {},
   onShareAppMessage: function(res) {
     if (res.from === "button") {
       // 来自页面内转发按钮

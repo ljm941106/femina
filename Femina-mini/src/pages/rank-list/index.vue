@@ -3,8 +3,8 @@
     <div class="rank-banner">
       <img :src="banner" style="width:750rpx;height:550rpx">
     </div>
-    <div class="cutdown" :class="{'cutdown-end':cutdownOriginal<0}">
-      <template v-if="cutdownOriginal>=0">
+    <div class="cutdown" :class="{'cutdown-end':!isCutdownShow&&cutdownRender}">
+      <template v-if="isCutdownShow">
         <span>距离结束还剩：</span>
         <em>{{cutdown.day}}</em>天
         <em>{{cutdown.hour}}</em>小时
@@ -52,7 +52,7 @@ export default {
   components: {},
   data() {
     return {
-      banner: require("../../../static/temp.jpg"),
+      banner: "",
       cutdownOriginal: 0,
       cutdown: {
         day: "",
@@ -63,37 +63,27 @@ export default {
       list: [],
       topList: [],
       page: 1,
-      lodingCompleted: false,
-      isiOS: false,
-      isShowLoadPage2: false
+      isShowLoadPage2: false,
+      cutdownRender: false,
+      isCutdownShow: false
     };
   },
-  mounted() {
+  onLoad() {
+    //token
     this.token = wx.getStorageSync("token");
-    const systemRes = wx.getSystemInfoSync();
-    if (systemRes.system.indexOf("iOS") > -1) this.isiOS = true;
-    let banner = wx.getStorageSync("rankBanner");
-    if (banner) {
-      this.banner = banner;
-    }
+    //id
     this.magazineId = this.$mp.query.id;
-    this.page = 1;
-    this.list = [];
-    this.topList = [];
-    this.cutdownOriginal = 0;
-    this.isShowLoadPage2 = true;
+    //mpvue设计权限，暂未修复，所以需要重置一下数据
+    this.reset();
+    //初始化数据
     this.init();
-    //			wx.setStorageSync("magazineId", this.magazineId);
   },
   async onPullDownRefresh() {
     wx.showLoading();
     this.page = 1;
     this.list = [];
     this.topList = [];
-    this.cutdownOriginal = 0;
-    clearInterval(this.cutdownInterval);
-    this.init();
-    this.isShowLoadPage2 = true;
+    this.initRank();
     wx.stopPullDownRefresh();
     wx.hideLoading();
   },
@@ -128,7 +118,28 @@ export default {
     //			}
   },
   methods: {
+    reset() {
+      this.banner = "";
+      this.cutdownOriginal = 0;
+      this.cutdown = {
+        day: "",
+        hour: "",
+        minute: "",
+        second: ""
+      };
+      this.list = [];
+      this.topList = [];
+      this.page = 1;
+      this.isShowLoadPage2 = false;
+      this.cutdownRender = false;
+      this.isCutdownShow = false;
+    },
     async init() {
+      this.initRank();
+      this.initCutdown();
+    },
+    //排行榜
+    async initRank() {
       let res = await fly.get(api.rank, {
         magazine_id: this.magazineId,
         page: this.page,
@@ -152,14 +163,22 @@ export default {
           this.isShowLoadPage2 = true;
         }
       }
-
+    },
+    //倒计时和banner图
+    async initCutdown() {
       let cutdownRes = await fly.get("api/index/rank_time", {
         magazine_id: this.magazineId,
         token: this.token
       });
-      let cutdown;
-      if (res.code == 0) {
-        this.cutdownOriginal = cutdownRes.data.remaining_time;
+      if (cutdownRes.code == 0) {
+        this.banner = cutdownRes.data.rank_img; //banner
+        this.cutdownOriginal = cutdownRes.data.remaining_time; //倒计时
+        this.cutdownRender = true;
+        if (this.cutdownOriginal > 0) {
+          this.isCutdownShow = true;
+        } else {
+          this.isCutdownShow = false;
+        }
         this.cutdownCount();
         this.cutdownInterval = setInterval(() => {
           this.cutdownCount();

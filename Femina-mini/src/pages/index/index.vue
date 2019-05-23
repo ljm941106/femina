@@ -14,12 +14,16 @@
       </div>
       <div class="button-box">
         <!-- <div class="button" v-if="!firstItem.buy">开始阅读</div> -->
+        <div class="button">
+         <text>开始阅读</text> 
+          </div>
         <div
           class="button"
           v-if="firstItem.rank_enable"
           @click.stop="gotoRank(firstItem.id,firstItem.rank_img)"
-        >粉丝订阅榜</div>
-        <div class="button">开始阅读</div>
+        >
+       <text>粉丝订阅榜</text> 
+        </div>
       </div>
       <!--<div class="button" v-if="!firstItem.buy" @click.stop="showCodeInputPopup(firstItem.id)">使用阅读码</div>-->
     </div>
@@ -404,17 +408,21 @@ export default {
         height: 256rpx;
         img {
           position: absolute;
+          z-index: -1;
           left: 0;
           top: 0;
           width: 100%;
           height: 100%;
         }
         .button {
+          position: relative;
           width: 150rpx;
           padding: 0;
           line-height: 56rpx;
           margin: 110rpx auto 8rpx;
-          border-color: #ffffff;
+          border: #ffffff 1rpx solid;
+          border-radius: 6rpx;
+          text-align: center;
           color: #ffffff;
           font-size: 30rpx;
         }
@@ -429,20 +437,35 @@ export default {
       }
     }
     .button-box {
-      padding: 0 30rpx;
+      height: 112rpx;
       width: 100%;
       display: flex;
-      justify-content: space-around;
-    }
-    .button {
-      text-align: center;
-      margin-top: 40rpx;
-      border: $pcolor solid 3rpx;
-      border-radius: 6rpx;
-      padding: 12rpx 0;
-      color: $pcolor;
       align-items: center;
-	  width: 240rpx;
+      justify-content: space-around;
+      .button {
+        position: relative;
+        // border: $pcolor solid 3rpx;
+        // border-radius: 6rpx;
+        color: $pcolor;
+        width: 167rpx;
+        height: 80rpx;
+        display: flex;
+        justify-content: center;
+        padding-top: 38rpx;
+        font-size: 24rpx;
+        background: url("https://ssl-yizhou.25bsx.com/public/icon/index-bg-none.png")
+          center / cover;
+        &:nth-child(2) {
+          background-image: url("https://ssl-yizhou.25bsx.com/public/icon/index-bg-rank.png");
+          text {
+            margin-left: 20rpx;
+          }
+        }
+        text {
+          font-weight: bold;
+          line-height: 1;
+        }
+      }
     }
   }
   .index-list {
@@ -507,7 +530,7 @@ export default {
       padding: 0 30rpx;
       .item {
         position: relative;
-        width: 330rpx;
+        width: 306rpx;
         margin-bottom: 40rpx;
         overflow: hidden;
         .tag {
@@ -536,21 +559,19 @@ export default {
           display: flex;
           flex-direction: column;
           align-items: center;
-          background: $bcolor;
-          padding-top: 12rpx;
           img {
             width: 306rpx;
             height: 408rpx;
           }
           span {
             line-height: 60rpx;
-            color: #ffffff;
+            color: #434343;
             font-weight: bold;
           }
         }
         .intro {
-          text-align: right;
-          font-size: 30rpx;
+          text-align: center;
+          font-size: 24rpx;
           color: #999;
         }
       }
