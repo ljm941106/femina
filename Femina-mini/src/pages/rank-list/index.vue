@@ -226,7 +226,11 @@ export default {
     }
     return {
       title: "指尖阅读，要你好看，伊周GO！",
-      path: "/pages/index/main",
+      path:
+        "/pages/index/main?id=" +
+        this.magazineId +
+        "&name=" +
+        this.$mp.query.name,
       success: function(res) {},
       fail: function(res) {
         // 转发失败

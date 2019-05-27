@@ -248,11 +248,13 @@ export default {
     },
     gotoRank(id, banner) {
       wx.navigateTo({
-        url: "/pages/rank-list/main?id=" + id
+        url: "/pages/rank-list/main?id=" + id + "&name=" + this.buyTitle
       });
     }
   },
-  onUnload() {},
+  onUnload() {
+    this.reset();
+  },
   onShareAppMessage: function(res) {
     if (res.from === "button") {
       // 来自页面内转发按钮

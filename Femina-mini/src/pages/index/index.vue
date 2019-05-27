@@ -15,14 +15,14 @@
       <div class="button-box">
         <!-- <div class="button" v-if="!firstItem.buy">开始阅读</div> -->
         <div class="button">
-         <text>开始阅读</text> 
-          </div>
+          <text>开始阅读</text>
+        </div>
         <div
           class="button"
           v-if="firstItem.rank_enable"
           @click.stop="gotoRank(firstItem.id,firstItem.rank_img)"
         >
-       <text>粉丝订阅榜</text> 
+          <text>粉丝订阅榜</text>
         </div>
       </div>
       <!--<div class="button" v-if="!firstItem.buy" @click.stop="showCodeInputPopup(firstItem.id)">使用阅读码</div>-->
@@ -174,6 +174,15 @@ export default {
   mounted() {
     const systemRes = wx.getSystemInfoSync();
     if (systemRes.system.indexOf("iOS") > -1) this.isiOS = true;
+    if (this.$mp.query.id) {
+      wx.navigateTo({
+        url:
+          "/pages/preview/main?id=" +
+          this.$mp.query.id +
+          "&name=" +
+          this.$mp.query.name
+      });
+    }
     //			wx.removeStorageSync("magazineId")
   },
   async onPullDownRefresh() {
