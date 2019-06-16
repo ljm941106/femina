@@ -1,36 +1,33 @@
 <template>
   <div class="item detail">
-    <video
-      class="video"
-      id="videoPlay"
-      :direction="direction"
-      @fullscreenchange="fullscreenchange"
-      @ended="videoEnd"
-      :src="videoUrl"
-      controls
-      @play="onVideoplay"
-    />
-    <swiper
-      v-if="render"
-      class="swiper"
-      :indicator-dots="indicatorDots"
-      duration="300"
-      @change="swiperChange"
-    >
-      <block v-for="i in detail" :key="i.img">
-        <swiper-item class="swiper-item" @click="playVideo(i.cate,i.video,i.direction)">
-          <!--<img mode="aspectFill" :src="i.img" :style="{transform: 'translateY(' + (windowHeight-(i.height/2)) + 'rpx)',width:i.width+'rpx',height:i.height+'rpx'}" />-->
-          <img mode="widthFix" :src="i.img">
-        </swiper-item>
-      </block>
-    </swiper>
-    <div v-if="render" @click="playCurrentVideo">
-      <img v-if="isCurrentVideo" class="play-icon" src="../../../static/whitePlay.png">
-    </div>
-    <div class="swiper-indicator">{{swiperCurrentIndex+1}}/{{detail.length}}</div>
-    <!-- <div class="rank-icon" @click.stop="gotoRank(id)">
+    <web-view v-if="webViewSrc" :src="webViewSrc" @load="webViewLoad"></web-view>
+    <template v-else>
+      <video
+        class="video"
+        id="videoPlay"
+        :direction="direction"
+        @fullscreenchange="fullscreenchange"
+        @ended="videoEnd"
+        :src="videoUrl"
+        controls
+        @play="onVideoplay"
+      />
+      <swiper v-if="render" class="swiper" :indicator-dots="indicatorDots" duration="300" @change="swiperChange">
+        <block v-for="i in detail" :key="i.img">
+          <swiper-item class="swiper-item" @click="playVideo(i.cate,i.video,i.direction)">
+            <!--<img mode="aspectFill" :src="i.img" :style="{transform: 'translateY(' + (windowHeight-(i.height/2)) + 'rpx)',width:i.width+'rpx',height:i.height+'rpx'}" />-->
+            <img mode="widthFix" :src="i.img">
+          </swiper-item>
+        </block>
+      </swiper>
+      <div v-if="render" @click="playCurrentVideo">
+        <img v-if="isCurrentVideo" class="play-icon" src="../../../static/whitePlay.png">
+      </div>
+      <div class="swiper-indicator">{{swiperCurrentIndex+1}}/{{detail.length}}</div>
+      <!-- <div class="rank-icon" @click.stop="gotoRank(id)">
       <img src="../../../static/icon_rank.png">
-    </div> -->
+      </div>-->
+    </template>
   </div>
 </template>
 
@@ -48,7 +45,8 @@ export default {
       indicatorDots: false, //swiper指示点
       videoUrl: "",
       windowHeight: "",
-      render: true
+      render: true,
+      webViewSrc: ""
     };
   },
   mounted() {
@@ -63,6 +61,10 @@ export default {
       wx.showLoading();
       const _this = this;
       this.id = this.$mp.query.id;
+      if (!this.id) {
+        this.webViewSrc = this.$mp.query.url;
+        return;
+      }
       this.buyTitle = this.$mp.query.name;
       this.token = wx.getStorageSync("token");
       let res = await fly.post(api.itemDetail, {
@@ -74,16 +76,6 @@ export default {
         this.detail = res.data.list;
         this.render = true;
         wx.hideLoading();
-        //        this.detail.forEach(i => {
-        //          wx.getImageInfo({
-        //            src: i.img,
-        //            success(res) {
-        //              i.width = res.width;
-        //              i.height = res.height;
-        //              _this.render = true
-        //            }
-        //          })
-        //        })
       } else {
         wx.showToast({
           title: res.msg,
@@ -94,6 +86,9 @@ export default {
           wx.navigateBack();
         }, 2000);
       }
+    },
+    webViewLoad() {
+      wx.hideLoading();
     },
     swiperChange(e) {
       this.swiperCurrentIndex = e.mp.detail.current;

@@ -4,6 +4,7 @@
     "pages/loading/main",
     "pages/login/main",
     "pages/description/main",
+    "pages/buy-middle/main",
     "pages/preview/main",
     "pages/rank-list/main",
     "pages/item/main"

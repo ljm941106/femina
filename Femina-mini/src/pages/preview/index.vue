@@ -10,16 +10,9 @@
       controls
       @play="onVideoplay"
     />
-    <swiper
-      v-if="render"
-      class="swiper"
-      :indicator-dots="indicatorDots"
-      duration="300"
-      @change="swiperChange"
-    >
+    <swiper v-if="render" class="swiper" :indicator-dots="indicatorDots" duration="300" @change="swiperChange">
       <block v-for="i in detail" :key="i.img">
         <swiper-item class="swiper-item" @click="playVideo(i.cate,i.video,i.direction)">
-          <!--<img mode="aspectFill" :src="i.img" :style="{transform: 'translateY(' + (windowHeight-(i.height/2)-50) + 'rpx)',width:i.width+'rpx',height:i.height+'rpx'}" />-->
           <img mode="widthFix" :src="i.img">
         </swiper-item>
       </block>
@@ -43,8 +36,10 @@
       :show="isBuyPopupShow"
       @hideBuyPopup="hideBuyPopup"
       :magazineId="id"
+      :groupId="groupId"
       :buyTitle="buyTitle"
       @buySuccess="buySuccess"
+      @buyComplete="buyComplete"
     ></buy-popup>
     <code-input-popup
       ref="codeUse"
@@ -54,18 +49,21 @@
       :code="currentUseCode"
       :magazineId="currentMagazineId"
     ></code-input-popup>
+    <buy-middle v-if="isChooseGroup&&middleRender" :data="buyMiddleData" @groupChose="getGroupChose"></buy-middle>
   </div>
 </template>
 
 <script>
 import fly from "../../utils/fly";
 import api from "../../utils/api";
-import buyPopup from "../../components/common/buy-popup";
-import codeInputPopup from "../../components/common/code-input-popup";
+import BuyPopup from "../../components/common/buy-popup";
+import CodeInputPopup from "../../components/common/code-input-popup";
+import BuyMiddle from "../../components/common/buy-middle";
 export default {
   components: {
-    buyPopup,
-    codeInputPopup
+    BuyPopup,
+    CodeInputPopup,
+    BuyMiddle
   },
   data() {
     return {
@@ -84,7 +82,12 @@ export default {
       buyTitle: "",
       render: false,
       currentUseCode: "",
-      currentMagazineId: ""
+      currentMagazineId: "",
+      middleRender: false,
+      isChooseGroup: false,
+      buyMiddleData: "",
+      groupId: "",
+      webViewSrc: ""
     };
   },
   mounted() {
@@ -93,10 +96,7 @@ export default {
     this.reset();
     this.init();
   },
-  onShow() {
-    // const systemRes = wx.getSystemInfoSync();
-    // this.windowHeight = systemRes.windowHeight;
-  },
+  onShow() {},
   methods: {
     reset() {
       this.swiperCurrentIndex = 0;
@@ -105,35 +105,41 @@ export default {
       this.isCodeInputPopup = false; //输入code弹窗
       this.videoUrl = "";
       this.render = false;
+      this.isBuyPopupShow = false;
+      this.isChooseGroup = false;
+      this.middleRender = false;
     },
     async init() {
       wx.showLoading();
       const _this = this;
       this.id = this.$mp.query.id;
 
-      this.buyTitle = this.$mp.query.name;
       this.token = wx.getStorageSync("token");
       let res = await fly.post(api.preview, {
         token: wx.getStorageSync("token"),
         magazine_id: this.id
       });
       if (res.code == 0) {
-        this.detail = res.data.list;
-        this.isBuy = res.data.buy;
-        this.isRank = res.data.rank_enable;
-        this.render = true;
         wx.hideLoading();
-        //        this.detail.forEach(i => {
-        //          wx.getImageInfo({
-        //            src: i.img,
-        //            success(res) {
-        //              i.width = res.width;
-        //              i.height = res.height;
-        //              _this.render = true;
-        //              console.log(i)
-        //            }
-        //          })
-        //        })
+
+        this.buyTitle = res.data.name;
+        this.detail = res.data.list; //预览列表
+        this.isBuy = res.data.buy; //是否已经购买
+        this.isRank = res.data.rank_enable; //是否开启了排行榜
+        this.buyType = res.data.buy_type;
+        this.render = true;
+        this.contetnType = res.data.content_type;
+        this.contetnUrl = res.data.content_url;
+        if (res.data.buy_type == 2) {
+          let middleRes = await fly.post(api.middleGroup, {
+            token: wx.getStorageSync("token"),
+            magazine_id: this.id
+          });
+          if (middleRes.code == 0) {
+            this.middleRender = true;
+            this.buyMiddleData = middleRes.data;
+          }
+        }
       }
     },
     //已经购买过了显示详情
@@ -145,11 +151,21 @@ export default {
         this.direction = this.detail[this.swiperCurrentIndex].direction;
       }
     },
+    //组合的购买
+    getGroupChose(value, name) {
+      this.groupId = value;
+      this.buyTitle += "-" + name;
+      this.isBuyPopupShow = true;
+    },
     hideBuyPopup() {
       this.isBuyPopupShow = false;
     },
     showBuyPopup() {
-      this.isBuyPopupShow = true;
+      if (this.buyType == 2) {
+        this.isChooseGroup = true;
+      } else {
+        this.isBuyPopupShow = true;
+      }
     },
     hideCodeInputPopup() {
       this.isCodeInputPopup = false;
@@ -166,9 +182,16 @@ export default {
       this.gotoDetail();
     },
     gotoDetail() {
-      wx.navigateTo({
-        url: "/pages/item/main?id=" + this.id + "&name=" + this.buyTitle
-      });
+      if (this.contetnType == 2) {
+        let webViewSrc = this.contetnType;
+        wx.navigateTo({
+          url: "/pages/item/main?url=" + this.contetnUrl
+        });
+      } else {
+        wx.navigateTo({
+          url: "/pages/item/main?id=" + this.id + "&name=" + this.buyTitle
+        });
+      }
     },
     //购买成功
     buySuccess() {
@@ -197,6 +220,10 @@ export default {
           }
         }
       });
+    },
+    buyComplete() {
+      this.isBuyPopupShow = false;
+      this.isChooseGroup = false;
     },
     playCurrentVideo() {
       wx.showLoading({

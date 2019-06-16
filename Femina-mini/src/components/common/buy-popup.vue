@@ -9,14 +9,14 @@
       <div class="buy-list">
         <radio-group class="radio-group" @change="radioChange">
           <label class="item" v-for="item in codeList" :key="item.id">
-		        <radio :value="item.id" :checked="item.checked"/> 
-		        <span>× {{item.num}}本</span>
-          	<span>￥{{item.price / 100}}</span>
-		      </label>
+            <radio :value="item.id" :checked="item.checked"/>
+            <span>× {{item.num}}本</span>
+            <span>￥{{item.price / 100}}</span>
+          </label>
         </radio-group>
         <div class="custom">
           其它数量：
-          <input type="text" v-model.number="customNum" @input="inputChange" />&nbsp;本
+          <input type="text" v-model.number="customNum" @input="inputChange">&nbsp;本
           <span>￥{{custumPrice}}</span>
         </div>
         <div class="button-box">
@@ -40,6 +40,7 @@ export default {
       type: Boolean
     },
     magazineId: {},
+    groupId: {}, //若组合购买所需要的组合成员的id
     buyTitle: {} //购买的杂志的标题
   },
   data() {
@@ -102,12 +103,12 @@ export default {
     },
     async submit() {
       wx.showLoading();
-      const _this = this;
       let res = await fly.post(api.pay, {
         token: wx.getStorageSync("token"),
         price_id: this.codeId,
         nums: this.customNumSubmit,
-        magazine_id: this.magazineId
+        magazine_id: this.magazineId,
+        group_id: this.groupId
       });
       wx.hideLoading();
       if (res.code == 500) {
@@ -123,10 +124,15 @@ export default {
         package: payInfo.package,
         signType: "MD5",
         paySign: payInfo.paySign,
-        success(res) {
-          _this.$emit("buySuccess");
+        success: res => {
+          this.$emit("buySuccess");
         },
-        fail(res) {}
+        fail: res => {
+          this.$emit("buyfail");
+        },
+        complete: res => {
+          this.$emit("buyComplete");
+        }
       });
     }
   }

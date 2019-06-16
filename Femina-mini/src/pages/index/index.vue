@@ -1,52 +1,45 @@
 <template>
   <div class="index">
-    <div
-      class="magazine"
-      @click="gotoItem(firstItem.id,firstItem.buy,firstItem.name,firstItem.rank_img)"
+    <swiper
+      class="swiper-banner"
+      :indicator-dots="true"
+      :autoplay="false"
+      :current="swiperIndex"
+      :previous-margin="swiperMargin"
+      :next-margin="swiperMargin"
+      @change="swiperChange"
     >
-      <div class="img">
-        <img :src="firstItem.img">
-        <div class="detail">
-          <img src="../../../static/logo-bg.png">
-          <div class="button">预览</div>
-          <div class="num">{{firstItem.sale}}人已订阅</div>
-        </div>
+      <block v-for="(i,index) in banner" :key="i.id">
+        <swiper-item class="magazine" :class="{current:swiperIndex==index}" @click="gotoItem(i)">
+          <div class="img-box">
+            <div class="img">
+              <img :src="i.img">
+              <div class="detail">
+                <img src="../../../static/logo-bg.png">
+                <div class="button">预览</div>
+                <div class="num">{{i.sale}}人已订阅</div>
+              </div>
+            </div>
+          </div>
+        </swiper-item>
+      </block>
+    </swiper>
+    <div class="button-box">
+      <div class="button" @click="gotoItem(currentSwiper)">
+        <text>开始阅读</text>
       </div>
-      <div class="button-box">
-        <!-- <div class="button" v-if="!firstItem.buy">开始阅读</div> -->
-        <div class="button">
-          <text>开始阅读</text>
-        </div>
-        <div
-          class="button"
-          v-if="firstItem.rank_enable"
-          @click.stop="gotoRank(firstItem.id,firstItem.rank_img)"
-        >
-          <text>粉丝订阅榜</text>
-        </div>
+      <div class="button" @click.stop="gotoRank(currentSwiper)">
+        <text>粉丝订阅榜</text>
       </div>
-      <!--<div class="button" v-if="!firstItem.buy" @click.stop="showCodeInputPopup(firstItem.id)">使用阅读码</div>-->
     </div>
     <div class="index-list">
       <div class="menu">
-        <div
-          class="item"
-          :class="{active:index==currentIndex}"
-          v-for="(i,index) in menuList"
-          :key="i.id"
-          @click="munuItemClick(index)"
-        >{{i.value}}</div>
+        <div class="item" :class="{active:index==currentIndex}" v-for="(i,index) in menuList" :key="i.id" @click="munuItemClick(index)">{{i.value}}</div>
       </div>
       <div class="list-box">
         <div v-show="currentIndex==0">
           <div class="pro-list">
-            <div
-              class="item"
-              v-for="(i,index) in list"
-              v-if="index>0"
-              :key="i.id"
-              @click="gotoItem(i.id,i.buy,i.name,i.rank_img)"
-            >
+            <div class="item" v-for="i in list" :key="i.id" @click="gotoItem(i)">
               <div class="tag" v-if="!i.buy&&!isiOS">
                 <div>购买</div>
               </div>
@@ -61,12 +54,7 @@
         </div>
         <div v-show="currentIndex==1">
           <div class="pro-list">
-            <div
-              class="item"
-              v-for="i in myList"
-              :key="i.id"
-              @click="gotoItem(i.id,true,i.name,i.rank_img)"
-            >
+            <div class="item" v-for="i in myList" :key="i.id" @click="gotoItem(i)">
               <div class="cover">
                 <img :src="i.img">
                 <span>{{i.name}}</span>
@@ -91,11 +79,7 @@
                   {{i.code}}
                 </div>
                 <div class="operation">
-                  <div
-                    class="button"
-                    :class="{disabled:i.status}"
-                    @click="toUseCode(i.pid,i.code,i.status)"
-                  >
+                  <div class="button" :class="{disabled:i.status}" @click="toUseCode(i.pid,i.code,i.status)">
                     <template v-if="i.status">已使用</template>
                     <template v-else>去使用</template>
                   </div>
@@ -154,6 +138,10 @@ export default {
           iconActive: require("../../../static/icon-purchased.png")
         }
       ],
+      banner: [],
+      swiperIndex: 0,
+      swiperMargin: 0,
+      currentSwiper: "",
       list: [],
       firstItem: "",
       myList: [], //我已购买的期刊
@@ -168,22 +156,22 @@ export default {
       codePage: 1,
 
       lodingCompleted: false,
-      isiOS: false
+      isiOS: false,
+      webViewSrc: ""
     };
   },
   mounted() {
     const systemRes = wx.getSystemInfoSync();
     if (systemRes.system.indexOf("iOS") > -1) this.isiOS = true;
+    this.swiperMargin = systemRes.windowWidth / 750 * 55 + "px";
     if (this.$mp.query.id) {
       wx.navigateTo({
-        url:
-          "/pages/preview/main?id=" +
-          this.$mp.query.id +
-          "&name=" +
-          this.$mp.query.name
+        url: "/pages/preview/main?id=" + this.$mp.query.id + "&name=" + this.$mp.query.name
       });
     }
-    //			wx.removeStorageSync("magazineId")
+    this.timeStart = +new Date();
+    this.token = wx.getStorageSync("token");
+    this.initList();
   },
   async onPullDownRefresh() {
     this.indexPage = 1;
@@ -230,13 +218,16 @@ export default {
     }
     wx.hideLoading();
   },
-  onShow() {
-    this.timeStart = +new Date();
-    this.token = wx.getStorageSync("token");
-    this.initList();
-  },
   methods: {
     async initList() {
+      fly
+        .post(api.getBanner, {
+          token: this.token
+        })
+        .then(data => {
+          this.banner = data.data.list;
+          this.currentSwiper = this.banner[0];
+        });
       //      wx.showLoading()
       this.indexPage = 1;
       this.myPage = 1;
@@ -311,23 +302,25 @@ export default {
       this.currentMagazineId = magazineId;
       this.isCodeInputPopup = true;
     },
-    gotoItem(id, isBuy, name, banner) {
-      wx.setStorageSync("payPopupTitle", name);
-      if (isBuy == 0) {
-        isBuy = false;
-      } else {
-        isBuy = true;
-      }
+    gotoItem(item) {
       wx.navigateTo({
-        url: "/pages/preview/main?buy=" + isBuy + "&id=" + id + "&name=" + name
+        url: "/pages/preview/main" + "?id=" + item.id + "&name=" + item.name
       });
-      wx.setStorageSync("rankBanner", banner);
+      wx.setStorageSync("rankBanner", item.rank_img);
     },
-    gotoRank(id, banner) {
-      wx.setStorageSync("rankBanner", banner);
-      wx.navigateTo({
-        url: "/pages/rank-list/main?id=" + id
-      });
+    gotoRank(item) {
+      if (item.rank_enable) {
+        wx.setStorageSync("rankBanner", item.rank_img);
+        wx.navigateTo({
+          url: "/pages/rank-list/main?id=" + item.id
+        });
+      } else {
+        wx.showToast({
+          title: "暂未开启排行榜",
+          icon: "none",
+          duration: 2000
+        });
+      }
     },
     async toUseCode(magazineId, code, status) {
       if (status) return;
@@ -343,6 +336,10 @@ export default {
       wx.navigateTo({
         url: "/pages/description/main?type=use"
       });
+    },
+    swiperChange(e) {
+      this.swiperIndex = e.mp.detail.current;
+      this.currentSwiper = this.banner[this.swiperIndex];
     }
   },
   onShareAppMessage: function(res) {
@@ -374,6 +371,7 @@ export default {
 }
 
 @import "../../mixin";
+
 .loading {
   position: fixed;
   left: 0;
@@ -394,18 +392,66 @@ export default {
 }
 
 .index {
+  .swiper-banner {
+    height: 916rpx;
+  }
+  .button-box {
+    margin: -20rpx auto 30rpx;
+    height: 126rpx;
+    width: 612rpx;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    .button {
+      position: relative;
+      color: $pcolor;
+      width: 233.8rpx;
+      height: 112rpx;
+      display: flex;
+      justify-content: center;
+      padding-top: 53.2rpx;
+      font-size: 33.6rpx;
+      background: url("https://ssl-yizhou.25bsx.com/public/icon/index-bg-none.png") center / cover;
+      &:nth-child(2) {
+        background-image: url("https://ssl-yizhou.25bsx.com/public/icon/index-bg-rank.png");
+        span {
+          margin-left: 28rpx;
+        }
+      }
+      span {
+        font-weight: bold;
+        line-height: 1;
+      }
+    }
+  }
   .magazine {
     display: flex;
     padding: 40rpx 0;
     flex-direction: column;
     align-items: center;
-    .img {
+    &.current {
+      .img {
+        width: 612rpx;
+        height: 816rpx;
+        box-shadow: 0 0 18rpx 6rpx rgba(0, 0, 0, 0.2);
+      }
+    }
+    .img-box {
       width: 612rpx;
       height: 816rpx;
       position: relative;
+    }
+    .img {
+      width: 581.4rpx;
+      height: 775.2rpx;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transition: 0.3s;
       img {
-        width: 612rpx;
-        height: 816rpx;
+        width: 100%;
+        height: 100%;
         display: block;
       }
       .detail {
@@ -442,38 +488,6 @@ export default {
           color: #ffffff;
           font-size: 24rpx;
           text-align: right;
-        }
-      }
-    }
-    .button-box {
-      margin: 0 auto;
-      height: 126rpx;
-      width: 612rpx;
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-around;
-      .button {
-        position: relative;
-        // border: $pcolor solid 3rpx;
-        // border-radius: 6rpx;
-        color: $pcolor;
-        width: 233.8rpx;
-        height: 112rpx;
-        display: flex;
-        justify-content: center;
-        padding-top: 53.2rpx;
-        font-size: 33.6rpx;
-        background: url("https://ssl-yizhou.25bsx.com/public/icon/index-bg-none.png")
-          center / cover;
-        &:nth-child(2) {
-          background-image: url("https://ssl-yizhou.25bsx.com/public/icon/index-bg-rank.png");
-          text {
-            margin-left: 28rpx;
-          }
-        }
-        text {
-          font-weight: bold;
-          line-height: 1;
         }
       }
     }
@@ -563,6 +577,7 @@ export default {
           div {
             position: absolute;
             width: 50rpx;
+            font-size: 22rpx;
           }
         }
         .cover {

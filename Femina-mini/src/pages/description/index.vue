@@ -6,45 +6,43 @@
 </template>
 
 <script>
-  import fly from '../../utils/fly'
-  import api from '../../utils/api'
-  export default {
-    components: {},
-    data() {
-      return {
-        type: '',
-        infoUse: '',
-      }
-    },
-    onShow() {
-      this.type = this.$mp.query.type;
+import fly from "../../utils/fly";
+import api from "../../utils/api";
+export default {
+  components: {},
+  data() {
+    return {
+      type: "",
+      infoUse: ""
+    };
+  },
+  onShow() {
+    this.type = this.$mp.query.type;
 
-      let result = wx.getStorageSync('config').use
-      const regex = new RegExp('<img', 'gi');
-      result = result.replace(regex, `<img mode="widthFix" class="img"`);
-      this.infoUse = result;
-
-    },
-    methods: {},
-
-  }
+    let result = wx.getStorageSync("config").use;
+    const regex = new RegExp("<img", "gi");
+    result = result.replace(regex, `<img mode="widthFix" class="img"`);
+    this.infoUse = result;
+  },
+  methods: {}
+};
 </script>
 
 <style lang="scss">
-  @import "../../mixin";
-  .description {
-    padding: 20rpx 30rpx;
-    h2 {
-      text-align: center;
-      font-size: 40rpx;
-      font-weight: bold;
-    }
-    rich-text {
-      max-width: 100%;
-    }
-    .img {
-      max-width: 100%;
-      margin: 20rpx auto;
-    }
+@import "../../mixin";
+.description {
+  padding: 20rpx 30rpx;
+  h2 {
+    text-align: center;
+    font-size: 40rpx;
+    font-weight: bold;
   }
+  rich-text {
+    max-width: 100%;
+  }
+  .img {
+    max-width: 100%;
+    margin: 20rpx auto;
+  }
+}
 </style>
