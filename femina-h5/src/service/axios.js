@@ -9,7 +9,7 @@ let baseURL;
 if(process.env.NODE_ENV == 'production') {
   baseURL = 'https://ssl-yizhou.25bsx.com'
 } else if(process.env.NODE_ENV == 'development') {
-  baseURL = 'https://ssl-yizhou.25bsx.com'
+  baseURL = 'http://yizhou.congcong2014.cn'
 }
 const instance = axios.create({
   baseURL: baseURL,
