@@ -1,14 +1,14 @@
 <template>
-  <div class="index">
+  <div class="index" :class="{'over-hidden':isBuyMiddleShow}">
     <!-- <div class="logo-con">
       <h2>伊周电子刊·订阅</h2>
       <div class="logo">
         <img :src="banner">
       </div>
     </div>-->
-    <div class="swiper-container">
+    <div class="swiper-container" v-if="swiperRender">
       <div class="swiper-wrapper">
-        <div class="swiper-slide" v-for="(i,index) in bannerList" :key="i.id">
+        <div class="swiper-slide" v-for="(i,index) in bannerList" :key="i.id" @click="preview(i.id)">
           <div class="img-box">
             <div class="img" :class="{active:swiperActiveIndex==index}">
               <img :src="i.img">
@@ -51,7 +51,7 @@
               </div>
               <div class="operation">
                 <div class="button" @click="preview(firstItem.id)">预览</div>
-                <div class="button" @click="showBuyModal(firstItem.id,firstItem.name,firstItem.buy)">
+                <div class="button" @click="showBuyModal(firstItem)">
                   <template v-if="firstItem.buy">再次购买</template>
                   <template v-else>购买阅读码</template>
                 </div>
@@ -112,7 +112,7 @@
         <h3>{{buyTitle}}</h3>
         <div class="buy-list">
           <label class="item" v-for="i in buyDetailInfo" :key="i.id">
-            <input type="radio" v-model="codeId" :value="i.id" @change="radioChnage">
+            <input type="radio" v-model="codeId" :value="i.id" @change="radioChange">
             <span>× {{i.num}}本</span>
             <span>￥{{i.price / 100}}</span>
           </label>
@@ -147,6 +147,9 @@ import "swiper/dist/css/swiper.min.css";
 import Swiper from "swiper/dist/js/swiper.min.js";
 import Clipboard from "clipboard";
 import { log } from "util";
+import { clearTimeout } from "timers";
+import { truncate } from "fs";
+let mySwiper;
 export default {
   name: "index",
   components: {
@@ -169,6 +172,7 @@ export default {
           imgActive: require("../assets/icon-coupon-listd.png")
         }
       ],
+      swiperRender: false,
       bannerList: [],
       proList: [], //产品列表
       firstItem: "", //第一个项目列表
@@ -194,6 +198,30 @@ export default {
     };
   },
   async activated() {
+    this.swiperRender = false;
+    if (mySwiper == "destroy") {
+      let bannerRes = await this.$http.post(this, api.getBanner, {
+        token: db.get("token")
+      });
+      if (bannerRes.code == 0) {
+        this.bannerList = bannerRes.data.list;
+        this.swiperRender = true;
+        this.currentSwiper = this.bannerList[this.swiperActiveIndex];
+        this.$nextTick(() => {
+          mySwiper = new Swiper(".swiper-container", {
+            slidesPerView: "auto",
+            spaceBetween: 20,
+            centeredSlides: true,
+            on: {
+              slideChange: () => {
+                this.swiperActiveIndex = mySwiper.activeIndex;
+                this.currentSwiper = this.bannerList[this.swiperActiveIndex];
+              }
+            }
+          });
+        });
+      }
+    }
     // let res = await this.$http.post(this, api.getList, {
     //   token: db.get("token")
     // });
@@ -209,11 +237,37 @@ export default {
     //   this.codeList = codeRes.data.list;
     // }
   },
+  deactivated() {
+    mySwiper.destroy();
+    mySwiper = "destroy";
+  },
   created() {
     this.timeStart = +new Date();
     this.init();
   },
   async mounted() {
+    //banner
+    let bannerRes = await this.$http.post(this, api.getBanner, {
+      token: db.get("token")
+    });
+    if (bannerRes.code == 0) {
+      this.bannerList = bannerRes.data.list;
+      this.swiperRender = true;
+      this.currentSwiper = this.bannerList[this.swiperActiveIndex];
+      this.$nextTick(() => {
+        mySwiper = new Swiper(".swiper-container", {
+          slidesPerView: "auto",
+          spaceBetween: 20,
+          centeredSlides: true,
+          on: {
+            slideChange: () => {
+              this.swiperActiveIndex = mySwiper.activeIndex;
+              this.currentSwiper = this.bannerList[this.swiperActiveIndex];
+            }
+          }
+        });
+      });
+    }
     this.$nextTick(() => {
       const _this = this;
       let clipboard = new Clipboard(".clipboard-button");
@@ -265,9 +319,7 @@ export default {
     async init() {
       //配置，banner图，统一的价格，购买说明，使用说明以及购买选项
       let configRequest = this.$http.post(this, api.config);
-      let bannerRequest = this.$http.post(this, api.getBanner, {
-        token: db.get("token")
-      });
+
       let listRequest = this.$http.post(this, api.getList, {
         token: db.get("token")
       });
@@ -284,38 +336,19 @@ export default {
         this.infoUse = info.use;
         db.set("infoUse", this.infoUse);
       }
-      //banner
-      let bannerRes = await bannerRequest;
-      if (bannerRes.code == 0) {
-        this.bannerList = bannerRes.data.list;
-        this.currentSwiper = this.bannerList[0];
-      }
       //产品列表
       let res = await listRequest;
       if (res.code == 0) {
         this.proList = res.data.list;
         this.firstItem = this.proList[0];
       }
-      this.$nextTick(() => {
-        if (+new Date() - this.timeStart > 3000) {
+      if (+new Date() - this.timeStart > 3000) {
+        this.isLoading = false;
+      } else {
+        let timeout = setTimeout(() => {
           this.isLoading = false;
-        } else {
-          setTimeout(() => {
-            this.isLoading = false;
-          }, 3000);
-        }
-        var mySwiper = new Swiper(".swiper-container", {
-          slidesPerView: "auto",
-          spaceBetween: 20,
-          centeredSlides: true,
-          on: {
-            slideChange: () => {
-              this.swiperActiveIndex = mySwiper.activeIndex;
-              this.currentSwiper = this.bannerList[this.swiperActiveIndex];
-            }
-          }
-        });
-      });
+        }, 3000);
+      }
     },
     async getCodeList() {
       //我的阅读码列表
@@ -342,14 +375,17 @@ export default {
     },
     getGroupChose(value, name) {
       this.isBuyModal = true;
-      this.buyTitle += "-" + name;
+      this.buyTitle = this.itemName + "-" + name;
+      this.groupId = value;
     },
     async showBuyModal(item) {
       this.proId = item.id;
+      this.itemName = item.name;
       this.buyTitle = item.name;
       this.isBuy = item.buy;
       if (item.buy_type == 1) {
         this.isBuyModal = true;
+        this.groupId = "";
       } else {
         this.$vux.toast.show({
           text: "加载中...",
@@ -369,7 +405,7 @@ export default {
     hideModal() {
       this.isBuyModal = false;
     },
-    radioChnage() {
+    radioChange() {
       this.customNum = 0;
       this.custumPrice = 0;
       this.customNumSubmit = "";
@@ -407,7 +443,7 @@ export default {
         price_id: this.codeId,
         nums: this.customNumSubmit,
         magazine_id: this.proId,
-        group_id: this.currentBuyData.id
+        group_id: this.groupId
       });
       _this.submiting = false;
       if (res.code == 0) {
@@ -456,11 +492,24 @@ export default {
             fail: function(res) {
               _this.isBuyModal = false; //关闭购买弹窗
               _this.isBuyMiddleShow = false;
+              _this.$vux.toast.show({
+                text: res.msg,
+                type: "text",
+                width: "12em"
+              });
             }
           });
           wx.error(function(res) {
+            _this.isBuyModal = false; //关闭购买弹窗
+            _this.isBuyMiddleShow = false;
             //            alert("调用微信jsapi返回的状态:" + res.errMsg);
           });
+        });
+      } else {
+        this.$vux.toast.show({
+          text: res.msg,
+          type: "text",
+          width: "12em"
         });
       }
     },
@@ -507,6 +556,10 @@ export default {
 }
 
 .index {
+  &.over-hidden {
+    height: 100vh;
+    overflow: hidden;
+  }
   .vux-spinner {
     stroke: $pcolor;
   }

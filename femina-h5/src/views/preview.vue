@@ -51,36 +51,36 @@
           transitionEnd: function() {},
         },
       })
-      let wxjsConfigRes = await this.$http.post(this, api.getWxjsConfig, {
-        data: this.$route.fullPath.substring(1)
-      });
-      if(wxjsConfigRes.code == 0) {
-        wx.config({
-          //debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-          appId: wxjsConfigRes.data.appId, // 必填，公众号的唯一标识
-          timestamp: wxjsConfigRes.data.timestamp, // 必填，生成签名的时间戳
-          nonceStr: wxjsConfigRes.data.nonceStr, // 必填，生成签名的随机串
-          signature: wxjsConfigRes.data.signature, // 必填，签名，见附录1
-          jsApiList: ["chooseWXPay", "updateAppMessageShareData", "updateTimelineShareData", "onMenuShareTimeline", "onMenuShareAppMessage"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-        });
-        this.$nextTick(() => {
-          let shareData = {
-            title: '指尖阅读，要你好看，伊周GO！',
-            desc: '伊周电子刊，有声有色，你想看的都在这里',
-            link: window.location.href,
-            imgUrl: 'http://yizhou.25bsx.com/share-logo.jpeg',
-            success: function() {
-              //分享成功
-            }
-          }
-          wx.onMenuShareTimeline(shareData)
-          wx.onMenuShareAppMessage(shareData)
-          wx.ready(function() {
-            wx.updateAppMessageShareData(shareData)
-            wx.updateTimelineShareData(shareData)
-          })
-        })
-      }
+      // let wxjsConfigRes = await this.$http.post(this, api.getWxjsConfig, {
+      //   data: this.$route.fullPath.substring(1)
+      // });
+      // if(wxjsConfigRes.code == 0) {
+      //   wx.config({
+      //     //debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+      //     appId: wxjsConfigRes.data.appId, // 必填，公众号的唯一标识
+      //     timestamp: wxjsConfigRes.data.timestamp, // 必填，生成签名的时间戳
+      //     nonceStr: wxjsConfigRes.data.nonceStr, // 必填，生成签名的随机串
+      //     signature: wxjsConfigRes.data.signature, // 必填，签名，见附录1
+      //     jsApiList: ["chooseWXPay", "updateAppMessageShareData", "updateTimelineShareData", "onMenuShareTimeline", "onMenuShareAppMessage"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+      //   });
+      //   this.$nextTick(() => {
+      //     let shareData = {
+      //       title: '指尖阅读，要你好看，伊周GO！',
+      //       desc: '伊周电子刊，有声有色，你想看的都在这里',
+      //       link: window.location.href,
+      //       imgUrl: 'http://yizhou.25bsx.com/share-logo.jpeg',
+      //       success: function() {
+      //         //分享成功
+      //       }
+      //     }
+      //     wx.onMenuShareTimeline(shareData)
+      //     wx.onMenuShareAppMessage(shareData)
+      //     wx.ready(function() {
+      //       wx.updateAppMessageShareData(shareData)
+      //       wx.updateTimelineShareData(shareData)
+      //     })
+      //   })
+      // }
 
     },
     methods: {
