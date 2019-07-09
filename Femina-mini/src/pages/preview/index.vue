@@ -123,6 +123,7 @@ export default {
         wx.hideLoading();
 
         this.buyTitle = res.data.name;
+        this.magazineName = res.data.name;
         this.detail = res.data.list; //预览列表
         this.isBuy = res.data.buy; //是否已经购买
         this.isRank = res.data.rank_enable; //是否开启了排行榜
@@ -154,7 +155,7 @@ export default {
     //组合的购买
     getGroupChose(value, name) {
       this.groupId = value;
-      this.buyTitle += "-" + name;
+      this.buyTitle = this.magazineName + "-" + name;
       this.isBuyPopupShow = true;
     },
     hideBuyPopup() {

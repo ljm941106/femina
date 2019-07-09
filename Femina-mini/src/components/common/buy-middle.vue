@@ -1,22 +1,5 @@
 <template>
   <scroll-view scroll-y style="height:100vh" class="buy-middle">
-    <!-- <div class="main">
-      <div class="flex-left">
-        <div class="img">
-          <img :src="data.group_img" alt>
-        </div>
-        <h2>{{title}}</h2>
-      </div>
-      <div class="flex-right">
-        <div class="title">
-          <div class="img-bg">
-            <img src="../../../static/buy-middle-flag.png" style="width:464rpx;height:75rpx;">
-          </div>
-          <h2>期刊内容介绍</h2>
-        </div>
-        <p>把握、控制。指有组织、有计划、有标准的完成某项活动或工作，表示有很大的信心和很强的成功机率把握、控制。指有组织、有计划、有标准的完成某项活动或工作，表示有很大的信心和很强的成功机率把握、控制。指有组织、有计划、有标准的完成某项活动或工作，表示有很大的信心和很强的成功机率</p>
-      </div>
-    </div>-->
     <div class="main-img">
       <div class="img">
         <img :src="data.group_img">
@@ -33,15 +16,6 @@
         <span>{{i.total}}本订阅</span>
       </label>
     </radio-group>
-
-    <!-- <div class="item" v-for="i in data.group" :key="i.id">
-        <div class="img">
-          <img :src="i.head_img">
-        </div>
-        <strong>{{i.name}}</strong>
-        <span>{{i.total}}本订阅</span>
-    </div>-->
-    <!-- </div> -->
     <div class="button-box">
       <div class="button button-whole" @click="buy">购买</div>
     </div>

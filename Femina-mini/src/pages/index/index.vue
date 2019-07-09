@@ -170,8 +170,12 @@ export default {
       });
     }
     this.timeStart = +new Date();
+  },
+  onShow() {
     this.token = wx.getStorageSync("token");
-    this.initList();
+    if (this.list.length == 0) {
+      this.initList();
+    }
   },
   async onPullDownRefresh() {
     this.indexPage = 1;
@@ -186,7 +190,7 @@ export default {
       case 0:
         if (this.list.length % 20 == 0) {
           this.indexPage++;
-          let indexRes = await fly.get(api.getList, {
+          let indexRes = await fly.post(api.getList, {
             token: this.token,
             page: this.indexPage
           });
@@ -196,7 +200,7 @@ export default {
       case 1:
         if (this.myList.length % 20 == 0) {
           this.myPage++;
-          let myRes = await fly.get(api.getList, {
+          let myRes = await fly.post(api.getList, {
             token: this.token,
             page: this.myPage
           });
@@ -206,7 +210,7 @@ export default {
       case 2:
         if (this.myCodeList.length % 20 == 0) {
           this.codePage++;
-          let codeRes = await fly.get(api.getCode, {
+          let codeRes = await fly.post(api.getCode, {
             token: this.token,
             page: this.codePage
           });
@@ -409,12 +413,12 @@ export default {
       height: 112rpx;
       display: flex;
       justify-content: center;
-      padding-top: 53.2rpx;
+      padding-top: 48.2rpx;
       font-size: 33.6rpx;
       background: url("https://ssl-yizhou.25bsx.com/public/icon/index-bg-none.png") center / cover;
       &:nth-child(2) {
         background-image: url("https://ssl-yizhou.25bsx.com/public/icon/index-bg-rank.png");
-        span {
+        text {
           margin-left: 28rpx;
         }
       }
