@@ -1,6 +1,6 @@
-@import 'reset.css';
-@import 'animate.min.css';
-@import 'swiper.min.css';
+@import "reset.css";
+@import "animate.min.css";
+@import "swiper.min.css";
 
 html,
 body {
@@ -9,49 +9,26 @@ body {
 	position: relative;
 }
 
-#app,
-.home {
-	width: 100%;
-	height: 100%;
-}
+// #app,
+// .home {
+// 	width: 100%;
+// 	height: 100%;
+// }
 
-.cover-modal {
-	width: 100vw;
-	height: calc(3248vw / 15);
-	background-size: cover;
-	position: absolute;
-	z-index: 9;
-}
-
-.logo {
-	z-index: 9;
+.container {
 	position: absolute;
 	left: 0;
 	top: 0;
-	opacity: 0;
-	transition: 3s;
-	width: calc((627 / 1500) * 100vw);
-
+	width: 100vw;
+	z-index: 10;
+	height: calc(3248vw / 15);
 }
-
-.logo.active {
-	opacity: 1;
+.icon-red-point {
+	width: 0.285rem;
 }
-
-.red-point {
-	z-index: 9;
-	display: none;
-	position: absolute;
-	left: calc(147 / 1500 * 100vw);
-	top: calc(1097 / 1500 * 100vw);
-	width: calc(57 / 1500 * 100vw);
-	animation: scalePoint 1.778s infinite;
+.icon-red-point-a {
+	width: 0.505rem;
 }
-
-.red-point.active {
-	display: block;
-}
-
 @keyframes scalePoint {
 	0% {
 		transform: scale(1);
@@ -65,12 +42,45 @@ body {
 		transform: scale(1);
 	}
 }
+@keyframes scaleCom {
+	0% {
+		transform: scale(1);
+	}
 
-.container {
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 100vw;
-	z-index: 10;
-	height: calc(3248vw / 15);
+	50% {
+		transform: scale(1.3);
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}
+@keyframes nextMove {
+	0% {
+		transform: translateX(0);
+	}
+
+	50% {
+		transform: translateX(61.8%);
+	}
+
+	100% {
+		transform: translateX(0);
+	}
+}
+@keyframes handPoint {
+	0% {
+		top: calc(1538 / 3248 * 100vh);
+		right: calc(115 / 1500 * 100vw);
+	}
+
+	50% {
+		top: calc(1938 / 3248 * 100vh);
+		right: calc(515 / 1500 * 100vw);
+	}
+
+	100% {
+		top: calc(1538 / 3248 * 100vh);
+		right: calc(115 / 1500 * 100vw);
+	}
 }

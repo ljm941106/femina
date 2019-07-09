@@ -85,7 +85,7 @@
 			this._state = "init", this.getCanvasInfo(), this.ctx.closePath(), this.ctx.globalCompositeOperation =
 				"source-over";
 			var t = this.options.cover;
-			t instanceof Image ? (this.ctx.fillStyle = this.ctx.createPattern(t, "repeat"), this.ctx.rect(
+			t instanceof Image ? (this.ctx.fillStyle = this.ctx.createPattern(t, "no-repeat"), this.ctx.rect(
 					0, 0, this.width, this.height)) : (this.ctx.fillStyle = "string" == typeof t ? t : "gray",
 					this.ctx.fillRect(0, 0, this.width, this.height)), this.ctx.fill(), this.ctx.globalCompositeOperation =
 				"destination-out"

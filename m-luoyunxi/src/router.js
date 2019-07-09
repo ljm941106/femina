@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Home.vue";
+import Home from "./views/home.vue";
+import Copyright from "./views/copyright.vue";
+import Step2 from "./views/step2.vue";
 
 Vue.use(Router);
 
@@ -10,7 +12,15 @@ export default new Router({
 			path: "/",
 			name: "home",
 			component: Home
-    },
+		}, {
+			path: "/copyright",
+			name: "copyright",
+			component: Copyright
+		}, {
+			path: "/step2",
+			name: "step2",
+			component: Step2
+		},
     // {
     //   path: "/about",
     //   name: "about",
