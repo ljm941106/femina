@@ -3,23 +3,28 @@ import Router from "vue-router";
 import Home from "./views/home.vue";
 import Copyright from "./views/copyright.vue";
 import Step2 from "./views/step2.vue";
+import Step3 from "./views/step3.vue";
 
 Vue.use(Router);
 
 export default new Router({
-	routes: [
-		{
-			path: "/",
-			name: "home",
-			component: Home
+  routes: [
+    {
+      path: "/",
+      name: "home",
+      component: Home
 		}, {
-			path: "/copyright",
-			name: "copyright",
-			component: Copyright
+      path: "/copyright",
+      name: "copyright",
+      component: Copyright
 		}, {
-			path: "/step2",
-			name: "step2",
-			component: Step2
+      path: "/step2",
+      name: "step2",
+      component: Step2
+		}, {
+      path: "/step3",
+      name: "step3",
+      component: Step3
 		},
     // {
     //   path: "/about",

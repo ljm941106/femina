@@ -7,6 +7,54 @@
  * 1. Correct the line height in all browsers.
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
+body,
+div,
+span,
+header,
+footer,
+nav,
+section,
+aside,
+article,
+ul,
+ol,
+dl,
+dt,
+dd,
+li,
+a,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+i,
+b,
+textarea,
+button,
+input,
+select,
+label,
+figure,
+figcaption {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	font-style: normal;
+	text-decoration: none;
+	border: none;
+	color: #333333;
+	font-size: .28rem;
+	font-weight: normal;
+	font-family: "PingFang SC", 'Helvetica Neue', Tahoma, Arial, 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
+	box-sizing: border-box;
+	-webkit-tap-highlight-color: transparent;
+	-webkit-font-smoothing: antialiased;
+	outline: none;
+	resize: none;
+}
 
 html {
 	line-height: 1.15;
@@ -22,9 +70,9 @@ html {
    * Remove the margin in all browsers.
    */
 
-body {
-	margin: 0;
-}
+
+
+
 
 /**
    * Render the `main` element consistently in IE.
@@ -523,7 +571,7 @@ body {
 } */
 
 .head-img img,
-.img img{
+.img img {
 	width: 100%;
 	height: 100%;
 }

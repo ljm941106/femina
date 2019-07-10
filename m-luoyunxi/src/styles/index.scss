@@ -9,12 +9,39 @@ body {
 	position: relative;
 }
 
+img {
+	vertical-align: middle;
+}
+div {
+	will-change: transform;
+	will-change: opacity;
+}
+.icon-to-top {
+	width: 0.455rem;
+}
 // #app,
 // .home {
 // 	width: 100%;
 // 	height: 100%;
 // }
-
+.swiper-page {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	.swiper-button-next,
+	.swiper-button-prev {
+		position: fixed;
+		left: 0.65rem;
+		top: 50%;
+		// transform: translateY(-50%);
+		width: 0.25rem;
+		background: none;
+	}
+	.swiper-button-next {
+		left: auto;
+		right: 0.65rem;
+	}
+}
 .container {
 	position: absolute;
 	left: 0;
@@ -82,5 +109,21 @@ body {
 	100% {
 		top: calc(1538 / 3248 * 100vh);
 		right: calc(115 / 1500 * 100vw);
+	}
+}
+@keyframes binging {
+	0% {
+		opacity: 1;
+		// filter: grayscale(1);
+	}
+
+	50% {
+		opacity: 0.5;
+		// filter: grayscale(0.5);
+	}
+
+	100% {
+		opacity: 1;
+		// filter: grayscale(1);
 	}
 }
