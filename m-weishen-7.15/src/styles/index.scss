@@ -1,0 +1,129 @@
+@import "reset.css";
+@import "animate.min.css";
+@import "swiper.min.css";
+
+html,
+body {
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+
+img {
+	vertical-align: middle;
+}
+div {
+	will-change: transform;
+	will-change: opacity;
+}
+.icon-to-top {
+	width: 0.455rem;
+}
+// #app,
+// .home {
+// 	width: 100%;
+// 	height: 100%;
+// }
+.swiper-page {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	.swiper-button-next,
+	.swiper-button-prev {
+		position: fixed;
+		left: 0.65rem;
+		top: 50%;
+		// transform: translateY(-50%);
+		width: 0.25rem;
+		background: none;
+	}
+	.swiper-button-next {
+		left: auto;
+		right: 0.65rem;
+	}
+}
+.container {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100vw;
+	z-index: 10;
+	height: calc(3248vw / 15);
+}
+.icon-red-point {
+	width: 0.285rem;
+}
+.icon-red-point-a {
+	width: 0.505rem;
+}
+@keyframes scalePoint {
+	0% {
+		transform: scale(1);
+	}
+
+	50% {
+		transform: scale(1.778);
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}
+@keyframes scaleCom {
+	0% {
+		transform: scale(1);
+	}
+
+	50% {
+		transform: scale(1.3);
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}
+@keyframes nextMove {
+	0% {
+		transform: translateX(0);
+	}
+
+	50% {
+		transform: translateX(61.8%);
+	}
+
+	100% {
+		transform: translateX(0);
+	}
+}
+@keyframes handPoint {
+	0% {
+		top: calc(1538 / 3248 * 100vh);
+		right: calc(115 / 1500 * 100vw);
+	}
+
+	50% {
+		top: calc(1938 / 3248 * 100vh);
+		right: calc(515 / 1500 * 100vw);
+	}
+
+	100% {
+		top: calc(1538 / 3248 * 100vh);
+		right: calc(115 / 1500 * 100vw);
+	}
+}
+@keyframes binging {
+	0% {
+		opacity: 1;
+		// filter: grayscale(1);
+	}
+
+	50% {
+		opacity: 0.5;
+		// filter: grayscale(0.5);
+	}
+
+	100% {
+		opacity: 1;
+		// filter: grayscale(1);
+	}
+}

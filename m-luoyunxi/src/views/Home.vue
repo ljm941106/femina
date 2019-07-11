@@ -192,7 +192,7 @@ export default {
 }
 .text-level {
   position: absolute;
-  top: 2.08rem;
+  top: 2.1rem;
   display: flex;
   left: 0.89rem;
   & > div {
@@ -210,7 +210,7 @@ export default {
 }
 .text-luo {
   position: absolute;
-  top: 2.76rem;
+  top: 3rem;
   display: flex;
   left: 1.8rem;
   & > div {
