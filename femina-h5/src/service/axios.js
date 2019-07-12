@@ -8,9 +8,8 @@ import api from "./api";
 let baseURL;
 if (process.env.NODE_ENV == "production") {
   baseURL = "https://mini.yizhou.com.cn";
-  baseURL = "http://yizhou.congcong2014.cn";
 } else if (process.env.NODE_ENV == "development") {
-  baseURL = "http://yizhou.congcong2014.cn";
+  baseURL = "https://mini.yizhou.com.cn";
 }
 const instance = axios.create({
   baseURL: baseURL,

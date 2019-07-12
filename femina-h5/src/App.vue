@@ -1,9 +1,7 @@
 <template>
   <div id="app">
-    <keep-alive>
-      <router-view v-if="$route.meta.keepAlive"/>
-    </keep-alive>
-    <router-view v-if="!$route.meta.keepAlive"/>
+    <keep-alive><router-view v-if="$route.meta.keepAlive" /></keep-alive>
+    <router-view v-if="!$route.meta.keepAlive" />
   </div>
 </template>
 
@@ -37,7 +35,9 @@ export default {
       }
     } else if (!token) {
       //没有登录，去跳转登录页面
-      currentUrl.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${api.appid}&redirect_uri=${api.domain}/&response_type=code&scope=snsapi_userinfo&state=NlQ8alv8LFlTN2Vyw4q2#wechat_redirect`;
+      currentUrl.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${api.appid}&redirect_uri=${
+        api.domain
+      }/&response_type=code&scope=snsapi_userinfo&state=NlQ8alv8LFlTN2Vyw4q2#wechat_redirect`;
     } else {
       //我的阅读码列表
       let codeRes = await this.$http.post(this, api.getCode, {
@@ -45,12 +45,13 @@ export default {
       });
       if (codeRes.code == 500) {
         //token过期，去跳转登录界面
-        currentUrl.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${api.appid}&redirect_uri=${api.domain}/&response_type=code&scope=snsapi_userinfo&state=NlQ8alv8LFlTN2Vyw4q2#wechat_redirect`;
+        currentUrl.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${api.appid}&redirect_uri=${
+          api.domain
+        }/&response_type=code&scope=snsapi_userinfo&state=NlQ8alv8LFlTN2Vyw4q2#wechat_redirect`;
       }
     }
   }
 };
 </script>
 
-<style>
-</style>
+<style></style>

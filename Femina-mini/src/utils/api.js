@@ -1,6 +1,6 @@
 export default {
   appid: "wx1aae5f0db078030f",
-  domain: "http://yizhou.congcong2014.cn",
+  domain: "http://mini.yizhou.com.cn",
   login: "api/login/getMiniToken",
   getH5Token: "api/login/getH5Token",
   getWxjsConfig: "api/pay/get_wxjs_config",

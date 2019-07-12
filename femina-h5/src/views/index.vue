@@ -392,7 +392,7 @@ export default {
           type: "text"
         });
         let res = await this.$http.post(this, api.groupBuyDetail, {
-          token: this.token,
+          token: db.get("token"),
           magazine_id: item.id
         });
         if (res.code == 0) {
