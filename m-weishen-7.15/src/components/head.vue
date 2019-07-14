@@ -4,7 +4,7 @@
 			<img v-if="backColor == 'black'" src="../img/back-black.png" />
 			<img v-if="backColor == 'white'" src="../img/back-white.png" />
 		</div>
-		<div
+		<!-- <div
 			class="icon-music wow fadeIn"
 			:class="{disabled: musicDisabled}"
 			data-wow-duration="1.5s"
@@ -13,7 +13,7 @@
 		>
 			<img v-if="backColor == 'black'" src="../img/music-black.png"  />
 			<img v-if="backColor == 'white'" src="../img/music-white.png"  />
-		</div>
+		</div> -->
 	</div>
 </template>
 
@@ -52,7 +52,7 @@ export default {
 <style lang="scss">
 .head-top {
 	position: fixed;
-	z-index: 10;
+	z-index: 100;
 	left: 0;
 	top: 0.825rem;
 	padding: 0 0.6rem;
