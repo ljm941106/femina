@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <head-top :back="false" :backColor="backColor"></head-top>
+    <!-- <head-top :back="false" :backColor="backColor"></head-top> -->
     <div class="swiper-container main-swiper">
       <div class="swiper-wrapper">
         <div class="swiper-slide p1">
@@ -13,21 +13,19 @@
             </div>
           </div>
           <div class="video" :class="{active: isVideoShow}">
-            <video width="100%" height="" autoplay>
-              <source
-                src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/6169b03a75a569c605fadb566fe2c056.mp4"
-                type="video/mp4"
-              />
+            <video width="100%" autoplay="autoplay">
+              <source src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/video/20190715-v1.mp4" type="video/mp4" />
             </video>
           </div>
           <div class="img all-person" :class="{small: isVideoShow}"><img src="../img/all-white.jpg" /></div>
         </div>
-        <div
-          class="swiper-slide main1"
-          style="background: url(http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/1f6ef7f9769afeec23845a8c7b835a57.jpg) center top no-repeat / cover;"
-        >
+        <div class="swiper-slide main1">
           <div class="main1-logo" :class="{active: main1Actived}">
             <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/95905aa00b4a0c0b1fb1c087db053c8f.png" />
+          </div>
+          <div class="main1-img">
+            <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/a3912774b1011b648c47e113bb4b6cf8.png" />
+            <!-- <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/16e92117a412d8a9a8a74edce061c3b9.png" /> -->
           </div>
         </div>
         <div class="swiper-slide main2" style="background: none;">
@@ -60,10 +58,13 @@
             </li>
             <li class="item9"></li>
           </ul>
-          <div class="play" @click="gotoVideoPlay">
+          <div class="play" @click="playVideo2()">
             <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/5eed8a431b3ef0166b8c2cf14b35bc2c.png" />
             <span>点击播放</span>
           </div>
+          <video width="100%" id="video2">
+            <source src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/video/20190715-v2.mp4" type="video/mp4" />
+          </video>
           <div class="top" @click="toggleAllIntro()">
             <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/5725dc0712bed14b673589cb6b8f6562.png" />
           </div>
@@ -122,24 +123,36 @@
               <div class="swiper-slide" v-for="(i, index) in personList" :key="i.name">
                 <img :src="i.img" />
                 <div class="chat" @click="showChatCon(index)"><img src="../img/chat.png" /></div>
-                <div class="top" @click="showIntroCon(index)">
+                <!-- <div class="top" @click="showIntroCon(index)">
                   <img
                     src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/5725dc0712bed14b673589cb6b8f6562.png"
                   />
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
         </div>
+        <div class="swiper-slide p1">
+          <div class="img logo small">
+            <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/cdabff03751cca38a58b976c50da82dd.png" />
+          </div>
+          <div class="video active">
+            <video width="100%" preload="auto">
+              <source src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/video/20190715-v3.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="img all-person small"><img src="../img/all-white.jpg" /></div>
+        </div>
       </div>
     </div>
     <!-- 主要的前后 -->
-    <div class="swiper-prev" v-show="isShowBack">
+    <div class="swiper-prev" @click="backToMain" v-show="isShowBack">
       <img v-show="backColor == 'white'" src="../img/back-white.png" />
       <img v-show="backColor == 'black'" src="../img/back-black.png" />
     </div>
-    <div class="swiper-next" v-if="isShowSwiperNext"><img src="../img/next-black.png" /></div>
-    <!-- 任务的前后 -->
+    <div class="swiper-prev-new" v-if="isShowSwiperNext"><img src="../img/person-next.png" /></div>
+    <div class="swiper-next-new" v-if="isShowSwiperNext"><img src="../img/person-next.png" /></div>
+    <!-- 人物的前后 -->
     <div class="person-swiper-navigation" v-show="isPersonSwiperShow">
       <div class="person-swiper-prev"><img src="../img/person-next.png" /></div>
       <div class="person-swiper-next"><img src="../img/person-next.png" /></div>
@@ -157,6 +170,9 @@
           <img :src="i.textImg" />
         </div>
       </template>
+    </div>
+    <div class="person-text-hand" v-show="isPersonSwiperShow" @click="showIntroCon">
+      <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/346b2563b771bbabad7b1cd292663fdb.png" />
     </div>
     <!-- 采访界面 -->
     <div class="swiper-prev-person" v-show="currentPersonIndex > -1" @click="backToPersonSwiper">
@@ -182,7 +198,7 @@
         <div class="chat-bottom"><img src="../img/interview-bottom.jpg" width="100%" /></div>
       </div>
     </div>
-    <!-- 任务介绍界面 -->
+    <!-- 人物介绍界面 -->
     <div class="person-intro" :class="{active: currentPersonIndex > -1 && isShowIntro}">
       <div class="item" v-for="(i, index) in personList" :key="i.name" v-show="index == currentPersonIndex">
         <img :src="i.img" />
@@ -229,13 +245,12 @@ export default {
   components: {headTop},
   data() {
     return {
+      isLoading: true, //加载中...
       loadingIndex: 10,
       loadingProgress: 0,
       isShowBack: false, //回退
       isShowSwiperNext: true, //main下一页
-      backColor: "black", //回退icon颜色
-      isLoading: true, //加载中...
-      isVideoShow: true, //展示视频
+      isVideoShow: false, //展示视频
       main1Actived: false,
       listChange: 1,
       isIntroShow: false,
@@ -253,6 +268,15 @@ export default {
       isShowChat: false,
       isShowIntro: false
     };
+  },
+  computed: {
+    backColor() {
+      if (this.personActiveIndex == 2) {
+        return "white";
+      } else {
+        return "black";
+      }
+    }
   },
   created() {
     let inter = setInterval(() => {
@@ -285,10 +309,11 @@ export default {
   mounted() {
     const _this = this;
     this.mainSwiper = new Swiper(".main-swiper", {
-      direction: "vertical",
+      // direction: "vertical",
+      autoHeight: true, //高度随内容变化
       navigation: {
-        nextEl: ".swiper-next",
-        prevEl: ".swiper-prev"
+        nextEl: ".swiper-next-new",
+        prevEl: ".swiper-prev-new"
       },
       on: {
         init: function() {
@@ -297,6 +322,7 @@ export default {
               nextEl: ".person-swiper-next",
               prevEl: ".person-swiper-prev"
             },
+            nested: true,
             on: {
               slideChangeTransitionStart: function() {
                 _this.personActiveIndex = this.activeIndex;
@@ -317,10 +343,8 @@ export default {
           }
           // icon为白色
           if (this.activeIndex == 1 || this.activeIndex == 3) {
-            _this.backColor = "white";
             _this.main1Actived = true;
           } else {
-            _this.backColor = "black";
           }
           //图片切换
           let main2Count = 0;
@@ -341,8 +365,9 @@ export default {
           if (this.activeIndex == 3) {
             _this.isSlideToAngel = true;
           }
-          //任务浏览界面
+          //人物浏览界面
           if (this.activeIndex == 4) {
+            console.log("到人物界面");
             _this.isShowSwiperNext = false;
             _this.isPersonSwiperShow = true;
           } else {
@@ -357,9 +382,8 @@ export default {
     showVideo() {
       this.isVideoShow = true;
     },
-    gotoVideoPlay() {
-      this.mainSwiper.slideTo(0, 1000, false); //切换到第一个slide，速度为1秒
-      this.isVideoShow = true;
+    playVideo2() {
+      document.getElementById("video2").play();
     },
     toggleAllIntro() {
       this.isIntroShow = !this.isIntroShow;
@@ -377,7 +401,16 @@ export default {
             this.isHeartShoot = true;
             setTimeout(() => {
               this.mainSwiper.slideTo(4, 1000, false); //切换到第一个slide，速度为1秒
-              this.personSwiper.slideTo(index, 1000, false);
+
+              let targetIndex = index;
+              if (index == 5) targetIndex = 1;
+              if (index == 1) targetIndex = 2;
+              if (index == 2) targetIndex = 3;
+              if (index == 6) targetIndex = 4;
+              if (index == 4) targetIndex = 5;
+              if (index == 3) targetIndex = 6;
+              this.isShowBack = true;
+              this.personSwiper.slideTo(targetIndex, 1000, false);
               //重置
               this.arrowIndex = 0;
               this.isArrowShow = false;
@@ -394,14 +427,18 @@ export default {
       this.isShowBack = false;
       this.currentPersonIndex = index;
     },
-    showIntroCon(index) {
+    showIntroCon() {
       this.isShowIntro = true;
-      this.currentPersonIndex = index;
+      this.currentPersonIndex = this.personActiveIndex;
     },
     backToPersonSwiper() {
       this.currentPersonIndex = -1;
       this.isShowChat = false;
       this.isShowBack = true;
+    },
+    backToMain() {
+      this.isPersonSwiperShow = false;
+      this.mainSwiper.slideTo(3, 1000, false);
     }
   }
 };

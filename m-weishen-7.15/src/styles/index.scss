@@ -143,14 +143,12 @@ div {
 
 .home {
   .main-swiper {
-    height: 100vh;
     .swiper-slide {
+      min-height: 100vh;
       &.p1 {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        padding-bottom: 5.5vh;
-        padding-top: 1vh;
+        justify-content: center;
       }
     }
   }
@@ -221,18 +219,26 @@ div {
     }
   }
 }
-.main1-logo {
-  margin-top: 2.9rem;
-  text-align: center;
-  transition: 1.5s;
-  transform: scale(2);
-  &.active {
-    transform: scale(1);
+.main1 {
+  background: #cc0619;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  .main1-logo {
+    transition: 2s;
+    transform: scale(2.5);
+    width: 4.9rem;
+    margin-bottom: 0.2rem;
+    &.active {
+      transform: scale(1);
+    }
   }
-  img {
-    width: 6.225rem;
+  .main1-img {
+    width: 6.58rem;
   }
 }
+
 .main2 {
   display: flex;
   justify-content: center;
@@ -403,6 +409,12 @@ div {
   100% {
     transform: scale(1);
   }
+}
+#video2 {
+  position: fixed;
+  left: -9999px;
+  top: -9999px;
+  z-index: -1;
 }
 .main-angel {
   position: relative;
@@ -592,23 +604,29 @@ div {
 .person-swiper-navigation {
   position: relative;
   z-index: 10;
-  .person-swiper-next,
-  .person-swiper-prev {
-    position: fixed;
-    left: 0.65rem;
-    top: 50%;
-    transform: translateY(-50%) rotateZ(180deg);
-    z-index: 10;
-    width: 0.25rem;
-    &.swiper-button-disabled {
-      filter: grayscale(0.5);
-    }
+}
+.swiper-button-disabled {
+  display: none;
+}
+.person-swiper-next,
+.person-swiper-prev,
+.swiper-prev-new,
+.swiper-next-new {
+  position: fixed;
+  left: 0.2rem;
+  top: 50%;
+  transform: translateY(-50%) rotateZ(180deg);
+  z-index: 10;
+  width: 0.25rem;
+  &.swiper-button-disabled {
+    filter: grayscale(0.5);
   }
-  .person-swiper-next {
-    transform: translateY(-50%);
-    left: auto;
-    right: 0.65rem;
-  }
+}
+.person-swiper-next,
+.swiper-next-new {
+  transform: translateY(-50%);
+  left: auto;
+  right: 0.2rem;
 }
 .person-swiper {
   .swiper-slide {
@@ -872,4 +890,11 @@ div {
   100% {
     transform: rotate(0deg);
   }
+}
+.person-text-hand {
+  position: fixed;
+  right: 0.65rem;
+  bottom: 0.65rem;
+  width: 0.93rem;
+  z-index: 10;
 }
