@@ -196,7 +196,7 @@ div {
       width: 1.425rem;
     }
   }
-  .video {
+  .video-con {
     flex-shrink: 0;
     height: 0;
     width: 0;
@@ -226,7 +226,7 @@ div {
   flex-direction: column;
   align-items: center;
   .main1-logo {
-    transition: 2s;
+    transition: transform 2s;
     transform: scale(2.5);
     width: 4.9rem;
     margin-bottom: 0.2rem;
@@ -410,11 +410,38 @@ div {
     transform: scale(1);
   }
 }
+
 #video2 {
   position: fixed;
-  left: -9999px;
-  top: -9999px;
-  z-index: -1;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  &.active {
+    display: block;
+  }
+}
+#video1,
+#video3 {
+  width: 100vw;
+  height: 56.25vw;
+  // position: fixed;
+  // top: -9999px;
+  // left: -9999px;
+}
+.video3-con {
+  margin: 1vh auto;
+  position: relative;
+  .img {
+    width: 100%;
+  }
+  .play {
+    width: 0.555rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
 .main-angel {
   position: relative;
@@ -628,67 +655,67 @@ div {
   left: auto;
   right: 0.2rem;
 }
-.person-swiper {
-  .swiper-slide {
-    position: relative;
-    min-height: 100vh;
+
+.swiper-slide.person-swiper {
+  position: relative;
+  min-height: 100vh;
+  .chat {
+    position: absolute;
+    z-index: 10;
+    width: 0.505rem;
+    animation: scalePointSmall 2s infinite;
+  }
+  .top {
+    position: absolute;
+    z-index: 10;
+    width: 0.455rem;
+    right: 0.65rem;
+    top: 90vh;
+  }
+  &:nth-child(5) {
     .chat {
-      position: absolute;
-      z-index: 10;
-      width: 0.505rem;
-      animation: scalePointSmall 2s infinite;
+      top: 4.2rem;
+      left: 4.4rem;
     }
-    .top {
-      position: absolute;
-      z-index: 10;
-      width: 0.455rem;
-      right: 0.65rem;
-      top: 90vh;
+  }
+  &:nth-child(6) {
+    .chat {
+      top: 5.7rem;
+      left: 5.4rem;
     }
-    &:nth-child(1) {
-      .chat {
-        top: 4.2rem;
-        left: 4.4rem;
-      }
+  }
+  &:nth-child(7) {
+    .chat {
+      top: 3.4rem;
+      left: 4.8rem;
     }
-    &:nth-child(2) {
-      .chat {
-        top: 5.7rem;
-        left: 5.4rem;
-      }
+  }
+  &:nth-child(8) {
+    .chat {
+      top: 3.2rem;
+      left: 4.4rem;
     }
-    &:nth-child(3) {
-      .chat {
-        top: 3.4rem;
-        left: 4.8rem;
-      }
+  }
+  &:nth-child(9) {
+    .chat {
+      top: 3.8rem;
+      left: 4.8rem;
     }
-    &:nth-child(4) {
-      .chat {
-        top: 3.2rem;
-        left: 4.4rem;
-      }
+  }
+  &:nth-child(10) {
+    .chat {
+      top: 6rem;
+      left: 6rem;
     }
-    &:nth-child(5) {
-      .chat {
-        top: 3.8rem;
-        left: 4.8rem;
-      }
-    }
-    &:nth-child(6) {
-      .chat {
-        top: 7.7rem;
-        left: 4rem;
-      }
-    }
-    &:nth-child(7) {
-      .chat {
-        top: 3.8rem;
-        left: 4.4rem;
-      }
+  }
+  &:nth-child(11) {
+    .chat {
+      top: 3.8rem;
+      left: 4.4rem;
     }
   }
 }
+
 .person-text-con {
   position: fixed;
   left: 0;

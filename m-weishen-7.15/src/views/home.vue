@@ -12,12 +12,16 @@
               <img class="wow zoomIn" data-wow-duration="1.5s" src="../img/heart.png" v-if="!isLoading" />
             </div>
           </div>
-          <div class="video" :class="{active: isVideoShow}">
-            <video width="100%" autoplay="autoplay">
+          <div class="video-con" :class="{active: isVideoShow}">
+            <!-- <img class="img" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/3017f0f86889af243c298a81d0547293.jpg" />
+            <img class="play" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/95d252804da92d20037ce78bfd0b2b8a.png" /> -->
+            <video id="video1" controls="controls" width="100%" preload>
               <source src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/video/20190715-v1.mp4" type="video/mp4" />
             </video>
           </div>
-          <div class="img all-person" :class="{small: isVideoShow}"><img src="../img/all-white.jpg" /></div>
+          <div class="img all-person" :class="{small: isVideoShow}">
+            <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/638660e9720be4f527b691be2f412c2a.jpg" />
+          </div>
         </div>
         <div class="swiper-slide main1">
           <div class="main1-logo" :class="{active: main1Actived}">
@@ -35,34 +39,35 @@
           </div>
           <ul :class="['list' + listChange]">
             <li class="item1">
-              <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/5d89683745f87372646bf15906827ec4.jpg" />
+              <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/07833e04d3f37635bb73299d0156fb25.jpg" />
             </li>
             <li class="item2">
-              <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/a61db26c5c3069c27b2408093e0e1f24.jpg" />
+              <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/c4256876058d80cded453d2919a645a8.jpg" />
             </li>
             <li class="item3">
-              <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/f56f8e49bdba2148a5a80002fbccde38.jpg" />
+              <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/a577bb14234facda53e65e95dfe2d2dd.jpg" />
             </li>
             <li class="item4">
-              <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/572b6678604f2564e2dc491f861d0807.jpg" />
+              <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/2c25b121410642f86c764dcf74076100.jpg" />
             </li>
             <li class="item5">
-              <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/127c007e9133faa33303a7eccbbc2318.jpg" />
+              <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/cf6a3f7c02f8027dbaecefa0a7b78529.jpg" />
             </li>
             <li class="item6">
-              <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/d71734ddf50c438db87f926b08df4a89.jpg" />
+              <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/7b51ecdfe671b48f212656a47d9be450.jpg" />
             </li>
             <li class="item7"></li>
             <li class="item8">
-              <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/dcf10536dbd0c86407befd8abf5e8e20.jpg" />
+              <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/f22cce9923636fe8776e7bf09a4e9f11.jpg" />
             </li>
             <li class="item9"></li>
           </ul>
           <div class="play" @click="playVideo2()">
             <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/5eed8a431b3ef0166b8c2cf14b35bc2c.png" />
-            <span>点击播放</span>
+            <span v-if="!video2Show">点击播放</span>
+            <span v-else>点击关闭</span>
           </div>
-          <video width="100%" id="video2">
+          <video id="video2" :class="{active: video2Show}" preload="auto" controls="controls">
             <source src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/video/20190715-v2.mp4" type="video/mp4" />
           </video>
           <div class="top" @click="toggleAllIntro()">
@@ -117,27 +122,16 @@
             <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/7e3064c2781a6d09db98d9d82e2edaca.png" />
           </div>
         </div>
-        <div class="swiper-slide mian-con">
-          <div class="swiper-container person-swiper">
-            <div class="swiper-wrapper">
-              <div class="swiper-slide" v-for="(i, index) in personList" :key="i.name">
-                <img :src="i.img" />
-                <div class="chat" @click="showChatCon(index)"><img src="../img/chat.png" /></div>
-                <!-- <div class="top" @click="showIntroCon(index)">
-                  <img
-                    src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/5725dc0712bed14b673589cb6b8f6562.png"
-                  />
-                </div> -->
-              </div>
-            </div>
-          </div>
+        <div class="swiper-slide person-swiper" v-for="(i, index) in personList" :key="i.name">
+          <img :src="i.img" />
+          <div class="chat" @click="showChatCon(index)"><img src="../img/chat.png" /></div>
         </div>
         <div class="swiper-slide p1">
           <div class="img logo small">
             <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/cdabff03751cca38a58b976c50da82dd.png" />
           </div>
-          <div class="video active">
-            <video width="100%" preload="auto">
+          <div class="video3-con" @click="playVideo3()">
+            <video id="video3" preload="auto" controls="controls">
               <source src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/video/20190715-v3.mp4" type="video/mp4" />
             </video>
           </div>
@@ -150,13 +144,13 @@
       <img v-show="backColor == 'white'" src="../img/back-white.png" />
       <img v-show="backColor == 'black'" src="../img/back-black.png" />
     </div>
-    <div class="swiper-prev-new" v-if="isShowSwiperNext"><img src="../img/person-next.png" /></div>
-    <div class="swiper-next-new" v-if="isShowSwiperNext"><img src="../img/person-next.png" /></div>
+    <div class="swiper-prev-new"><img src="../img/person-next.png" /></div>
+    <div class="swiper-next-new"><img src="../img/person-next.png" /></div>
     <!-- 人物的前后 -->
-    <div class="person-swiper-navigation" v-show="isPersonSwiperShow">
+    <!-- <div class="person-swiper-navigation" v-show="isPersonSwiperShow">
       <div class="person-swiper-prev"><img src="../img/person-next.png" /></div>
       <div class="person-swiper-next"><img src="../img/person-next.png" /></div>
-    </div>
+    </div> -->
     <!-- 人物的介绍text -->
     <div class="person-text-con" v-show="isPersonSwiperShow">
       <template v-for="(i, index) in personList">
@@ -171,6 +165,7 @@
         </div>
       </template>
     </div>
+    <!-- 人物手势 -->
     <div class="person-text-hand" v-show="isPersonSwiperShow" @click="showIntroCon">
       <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/346b2563b771bbabad7b1cd292663fdb.png" />
     </div>
@@ -206,32 +201,10 @@
         <p v-for="t in i.text">{{ t }}</p>
       </div>
     </div>
+    <!-- loading -->
     <div class="loading-container" v-if="isLoading">
       <div class="loading-content">
         <div class="loading-progress"><div class="line" :style="{width: loadingProgress + '%'}"></div></div>
-        <!-- <ul>
-          <li v-show="loadingIndex > -1">
-            <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/0c9bb48e0be4fa4880bb4bc80e160730.png" />
-          </li>
-          <li v-show="loadingIndex > 0">
-            <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/68ce1618f757fd60f3bb890b90024d26.png" />
-          </li>
-          <li v-show="loadingIndex > 1">
-            <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/a6bece2a2295382cd73cad5cec159eb4.png" />
-          </li>
-          <li v-show="loadingIndex > 2">
-            <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/c6842f9b2b95e6d825882d08cd32c594.png" />
-          </li>
-          <li v-show="loadingIndex > 3">
-            <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/236236f8603cf2dc1d56b4087593ff3d.png" />
-          </li>
-          <li v-show="loadingIndex > 4">
-            <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/1873919d4dd90b35b1b35ad84699ebd4.png" />
-          </li>
-          <li v-show="loadingIndex > 5">
-            <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/5543d249f077463e8f96ac68b73c396a.png" />
-          </li>
-        </ul> -->
       </div>
     </div>
   </div>
@@ -249,7 +222,6 @@ export default {
       loadingIndex: 10,
       loadingProgress: 0,
       isShowBack: false, //回退
-      isShowSwiperNext: true, //main下一页
       isVideoShow: false, //展示视频
       main1Actived: false,
       listChange: 1,
@@ -266,7 +238,8 @@ export default {
       currentPersonIndex: -1, //用于显示采访内容的index
       personActiveIndex: 0, //当前活动的人物index
       isShowChat: false,
-      isShowIntro: false
+      isShowIntro: false,
+      video2Show: false
     };
   },
   computed: {
@@ -316,33 +289,15 @@ export default {
         prevEl: ".swiper-prev-new"
       },
       on: {
-        init: function() {
-          _this.personSwiper = new Swiper(".person-swiper", {
-            navigation: {
-              nextEl: ".person-swiper-next",
-              prevEl: ".person-swiper-prev"
-            },
-            nested: true,
-            on: {
-              slideChangeTransitionStart: function() {
-                _this.personActiveIndex = this.activeIndex;
-              }
-            }
-          });
-        },
+        init: function() {},
         slideChangeTransitionStart: function() {
           console.log(this.activeIndex);
-          if (this.activeIndex != 0) {
-            // _this.isVideoShow = false;
-          }
+          _this.pauseAllVideo();
           // 显示返回
-          if (this.activeIndex == 4) {
-            _this.isShowBack = true;
-          } else {
-            _this.isShowBack = false;
-          }
-          // icon为白色
-          if (this.activeIndex == 1 || this.activeIndex == 3) {
+          let activeIndex = this.activeIndex;
+          _this.personActiveIndex = activeIndex - 4;
+          //进入动画
+          if (activeIndex == 1 || activeIndex == 3) {
             _this.main1Actived = true;
           } else {
           }
@@ -366,13 +321,12 @@ export default {
             _this.isSlideToAngel = true;
           }
           //人物浏览界面
-          if (this.activeIndex == 4) {
-            console.log("到人物界面");
-            _this.isShowSwiperNext = false;
+          if (activeIndex > 3 && activeIndex < 11) {
             _this.isPersonSwiperShow = true;
+            _this.isShowBack = true;
           } else {
-            _this.isShowSwiperNext = true;
             _this.isPersonSwiperShow = false;
+            _this.isShowBack = false;
           }
         }
       }
@@ -382,11 +336,43 @@ export default {
     showVideo() {
       this.isVideoShow = true;
     },
+    playVideo1() {
+      document.getElementById("video1").play();
+    },
     playVideo2() {
-      document.getElementById("video2").play();
+      this.video2Show = !this.video2Show;
+      let element = document.getElementById("video2");
+      this.$nextTick(() => {
+        if (this.video2Show) {
+          // wx.createVideoContext("video2").requestFullScreen(90);
+          // wx.createVideoContext("video2").play();
+          element.play();
+        } else {
+          element.pause();
+          // wx.createVideoContext("video2").pause();
+          // wx.createVideoContext("video2").exitFullScreen();
+        }
+      });
+      if (this.video2Show) {
+        // wx.createVideoContext("video2").requestFullScreen(90);
+        // wx.createVideoContext("video2").play();
+        element.play();
+      } else {
+        element.pause();
+        // wx.createVideoContext("video2").pause();
+        // wx.createVideoContext("video2").exitFullScreen();
+      }
+    },
+    playVideo3() {
+      document.getElementById("video3").play();
     },
     toggleAllIntro() {
       this.isIntroShow = !this.isIntroShow;
+    },
+    pauseAllVideo() {
+      document.getElementById("video1").pause();
+      document.getElementById("video2").pause();
+      document.getElementById("video3").pause();
     },
     arrowHeart(index) {
       console.log(index);
@@ -400,17 +386,17 @@ export default {
             // this.isSlideToAngel = false;
             this.isHeartShoot = true;
             setTimeout(() => {
-              this.mainSwiper.slideTo(4, 1000, false); //切换到第一个slide，速度为1秒
-
               let targetIndex = index;
-              if (index == 5) targetIndex = 1;
-              if (index == 1) targetIndex = 2;
-              if (index == 2) targetIndex = 3;
-              if (index == 6) targetIndex = 4;
-              if (index == 4) targetIndex = 5;
-              if (index == 3) targetIndex = 6;
+              if (index == 5) targetIndex = 5;
+              if (index == 1) targetIndex = 6;
+              if (index == 2) targetIndex = 7;
+              if (index == 6) targetIndex = 8;
+              if (index == 4) targetIndex = 9;
+              if (index == 3) targetIndex = 10;
+              this.personActiveIndex = targetIndex - 4;
+              this.isPersonSwiperShow = true;
               this.isShowBack = true;
-              this.personSwiper.slideTo(targetIndex, 1000, false);
+              this.mainSwiper.slideTo(targetIndex, 1000, false);
               //重置
               this.arrowIndex = 0;
               this.isArrowShow = false;
