@@ -7,12 +7,8 @@
         <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/db6314449c20ece53124225859412b87.png" />
       </div>
     </transition>
-    <div class="red-point" v-if="canvasEnd && !timeout" @click="gotoCopyright">
-      <img src="../img/redpoint.png" />
-    </div>
-    <div class="hand-point" v-if="!touched">
-      <img src="../img/hand.png" alt />
-    </div>
+    <div class="red-point" v-if="canvasEnd && !timeout" @click="gotoCopyright"><img src="../img/redpoint.png" /></div>
+    <div class="hand-point" v-if="!touched"><img src="../img/hand.png" alt /></div>
     <div class="on-the-top" v-if="timeout">
       <div class="text-youxi">
         <div class="wow fadeInDown" data-wow-duration="1.5s" data-wow-delay="0.5s">
@@ -49,12 +45,8 @@
         </div>
       </div>
 
-      <div class="icon-com" @click="showCom">
-        <img src="../img/comunication.png" alt />
-      </div>
-      <div class="icon-next" @click="gotoNext">
-        <img src="../img/next.png" alt />
-      </div>
+      <div class="icon-com" @click="showCom"><img src="../img/comunication.png" alt /></div>
+      <div class="icon-next" @click="gotoNext"><img src="../img/next.png" alt /></div>
       <div class="text-com" v-if="isComShow">
         <div class="quotation wow fadeInRight" data-wow-duration="1.5s" data-wow-delay="0s">
           <img src="../img/quotation-l.png" alt />
@@ -81,7 +73,7 @@
 import headTop from "../components/head.vue";
 export default {
   name: "home",
-  components: { headTop },
+  components: {headTop},
   data() {
     return {
       touched: false,
@@ -102,7 +94,9 @@ export default {
       });
       lottery.on("start", () => {
         this.touched = true;
-        lottery.setResult("http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/2f8f85541a4ad940841c37ca79a75453.jpg");
+        lottery.setResult(
+          "http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/2f8f85541a4ad940841c37ca79a75453.jpg"
+        );
       });
       lottery.on("end", () => {
         this.canvasEnd = true;

@@ -4,6 +4,9 @@ import Home from "./views/home.vue";
 import Copyright from "./views/copyright.vue";
 import Step2 from "./views/step2.vue";
 import Step3 from "./views/step3.vue";
+import Step4 from "./views/step4.vue";
+import Step5 from "./views/step5.vue";
+import End from "./views/end.vue";
 
 Vue.use(Router);
 
@@ -25,7 +28,19 @@ export default new Router({
       path: "/step3",
       name: "step3",
       component: Step3
-		},
+		}, {
+      path: "/step4",
+      name: "step4",
+      component: Step4
+		}, {
+      path: "/step5",
+      name: "step5",
+      component: Step5
+		}, {
+      path: "/end",
+      name: "end",
+      component: End
+		}
     // {
     //   path: "/about",
     //   name: "about",
