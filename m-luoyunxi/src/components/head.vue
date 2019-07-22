@@ -48,7 +48,7 @@ export default {
       this.musicDisabled = !this.musicDisabled;
     },
     goBack() {
-      this.$router.go(-1);
+      this.$router.push("step2");
     }
   }
 };

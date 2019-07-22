@@ -118,8 +118,10 @@ export default {
         },
         touchEnd(event) {
           touchEndX = event.changedTouches[0].screenX;
-          if (touchEndX < touchStartX && _this.mySwiper.isEnd) {
+          if (touchEndX - touchStartX < -100 && _this.mySwiper.isEnd) {
             _this.$router.push("step4");
+          } else if (touchEndX - touchStartX > 100 && _this.mySwiper.isBeginning) {
+            _this.$router.go(-1);
           }
         },
         slideChangeTransitionEnd: function() {

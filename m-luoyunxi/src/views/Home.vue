@@ -2,63 +2,56 @@
   <div class="home">
     <head-top :back="false"></head-top>
     <canvas class="cover-modal" id="js_lottery"></canvas>
+    <!-- 引导擦除手势 -->
+    <div class="hand-point" v-show="!touched"><img src="../img/hand.png" alt /></div>
+    <!-- logo -->
     <transition name="fade">
-      <div class="img logo" v-if="canvasEnd && !timeout">
+      <div class="img logo" v-show="canvasEnd && !timeout">
         <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/db6314449c20ece53124225859412b87.png" />
       </div>
     </transition>
-    <div class="red-point" v-if="canvasEnd && !timeout" @click="gotoCopyright"><img src="../img/redpoint.png" /></div>
-    <div class="hand-point" v-if="!touched"><img src="../img/hand.png" alt /></div>
-    <div class="on-the-top" v-if="timeout">
+    <!-- 文字 -->
+    <div class="on-the-top" v-show="timeout">
+      <!-- 红点 -->
+      <div class="red-point" @click="gotoNext"><img src="../img/redpoint.png" /></div>
       <div class="text-youxi">
-        <div class="wow fadeInDown" data-wow-duration="1.5s" data-wow-delay="0.5s">
-          <img src="../img/text-you.png" alt />
+        <div class="wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.2s"><img src="../img/text-you.png" /></div>
+        <div class="wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.4s"><img src="../img/text-xi.png" /></div>
+        <div class="wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.6s">
+          <img src="../img/text-shao.png" />
         </div>
-        <div class="wow fadeInDown" data-wow-duration="1.5s" data-wow-delay="1s">
-          <img src="../img/text-xi.png" alt />
-        </div>
-        <div class="wow fadeInDown" data-wow-duration="1.5s" data-wow-delay="1.5s">
-          <img src="../img/text-shao.png" alt />
-        </div>
-        <div class="wow fadeInDown" data-wow-duration="1.5s" data-wow-delay="2s">
-          <img src="../img/text-nian.png" alt />
+        <div class="wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.8s">
+          <img src="../img/text-nian.png" />
         </div>
       </div>
       <div class="text-level">
-        <div class="wow fadeInDown" data-wow-duration="1.5s" data-wow-delay="2.5s">L</div>
-        <div class="wow fadeInDown" data-wow-duration="1.5s" data-wow-delay="3s">e</div>
-        <div class="wow fadeInDown" data-wow-duration="1.5s" data-wow-delay="3.5s">v</div>
-        <div class="wow fadeInDown" data-wow-duration="1.5s" data-wow-delay="4s">e</div>
-        <div class="wow fadeInDown" data-wow-duration="1.5s" data-wow-delay="4.5s">l</div>
-        <div class="wow fadeInDown" data-wow-duration="1.5s" data-wow-delay="5s">u</div>
-        <div class="wow fadeInDown" data-wow-duration="1.5s" data-wow-delay="5.5s">p</div>
+        <div class="wow fadeInDown" data-wow-duration="1s" data-wow-delay="1s">L</div>
+        <div class="wow fadeInDown" data-wow-duration="1s" data-wow-delay="1.2s">e</div>
+        <div class="wow fadeInDown" data-wow-duration="1s" data-wow-delay="1.4s">v</div>
+        <div class="wow fadeInDown" data-wow-duration="1s" data-wow-delay="1.6s">e</div>
+        <div class="wow fadeInDown" data-wow-duration="1s" data-wow-delay="1.8s">l</div>
+        <div class="wow fadeInDown" data-wow-duration="1s" data-wow-delay="2s">u</div>
+        <div class="wow fadeInDown" data-wow-duration="1s" data-wow-delay="2.2s">p</div>
       </div>
       <div class="text-luo">
-        <div class="wow fadeInDown" data-wow-duration="1.5s" data-wow-delay="6s">
-          <img src="../img/text-luo.png" alt />
-        </div>
-        <div class="wow fadeInDown" data-wow-duration="1.5s" data-wow-delay="6.5s">
-          <img src="../img/text-yun.png" alt />
-        </div>
-        <div class="wow fadeInDown" data-wow-duration="1.5s" data-wow-delay="7s">
-          <img src="../img/text-xii.png" alt />
-        </div>
+        <div class="wow fadeInDown" data-wow-duration="1s" data-wow-delay="2.4s"><img src="../img/text-luo.png" /></div>
+        <div class="wow fadeInDown" data-wow-duration="1s" data-wow-delay="2.6s"><img src="../img/text-yun.png" /></div>
+        <div class="wow fadeInDown" data-wow-duration="1s" data-wow-delay="2.8s"><img src="../img/text-xii.png" /></div>
       </div>
-
-      <div class="icon-com" @click="showCom"><img src="../img/comunication.png" alt /></div>
-      <div class="icon-next" @click="gotoNext"><img src="../img/next.png" alt /></div>
-      <div class="text-com" v-if="isComShow">
-        <div class="quotation wow fadeInRight" data-wow-duration="1.5s" data-wow-delay="0s">
-          <img src="../img/quotation-l.png" alt />
+      <div class="icon-com" @click="showCom" v-show="!isComShow"><img src="../img/comunication.png" /></div>
+      <!-- <div class="icon-next" @click="gotoNext"><img src="../img/next.png" alt /></div> -->
+      <div class="text-com" v-show="isComShow">
+        <div class="quotation wow fadeInRight" data-wow-duration="1s" data-wow-delay="0s">
+          <img src="../img/quotation-l.png" />
         </div>
-        <div class="xiang wow fadeInRight" data-wow-duration="1.5s" data-wow-delay="0.5s">
-          <img src="../img/text-xiang.png" alt />
+        <div class="xiang wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.3s">
+          <img src="../img/text-xiang.png" />
         </div>
-        <div class="lai wow fadeInRight" data-wow-duration="1.5s" data-wow-delay="1s">
-          <img src="../img/text-lai.png" alt />
+        <div class="lai wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.6s">
+          <img src="../img/text-lai.png" />
         </div>
-        <div class="quotation wow fadeInRight" data-wow-duration="1.5s" data-wow-delay="1.5s">
-          <img src="../img/quotation.png" alt />
+        <div class="quotation wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.9s">
+          <img src="../img/quotation.png" />
         </div>
       </div>
     </div>
@@ -82,27 +75,35 @@ export default {
       isComShow: false
     };
   },
-  created() {
+  mounted() {
+    console.log(+new Date());
+    window.onload = () => {
+      console.log(+new Date());
+    };
     let img = new Image();
     let wWidth = document.documentElement.clientWidth;
-    let coverImg = require(`../img/cover${wWidth}.jpg`);
+    let coverImg;
+    try {
+      coverImg = require(`../img/cover${wWidth}.jpg`);
+    } catch (e) {
+      coverImg = require(`../img/cover414.jpg`);
+    }
     img.src = coverImg;
     img.onload = () => {
-      var lottery = new LotteryCard(document.getElementById("js_lottery"), {
-        // eslint-disable-line
+      let lottery = new LotteryCard(document.getElementById("js_lottery"), {
         cover: img
       });
+      lottery.setResult(
+        "http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/2f8f85541a4ad940841c37ca79a75453.jpg"
+      );
       lottery.on("start", () => {
         this.touched = true;
-        lottery.setResult(
-          "http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/2f8f85541a4ad940841c37ca79a75453.jpg"
-        );
       });
       lottery.on("end", () => {
         this.canvasEnd = true;
         setTimeout(() => {
           this.timeout = true;
-        }, 5000);
+        }, 2500);
       });
       window.lottery = lottery;
     };
@@ -121,6 +122,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.home {
+  width: 100vw;
+  overflow-x: hidden;
+}
 .fade-leave-active {
   transition: opacity 0.5s;
 }
@@ -235,7 +240,7 @@ export default {
 }
 .text-com {
   position: absolute;
-  bottom: 3.6rem;
+  top: 11rem;
   left: 1.7rem;
   font-size: 0.38rem;
   color: #fff;

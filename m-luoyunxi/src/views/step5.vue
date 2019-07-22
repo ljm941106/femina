@@ -41,10 +41,10 @@
       <audio id="audio" controls src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/video/2019072101.mp3"></audio>
     </div>
     <!-- 视频 -->
-    <div @click="showVideo2" style="position: fixed;top: 6rem;left: 1rem;z-index: 10;" v-show="currentIndex == 3">
+    <div @click="showVideo2" style="position: absolute;top: 6rem;left: 1rem;z-index: 10;" v-show="currentIndex == 3">
       <img src="../img/step3-play-white.png" style="width: 0.7rem;" />
     </div>
-    <div class="video2" v-show="isVideoShow && currentIndex == 3">
+    <div class="video2" v-if="isVideoShow && currentIndex == 3">
       <video id="video2" controls="controls" width="100%" preload>
         <source src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/video/2019072103.mp4" type="video/mp4" />
       </video>
@@ -85,7 +85,6 @@
     <div class="swiper-button-next" @click="nextPage"><img src="../img/swiper-next.png" /></div>
   </div>
 </template>
-
 <script>
 import "../plugins/swiper.min";
 import headTop from "../components/head.vue";
@@ -127,8 +126,10 @@ export default {
         },
         touchEnd(event) {
           touchEndX = event.changedTouches[0].screenX;
-          if (touchEndX < touchStartX && _this.mySwiper.isEnd) {
+          if (touchEndX - touchStartX < -100 && _this.mySwiper.isEnd) {
             _this.$router.push("end");
+          } else if (touchEndX - touchStartX > 100 && _this.mySwiper.isBeginning) {
+            _this.$router.go(-1);
           }
         },
         init: function() {
@@ -137,7 +138,6 @@ export default {
           timeout = setTimeout(() => {
             _this.text1Show = false;
           }, 4000);
-          //Swiper初始化了
           // console.log("当前的slide序号是" + this.activeIndex);
           // this.emit("transitionEnd"); //在初始化时触发一次transitionEnd事件，需要先设置transitionEnd
         },
@@ -151,6 +151,15 @@ export default {
           _this.text4Show = false;
           _this.text5Show = false;
           _this.currentIndex = this.activeIndex;
+          if (this.activeIndex != 3) {
+            let video2 = document.getElementById("video2");
+            if (video2) video2.pause();
+            _this.isVideoShow = false;
+          }
+          if (this.activeIndex != 1) {
+            let audio = document.getElementById("audio");
+            if (audio) audio.pause();
+          }
           if (this.activeIndex == 1) {
             _this.text2Show = true;
             _this.img2Init = true;
@@ -196,7 +205,7 @@ export default {
     },
     nextPage() {
       if (this.mySwiper.isEnd) {
-        this.$router.push("step4");
+        this.$router.push("end");
       }
     },
     prevPage() {
@@ -231,7 +240,7 @@ export default {
     }
   }
   .intro1 {
-    position: fixed;
+    position: absolute;
     top: 4.4rem;
     left: 1.5rem;
     width: 4.37rem;

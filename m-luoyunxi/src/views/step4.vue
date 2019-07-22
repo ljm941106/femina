@@ -7,15 +7,21 @@
     <div class="swiper-container">
       <div class="swiper-wrapper">
         <div class="swiper-slide">
+          <!-- <div class="swiper-modal"></div> -->
           <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/705a56a2d5f6fe1b8cbb19a88b0b47e4.jpg" />
         </div>
-        <div class="swiper-slide big-img" ref="slide2">
+        <div class="swiper-slide big-img" ref="slide2" @click="showImg(0)">
+          <!-- <div class="swiper-modal" v-show="isShowModal"></div> -->
+          <div class="red-point"><img src="../img/redpoint.png" /></div>
           <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/6572ea1f5862afff97acd4f6f785caee.jpg" />
         </div>
         <div class="swiper-slide">
+          <!-- <div class="swiper-modal"></div> -->
           <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/830b26f3299ec7606e676abbf9429c7b.jpg" />
         </div>
-        <div class="swiper-slide big-img" ref="slide4">
+        <div class="swiper-slide big-img" ref="slide4" @click="showImg(1)">
+          <!-- <div class="swiper-modal" v-show="isShowModal"></div> -->
+           <div class="red-point"><img src="../img/redpoint.png" /></div>
           <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/f3f59f3c6bac674ff9d70a89c0342b08.jpg" />
         </div>
       </div>
@@ -59,20 +65,26 @@
       <img
         class="text-img"
         src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/f9a79e78c00368c699dd5c2997c39013.png"
-        alt=""
       />
-      <img
+      <!-- <img
         class="icon-video"
         src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/d276fa568ec3c9a1b64a7d2d7b7179c6.png"
         alt=""
-      />
+      /> -->
     </div>
+    <div class="modal4" :class="{active: currentImg}" @touchend="touched = true">
+      <div class="icon-close" @click="hideBigImg"><img src="../img/close.png" alt="" /></div>
+      <img :src="currentImg" />
+      <div class="hand-point" v-show="!touched"><img src="../img/hand.png" alt /></div>
+    </div>
+    <!-- <previewer :list="previewerList" ref="previewer"></previewer> -->
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 // import '../plugins/card.js'
+// import {Previewer} from "vux";
 import headTop from "../components/head.vue";
 export default {
   name: "home",
@@ -84,19 +96,41 @@ export default {
       isIntro1Show: false,
       isIntro2Show: false,
       isIntro3Show: false,
-      isIntro4Show: false
+      isIntro4Show: false,
+      isShowModal: false,
+      touched: false,
+      previewerList: [
+        {
+          src: "http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/6572ea1f5862afff97acd4f6f785caee.jpg",
+          h: 1500,
+          w: 4870,
+          itemName: "item.newName"
+        },
+        {
+          src: "http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/f3f59f3c6bac674ff9d70a89c0342b08.jpg",
+          h: 1500,
+          w: 4870,
+          itemName: "item.newName"
+        }
+      ],
+      bigImgList: [
+        "http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/6572ea1f5862afff97acd4f6f785caee.jpg",
+        "http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/f3f59f3c6bac674ff9d70a89c0342b08.jpg"
+      ],
+      currentImg: ""
     };
   },
   created() {},
   mounted() {
-    console.log(document.documentElement.clientWidth * 2.247);
-    let sctollLeft = document.documentElement.clientWidth * 2.247;
+    this.sctollLeftMax = document.documentElement.clientWidth * 2.247;
     const _this = this;
     let touchStartX;
     let touchEndX;
     this.mySwiper = new Swiper(".swiper-container", {
       effect: "fade",
       speed: 1000,
+      // noSwiping: true,
+      // noSwipingSelector: "img",
       // height: "auto",
       navigation: {
         nextEl: ".swiper-button-next",
@@ -108,8 +142,10 @@ export default {
         },
         touchEnd(event) {
           touchEndX = event.changedTouches[0].screenX;
-          if (touchEndX < touchStartX && _this.mySwiper.isEnd) {
+          if (touchEndX - touchStartX < -100 && _this.mySwiper.isEnd) {
             _this.$router.push("step5");
+          } else if (touchEndX - touchStartX > 100 && _this.mySwiper.isBeginning) {
+            _this.$router.go(-1);
           }
         },
         slideChangeTransitionStart: function() {
@@ -120,28 +156,30 @@ export default {
             _this.iconToTopShow = false;
           }
           if (_this.swiperActiveIndex == 1) {
-            let inter = setInterval(() => {
-              _this.$refs.slide2.scrollTo({
-                top: 0,
-                left: sctollLeft
-              });
-              if (_this.$refs.slide2.scrollLeft >= sctollLeft - 1) {
-                clearInterval(inter);
-                _this.isIntro2Show = true;
-              }
-            }, 10);
+            _this.isIntro2Show = true;
+            // let inter = setInterval(() => {
+            //   _this.$refs.slide2.scrollTo({
+            //     top: 0,
+            //     left: sctollLeft
+            //   });
+            //   if (_this.$refs.slide2.scrollLeft >= sctollLeft - 1) {
+            //     clearInterval(inter);
+            //     _this.isIntro2Show = true;
+            //   }
+            // }, 10);
           }
           if (_this.swiperActiveIndex == 3) {
-            let inter = setInterval(() => {
-              _this.$refs.slide4.scrollTo({
-                top: 0,
-                left: sctollLeft
-              });
-              if (_this.$refs.slide4.scrollLeft >= sctollLeft - 1) {
-                clearInterval(inter);
-                _this.isIntro4Show = true;
-              }
-            }, 10);
+            _this.isIntro4Show = true;
+            // let inter = setInterval(() => {
+            //   _this.$refs.slide4.scrollTo({
+            //     top: 0,
+            //     left: sctollLeft
+            //   });
+            //   if (_this.$refs.slide4.scrollLeft >= sctollLeft - 1) {
+            //     clearInterval(inter);
+            //     _this.isIntro4Show = true;
+            //   }
+            // }, 10);
           }
         }
       }
@@ -158,33 +196,108 @@ export default {
     },
     nextPage() {
       if (this.mySwiper.isEnd) {
-        this.$router.push("step4");
+        this.$router.push("step5");
       }
     },
     prevPage() {
       if (this.mySwiper.isBeginning) {
         this.$router.push("step3");
       }
+    },
+    showImg(index) {
+      this.currentImg = this.bigImgList[index];
+      // this.$refs.previewer.show(index)
+    },
+    hideBigImg() {
+      this.currentImg = "";
+      this.touched = false;
     }
+    // touchstart(e) {
+    //   console.log(e.changedTouches[0].screenX);
+    //   this.touchStartX = e.changedTouches[0].screenX;
+    // },
+    // touchend(e) {
+    //   console.log(e.changedTouches[0].screenX);
+    //   this.touchEndX = e.changedTouches[0].screenX;
+    //   if (this.touchEndX < this.touchStartX) {
+    //     this.isShowModal = false;
+    //   }
+    //   let scrollLeft = this.$refs.slide2.scrollLeft;
+    //   if (scrollLeft >= this.sctollLeftMax - 2) {
+    //     this.isShowModal = true;
+    //   } else {
+    //     this.isShowModal = false;
+    //   }
+    // }
   }
 };
 </script>
 <style lang="scss">
 .step4 {
+  .red-point {
+    z-index: 9;
+    position: absolute;
+    left: 2rem;
+    top: 6rem;
+    animation: scalePoint 1.778s infinite;
+    img {
+      width: 0.285rem !important;
+    }
+  }
+  .hand-point {
+    position: fixed;
+    z-index: 10;
+    top: calc(1738 / 3248 * 100vh);
+    right: calc(315 / 1500 * 100vw);
+    width: calc(120 / 1500 * 100vw);
+    animation: handPoint2 1.778s infinite;
+  }
+  .modal4 {
+    z-index: -1;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: scroll;
+    transition: opacity 1s;
+    &.active {
+      opacity: 1;
+      z-index: 10;
+    }
+    & > img {
+      height: 16.24rem;
+      max-width: initial;
+    }
+    .icon-close {
+      position: fixed;
+      top: 0.3rem;
+      right: 0.3rem;
+      width: 0.64rem;
+    }
+  }
   position: relative;
   .swiper-container {
     height: 216.53vw;
+    .swiper-modal {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9;
+    }
   }
   .big-img {
+    position: relative;
     overflow: scroll;
-    transition: 2s;
     img {
       width: auto;
       height: 100%;
       max-width: initial;
     }
     &.swiper-slide-active {
-      scroll-behavior: smooth;
+      // scroll-behavior: smooth;
     }
   }
   .intro1 {
@@ -247,18 +360,16 @@ export default {
   .intro4 {
     position: fixed;
     z-index: -1;
-    left: 0;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 2.835rem;
+    top: 1.7rem;
+    right: 0.65rem;
     .text-img {
-      width: 2.835rem;
-      position: absolute;
-      top: 1.7rem;
-      right: 0.65rem;
     }
     .icon-video {
       position: absolute;
+    }
+    &.active {
+      z-index: 9;
     }
   }
 }

@@ -129,6 +129,19 @@ div {
     right: calc(115 / 1500 * 100vw);
   }
 }
+@keyframes handPoint2 {
+  0% {
+    right: calc(115 / 1500 * 100vw);
+  }
+
+  50% {
+    right: calc(515 / 1500 * 100vw);
+  }
+
+  100% {
+    right: calc(115 / 1500 * 100vw);
+  }
+}
 @keyframes binging {
   0% {
     opacity: 1;
