@@ -1,78 +1,46 @@
 <template>
   <div class="swiper-page step3 ">
     <head-top></head-top>
-    <div class="icon-to-top" v-show="currentIndex == 2 && !text2Show" @click="showText2">
-      <img src="../img/to-top.png" alt="" />
-    </div>
-    <div class="text text1" :class="{active: text1Show && currentIndex == 1}"><img src="../img/text-3-1.png" /></div>
-    <div class="text text2" :class="{active: text2Show && currentIndex == 2}">
-      <img src="../img/text3-2.png" alt="" />
-    </div>
-    <div class="text text3" :class="{active: text3Show && currentIndex == 3}">
-      <img src="../img/text3-3.png" alt="" />
-    </div>
-    <div class="text text4" :class="{active: text4Show && currentIndex == 4}">
-      <img src="../img/text3-4.png" alt="" />
-    </div>
-    <div class="text text5" :class="{active: text5Show && currentIndex == 5}">
-      <img src="../img/text3-5.png" alt="" />
-    </div>
+    <div class="icon-to-top" v-show="currentIndex == 2 && !text2Show" @click="showText2"><img src="../img/to-top.png" alt="" /></div>
+    <div class="text text1" :class="{ active: text1Show && currentIndex == 1 }"><img src="../img/text-3-1.png" /></div>
+    <div class="text text2" :class="{ active: text2Show && currentIndex == 2 }"><img src="../img/text3-2.png" alt="" /></div>
+    <div class="text text3" :class="{ active: text3Show && currentIndex == 3 }"><img src="../img/text3-3.png" alt="" /></div>
+    <div class="text text4" :class="{ active: text4Show && currentIndex == 4 }"><img src="../img/text3-4.png" alt="" /></div>
+    <div class="text text5" :class="{ active: text5Show && currentIndex == 5 }"><img src="../img/text3-5.png" alt="" /></div>
     <div class="swiper-container">
       <div class="swiper-wrapper">
         <div class="swiper-slide">
-          <img
-            class="img"
-            :class="{init: img1Init}"
-            src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/327fa954346c7ac11494f3e313238e07.jpg"
-          />
+          <img class="img" :class="{ init: img1Init }" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/327fa954346c7ac11494f3e313238e07.jpg" />
         </div>
         <div class="swiper-slide" @click="hideText2">
-          <img
-            class="img"
-            :class="{init: text2Show}"
-            src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/bac1b9adc94ad15899452cb9b87fa5ba.jpg"
-          />
+          <img class="img" :class="{ init: text2Show }" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/bac1b9adc94ad15899452cb9b87fa5ba.jpg" />
         </div>
         <div class="swiper-slide">
-          <img
-            class="img"
-            :class="{init: img3Init}"
-            src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/8de0c3b0c6facb5933c11a8ad24f220a.jpg"
-          />
+          <img class="img" :class="{ init: img3Init }" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/8de0c3b0c6facb5933c11a8ad24f220a.jpg" />
         </div>
         <div class="swiper-slide">
-          <img
-            class="img"
-            :class="{init: img4Init}"
-            src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/a5a3cb56cf7844005fb5c0358132e97d.jpg"
-          />
+          <img class="img" :class="{ init: img4Init }" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/a5a3cb56cf7844005fb5c0358132e97d.jpg" />
         </div>
         <div class="swiper-slide" @click="hideVide1()">
-          <img
-            class="img"
-            :class="{init: img5Init}"
-            src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/833777b6c020a8cf9f862018687894d1.jpg"
-          />
-          <img @click.stop="showVide1" class="play" src="../img/step3-play.png" />
+          <img class="img" :class="{ init: img5Init }" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/833777b6c020a8cf9f862018687894d1.jpg" />
+          <div class="play" @click.stop="showVideo1"><img  src="../img/step3-play.png" /></div>
         </div>
       </div>
     </div>
     <div class="swiper-button-prev" @click="prevPage"><img src="../img/swiper-prev.png" /></div>
     <div class="swiper-button-next" @click="nextPage"><img src="../img/swiper-next.png" /></div>
     <div class="video1" v-show="isVideo1Show">
-      <video id="video1" controls="controls" width="100%" preload>
-        <source src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/video/2019072102.mp4" type="video/mp4" />
-      </video>
+      <video id="video1" controls="controls" width="100%" preload><source src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/video/2019072102.mp4" type="video/mp4" /></video>
     </div>
   </div>
 </template>
 
 <script>
-import "../plugins/swiper.min";
-import headTop from "../components/head.vue";
+import '../plugins/swiper.min';
+import headTop from '../components/head.vue';
 export default {
-  name: "step3",
-  components: {headTop},
+  name: 'step3',
+  components: { headTop },
   data() {
     return {
       currentIndex: 1,
@@ -94,12 +62,12 @@ export default {
     let timeout;
     let touchStartX;
     let touchEndX;
-    this.mySwiper = new Swiper(".swiper-container", {
-      effect: "fade",
+    this.mySwiper = new Swiper('.swiper-container', {
+      effect: 'fade',
       speed: 1000,
       navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev"
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev'
       },
       // loop: true,
       on: {
@@ -119,7 +87,7 @@ export default {
         touchEnd(event) {
           touchEndX = event.changedTouches[0].screenX;
           if (touchEndX - touchStartX < -100 && _this.mySwiper.isEnd) {
-            _this.$router.push("step4");
+            _this.$router.push('step4');
           } else if (touchEndX - touchStartX > 100 && _this.mySwiper.isBeginning) {
             _this.$router.go(-1);
           }
@@ -173,20 +141,22 @@ export default {
     hideText2() {
       this.text2Show = false;
     },
-    showVide1() {
+    showVideo1() {
+      console.log('show');
       this.isVideo1Show = true;
     },
     hideVide1() {
+      console.log('hide');
       this.isVideo1Show = false;
     },
     nextPage() {
       if (this.mySwiper.isEnd) {
-        this.$router.push("step4");
+        this.$router.push('step4');
       }
     },
     prevPage() {
       if (this.mySwiper.isBeginning) {
-        this.$router.push("step2");
+        this.$router.push('step2');
       }
     }
   }
@@ -267,10 +237,10 @@ export default {
   }
   .play {
     width: 0.695rem;
-    position: fixed;
+    position: absolute;
     left: 0.65rem;
     top: 9.2rem;
-    z-index: 10;
+    z-index: 100;
   }
   .swiper-slide {
     overflow: hidden;

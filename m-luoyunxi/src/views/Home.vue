@@ -1,14 +1,13 @@
 <template>
   <div class="home">
     <head-top :back="false"></head-top>
-    <canvas class="cover-modal" id="js_lottery"></canvas>
+    <div v-if="isiOS"><img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/2f8f85541a4ad940841c37ca79a75453.jpg" /></div>
+    <canvas class="cover-modal" id="js_lottery" v-if="!isiOS"></canvas>
     <!-- 引导擦除手势 -->
-    <div class="hand-point" v-show="!touched"><img src="../img/hand.png" alt /></div>
+    <div class="hand-point" v-show="!touched && !isiOS"><img src="../img/hand.png" /></div>
     <!-- logo -->
     <transition name="fade">
-      <div class="img logo" v-show="canvasEnd && !timeout">
-        <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/db6314449c20ece53124225859412b87.png" />
-      </div>
+      <div class="img logo" v-show="canvasEnd && !timeout"><img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/db6314449c20ece53124225859412b87.png" /></div>
     </transition>
     <!-- 文字 -->
     <div class="on-the-top" v-show="timeout">
@@ -17,12 +16,8 @@
       <div class="text-youxi">
         <div class="wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.2s"><img src="../img/text-you.png" /></div>
         <div class="wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.4s"><img src="../img/text-xi.png" /></div>
-        <div class="wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.6s">
-          <img src="../img/text-shao.png" />
-        </div>
-        <div class="wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.8s">
-          <img src="../img/text-nian.png" />
-        </div>
+        <div class="wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.6s"><img src="../img/text-shao.png" /></div>
+        <div class="wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.8s"><img src="../img/text-nian.png" /></div>
       </div>
       <div class="text-level">
         <div class="wow fadeInDown" data-wow-duration="1s" data-wow-delay="1s">L</div>
@@ -41,18 +36,10 @@
       <div class="icon-com" @click="showCom" v-show="!isComShow"><img src="../img/comunication.png" /></div>
       <!-- <div class="icon-next" @click="gotoNext"><img src="../img/next.png" alt /></div> -->
       <div class="text-com" v-show="isComShow">
-        <div class="quotation wow fadeInRight" data-wow-duration="1s" data-wow-delay="0s">
-          <img src="../img/quotation-l.png" />
-        </div>
-        <div class="xiang wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.3s">
-          <img src="../img/text-xiang.png" />
-        </div>
-        <div class="lai wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.6s">
-          <img src="../img/text-lai.png" />
-        </div>
-        <div class="quotation wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.9s">
-          <img src="../img/quotation.png" />
-        </div>
+        <div class="quotation wow fadeInRight" data-wow-duration="1s" data-wow-delay="0s"><img src="../img/quotation-l.png" /></div>
+        <div class="xiang wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.3s"><img src="../img/text-xiang.png" /></div>
+        <div class="lai wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.6s"><img src="../img/text-lai.png" /></div>
+        <div class="quotation wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.9s"><img src="../img/quotation.png" /></div>
       </div>
     </div>
     <!-- 开始 -->
@@ -63,12 +50,13 @@
 </template>
 
 <script>
-import headTop from "../components/head.vue";
+import headTop from '../components/head.vue';
 export default {
-  name: "home",
-  components: {headTop},
+  name: 'home',
+  components: { headTop },
   data() {
     return {
+      isiOS: false,
       touched: false,
       canvasEnd: false,
       timeout: false,
@@ -76,12 +64,18 @@ export default {
     };
   },
   mounted() {
-    console.log(+new Date());
-    window.onload = () => {
-      console.log(+new Date());
-    };
-    let img = new Image();
     let wWidth = document.documentElement.clientWidth;
+    const u = navigator.userAgent;
+    this.isiOS =  !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    this.isiOS = wWidth == 414 && !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    if (this.isiOS) {
+      this.canvasEnd = true;
+      setTimeout(() => {
+        this.timeout = true;
+      }, 2500);
+      return;
+    }
+    let img = new Image();
     let coverImg;
     try {
       coverImg = require(`../img/cover${wWidth}.jpg`);
@@ -90,16 +84,14 @@ export default {
     }
     img.src = coverImg;
     img.onload = () => {
-      let lottery = new LotteryCard(document.getElementById("js_lottery"), {
+      let lottery = new LotteryCard(document.getElementById('js_lottery'), {
         cover: img
       });
-      lottery.setResult(
-        "http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/2f8f85541a4ad940841c37ca79a75453.jpg"
-      );
-      lottery.on("start", () => {
+      lottery.setResult('http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/2f8f85541a4ad940841c37ca79a75453.jpg');
+      lottery.on('start', () => {
         this.touched = true;
       });
-      lottery.on("end", () => {
+      lottery.on('end', () => {
         this.canvasEnd = true;
         setTimeout(() => {
           this.timeout = true;
@@ -110,13 +102,13 @@ export default {
   },
   methods: {
     gotoCopyright() {
-      this.$router.push("/copyright");
+      this.$router.push('/copyright');
     },
     showCom() {
       this.isComShow = true;
     },
     gotoNext() {
-      this.$router.push("/step2");
+      this.$router.push('/step2');
     }
   }
 };
@@ -200,7 +192,7 @@ export default {
     align-items: center;
     height: 0.75rem;
     font-size: 0.85rem;
-    font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     margin-right: 0.02rem;
     &:nth-child(6) {
       margin-left: 0.2rem;
@@ -214,7 +206,7 @@ export default {
   left: 1.8rem;
   & > div {
     width: 0.82rem;
-    font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   }
 }
 
