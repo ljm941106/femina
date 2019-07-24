@@ -1,141 +1,97 @@
 <template>
-  <div class="swiper-page step4">
+  <div class="swiper-page step5">
     <head-top></head-top>
-    <div class="icon-to-top" @click="showText" v-show="iconToTopShow" :class="{active: isIntro1Show || isIntro3Show}">
-      <img src="../img/to-top.png" />
+    <div class="icon-to-top" v-show="currentIndex == 0" @click="showIntro2" :class="{ active: isIntro2Show }"><img src="../img/to-top.png" alt="" /></div>
+    <div class="text text1" :class="{ active: text1Show && currentIndex == 0 }">
+      <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/6a78652c0ccb5d3614ab74171050ebba.png" />
+    </div>
+    <div class="text intro1 wow fadeInLeft" v-show="currentIndex == 0" data-wow-duration="1.5s" data-wow-delay="0s">
+      <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/3f725bdf1f4e3bdb0bc036713f2f1123.png" />
+    </div>
+    <div class="intro2" :class="{ active: isIntro2Show }">
+      <img class="bg" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/3d42aeee093b3eefa4cb6c28c844223f.png" alt="" />
+      <img class="img" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/0e86b5103cb7095640acaaeada681df1.png" alt="" />
+    </div>
+    <div class="text text2" :class="{ active: text2Show && currentIndex == 1 }">
+      <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/af3d5ae623465c15bd650f01c423f28e.png" alt="" />
+    </div>
+    <div class="text text3" :class="{ active: text3Show && currentIndex == 2 }">
+      <img
+        src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/1b4811701b1f3cf3bb4a109ed1233437.T%20%E9%BB%91%E8%89%B2%E7%9A%AE%E5%A4%B9%E5%85%8B%20Common%20Gender%20%E5%8D%8A%E6%A1%86%E7%9C%BC%E9%95%9C%20Ermen"
+      />
+    </div>
+    <div class="text text4" :class="{ active: text4Show && currentIndex == 3 }">
+      <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/16a5eb9a271ac3aeac032360b7853c3a.png" />
+    </div>
+    <!-- 音频 -->
+    <div class="audio" v-show="currentIndex == 1"><audio id="audio" controls src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/video/2019072101.mp3"></audio></div>
+    <!-- 视频 -->
+    <div @click="showVideo2" class="icon-video" style="position: absolute;top: 6rem;left: 1rem;z-index: 10;" v-show="currentIndex == 3">
+      <img src="../img/step3-play-white.png" style="width: 0.7rem;" />
+    </div>
+    <div class="video2" v-show="isVideoShow && currentIndex == 3">
+      <video id="video2" controls="controls" width="100%" preload><source src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/video/2019072103.mp4" type="video/mp4" /></video>
     </div>
     <div class="swiper-container">
       <div class="swiper-wrapper">
         <div class="swiper-slide">
-          <!-- <div class="swiper-modal"></div> -->
-          <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/705a56a2d5f6fe1b8cbb19a88b0b47e4.jpg" />
-        </div>
-        <div class="swiper-slide big-img" ref="slide2" @click="showImg(0)">
-          <!-- <div class="swiper-modal" v-show="isShowModal"></div> -->
-          <div class="red-point"><img src="../img/redpoint.png" /></div>
-          <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/6572ea1f5862afff97acd4f6f785caee.jpg" />
+          <img class="img" :class="{ init: img1Init }" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/ed185d437b880a444b71d596bb05b9b0.jpg" />
         </div>
         <div class="swiper-slide">
-          <!-- <div class="swiper-modal"></div> -->
-          <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/830b26f3299ec7606e676abbf9429c7b.jpg" />
+          <img class="img img2" :class="{ init: img2Init }" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/7912f66a20d4310da984ce3afbbf9476.jpg" />
         </div>
-        <div class="swiper-slide big-img" ref="slide4" @click="showImg(1)">
-          <!-- <div class="swiper-modal" v-show="isShowModal"></div> -->
-           <div class="red-point"><img src="../img/redpoint.png" /></div>
-          <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/f3f59f3c6bac674ff9d70a89c0342b08.jpg" />
+        <div class="swiper-slide">
+          <img class="img" :class="{ init: img3Init }" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/990832617f01b09a749f14eb99f822b1.jpg" />
+        </div>
+        <div class="swiper-slide" @click="hideVideo">
+          <img class="img" :class="{ init: img4Init }" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/11d8a83fb216f4f1b07067e1d612a223.jpg" />
         </div>
       </div>
     </div>
     <div class="swiper-button-prev" @click="prevPage"><img src="../img/swiper-prev.png" /></div>
     <div class="swiper-button-next" @click="nextPage"><img src="../img/swiper-next.png" /></div>
-    <div class="intro1" :class="{active: isIntro1Show && swiperActiveIndex == 0}">
-      <div class="img">
-        <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/f3ae5c290354d965ab119592af47c4f6.jpg" />
-      </div>
-      <div class="intro-con">
-        <div class="text-img">
-          <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/0405b933625c0cb73f325a86c4456505.png" />
-        </div>
-        <div class="col-img">
-          <img
-            src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/895a89fcf65cb15a6ee6520db42524aa.T%20%E9%BB%91%E8%89%B2%E5%8D%B0%E8%8A%B1T%E6%81%A4%20Zadig%26Voltaire%20from%20I"
-          />
-        </div>
-      </div>
-    </div>
-    <div class="intro2" :class="{active: isIntro2Show && swiperActiveIndex == 1}">
-      <img
-        src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/c2f155ff23547f096c507cb5d8accf80.T%20%E9%BB%91%E8%89%B2%E5%8D%B0%E8%8A%B1T%E6%81%A4%20Zadig%26Voltaire%20from%20I"
-      />
-    </div>
-    <div class="intro1" :class="{active: isIntro3Show && swiperActiveIndex == 2}">
-      <div class="img">
-        <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/f4972c8329522af7534539ce882bc345.jpg" />
-      </div>
-      <div class="intro-con">
-        <div class="text-img">
-          <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/80b882e0b997e78ca186d9fd3e69f5f8.png" />
-        </div>
-        <div class="col-img">
-          <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/5a0b25704521d88a1b6855e7dbca5901.png" />
-        </div>
-      </div>
-    </div>
-    <div class="intro4" :class="{active: isIntro4Show && swiperActiveIndex == 3}">
-      <img
-        class="text-img"
-        src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/f9a79e78c00368c699dd5c2997c39013.png"
-      />
-      <!-- <img
-        class="icon-video"
-        src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/d276fa568ec3c9a1b64a7d2d7b7179c6.png"
-        alt=""
-      /> -->
-    </div>
-    <div class="modal4" :class="{active: currentImg}" @touchend="touched = true">
-      <div class="icon-close" @click="hideBigImg"><img src="../img/close.png" alt="" /></div>
-      <img :src="currentImg" />
-      <div class="hand-point" v-show="!touched"><img src="../img/hand.png" alt /></div>
-    </div>
-    <!-- <previewer :list="previewerList" ref="previewer"></previewer> -->
   </div>
 </template>
-
 <script>
-// @ is an alias to /src
-// import '../plugins/card.js'
-// import {Previewer} from "vux";
-import headTop from "../components/head.vue";
+import '../plugins/swiper.min';
+import headTop from '../components/head.vue';
 export default {
-  name: "home",
-  components: {headTop},
+  name: 'step3',
+  components: { headTop },
   data() {
     return {
-      swiperActiveIndex: 0,
-      iconToTopShow: true,
-      isIntro1Show: false,
+      currentIndex: 0,
+      text1Show: false,
+      img1Init: false,
+      img2Init: false,
+      text2Show: false,
       isIntro2Show: false,
-      isIntro3Show: false,
-      isIntro4Show: false,
-      isShowModal: false,
-      touched: false,
-      previewerList: [
-        {
-          src: "http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/6572ea1f5862afff97acd4f6f785caee.jpg",
-          h: 1500,
-          w: 4870,
-          itemName: "item.newName"
-        },
-        {
-          src: "http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/f3f59f3c6bac674ff9d70a89c0342b08.jpg",
-          h: 1500,
-          w: 4870,
-          itemName: "item.newName"
-        }
-      ],
-      bigImgList: [
-        "http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/6572ea1f5862afff97acd4f6f785caee.jpg",
-        "http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/f3f59f3c6bac674ff9d70a89c0342b08.jpg"
-      ],
-      currentImg: ""
+      text3Show: false,
+      img3Init: false,
+      text4Show: false,
+      img4Init: false,
+      isVideoShow: false
     };
   },
   created() {},
   mounted() {
-    this.sctollLeftMax = document.documentElement.clientWidth * 2.247;
+    this.$nextTick(() => {
+      document.getElementById('video2').addEventListener('ended', () => {
+        this.isVideoShow = false;
+      });
+    });
     const _this = this;
+    let timeout;
     let touchStartX;
     let touchEndX;
-    this.mySwiper = new Swiper(".swiper-container", {
-      effect: "fade",
+    this.mySwiper = new Swiper('.swiper-container', {
+      effect: 'fade',
       speed: 1000,
-      // noSwiping: true,
-      // noSwipingSelector: "img",
-      // height: "auto",
       navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev"
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev'
       },
+      // loop: true,
       on: {
         touchStart(event) {
           touchStartX = event.changedTouches[0].screenX;
@@ -143,234 +99,232 @@ export default {
         touchEnd(event) {
           touchEndX = event.changedTouches[0].screenX;
           if (touchEndX - touchStartX < -100 && _this.mySwiper.isEnd) {
-            _this.$router.push("step5");
           } else if (touchEndX - touchStartX > 100 && _this.mySwiper.isBeginning) {
             _this.$router.go(-1);
           }
         },
+        init: function() {
+          _this.text1Show = true;
+          _this.img1Init = true;
+          timeout = setTimeout(() => {
+            _this.text1Show = false;
+          }, 4000);
+          // console.log("当前的slide序号是" + this.activeIndex);
+          // this.emit("transitionEnd"); //在初始化时触发一次transitionEnd事件，需要先设置transitionEnd
+        },
+        slideChangeTransitionEnd: function() {
+          // console.log(this.activeIndex);
+        },
         slideChangeTransitionStart: function() {
-          _this.swiperActiveIndex = this.activeIndex;
-          if (_this.swiperActiveIndex == 0 || _this.swiperActiveIndex == 2) {
-            _this.iconToTopShow = true;
-          } else {
-            _this.iconToTopShow = false;
+          console.log(this.activeIndex);
+          _this.text1Show = false;
+          _this.text3Show = false;
+          _this.text4Show = false;
+          _this.text5Show = false;
+          _this.currentIndex = this.activeIndex;
+          if (this.activeIndex != 3) {
+            let video2 = document.getElementById('video2');
+            if (video2) video2.pause();
+            _this.isVideoShow = false;
           }
-          if (_this.swiperActiveIndex == 1) {
-            _this.isIntro2Show = true;
-            // let inter = setInterval(() => {
-            //   _this.$refs.slide2.scrollTo({
-            //     top: 0,
-            //     left: sctollLeft
-            //   });
-            //   if (_this.$refs.slide2.scrollLeft >= sctollLeft - 1) {
-            //     clearInterval(inter);
-            //     _this.isIntro2Show = true;
-            //   }
-            // }, 10);
+          if (this.activeIndex != 1) {
+            let audio = document.getElementById('audio');
+            if (audio) audio.pause();
           }
-          if (_this.swiperActiveIndex == 3) {
-            _this.isIntro4Show = true;
-            // let inter = setInterval(() => {
-            //   _this.$refs.slide4.scrollTo({
-            //     top: 0,
-            //     left: sctollLeft
-            //   });
-            //   if (_this.$refs.slide4.scrollLeft >= sctollLeft - 1) {
-            //     clearInterval(inter);
-            //     _this.isIntro4Show = true;
-            //   }
-            // }, 10);
+          if (this.activeIndex == 1) {
+            _this.text2Show = true;
+            _this.img2Init = true;
+            setTimeout(() => {
+              _this.text2Show = false;
+            }, 4000);
           }
-        }
+          if (this.activeIndex == 2) {
+            _this.text3Show = true;
+            _this.img3Init = true;
+            setTimeout(() => {
+              _this.text3Show = false;
+            }, 4000);
+          }
+          if (this.activeIndex == 3) {
+            _this.text4Show = true;
+            _this.img4Init = true;
+            setTimeout(() => {
+              _this.text4Show = false;
+            }, 4000);
+          }
+          if (this.activeIndex == 4) {
+            _this.text4Show = true;
+            _this.img4Init = true;
+            setTimeout(() => {
+              _this.text4Show = false;
+            }, 4000);
+          }
+        },
+        slideChange: function() {}
       }
     });
   },
   methods: {
-    showText() {
-      if (this.swiperActiveIndex == 0) {
-        this.isIntro1Show = !this.isIntro1Show;
-      }
-      if (this.swiperActiveIndex == 2) {
-        this.isIntro3Show = !this.isIntro3Show;
-      }
+    showIntro2() {
+      this.isIntro2Show = !this.isIntro2Show;
+    },
+    showVideo2() {
+      this.isVideoShow = true;
+    },
+    hideVideo() {
+      this.isVideoShow = false;
     },
     nextPage() {
       if (this.mySwiper.isEnd) {
-        this.$router.push("step5");
       }
     },
     prevPage() {
       if (this.mySwiper.isBeginning) {
-        this.$router.push("step3");
+        this.$router.go(-1);
       }
-    },
-    showImg(index) {
-      this.currentImg = this.bigImgList[index];
-      // this.$refs.previewer.show(index)
-    },
-    hideBigImg() {
-      this.currentImg = "";
-      this.touched = false;
     }
-    // touchstart(e) {
-    //   console.log(e.changedTouches[0].screenX);
-    //   this.touchStartX = e.changedTouches[0].screenX;
-    // },
-    // touchend(e) {
-    //   console.log(e.changedTouches[0].screenX);
-    //   this.touchEndX = e.changedTouches[0].screenX;
-    //   if (this.touchEndX < this.touchStartX) {
-    //     this.isShowModal = false;
-    //   }
-    //   let scrollLeft = this.$refs.slide2.scrollLeft;
-    //   if (scrollLeft >= this.sctollLeftMax - 2) {
-    //     this.isShowModal = true;
-    //   } else {
-    //     this.isShowModal = false;
-    //   }
-    // }
   }
 };
 </script>
 <style lang="scss">
-.step4 {
-  .red-point {
+.fade3-enter-active,
+.fade3-leave-active {
+  transition: opacity 2s;
+}
+.fade3-enter, .fade3-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+.step5 {
+  .text {
+    position: fixed;
     z-index: 9;
-    position: absolute;
-    left: 2rem;
-    top: 6rem;
-    animation: scalePoint 1.778s infinite;
-    img {
-      width: 0.285rem !important;
-    }
+    transition: 2s;
   }
-  .hand-point {
-    position: fixed;
-    z-index: 10;
-    top: calc(1738 / 3248 * 100vh);
-    right: calc(315 / 1500 * 100vw);
-    width: calc(120 / 1500 * 100vw);
-    animation: handPoint2 1.778s infinite;
-  }
-  .modal4 {
-    z-index: -1;
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: scroll;
-    transition: opacity 1s;
+  .text1 {
+    top: 1.9rem;
+    right: 0.65rem;
+    width: 2.68rem;
+    opacity: 0;
     &.active {
       opacity: 1;
-      z-index: 10;
-    }
-    & > img {
-      height: 16.24rem;
-      max-width: initial;
-    }
-    .icon-close {
-      position: fixed;
-      top: 0.3rem;
-      right: 0.3rem;
-      width: 0.64rem;
-    }
-  }
-  position: relative;
-  .swiper-container {
-    height: 216.53vw;
-    .swiper-modal {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 9;
-    }
-  }
-  .big-img {
-    position: relative;
-    overflow: scroll;
-    img {
-      width: auto;
-      height: 100%;
-      max-width: initial;
-    }
-    &.swiper-slide-active {
-      // scroll-behavior: smooth;
     }
   }
   .intro1 {
-    width: 100vw;
-    min-height: 100%;
     position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 10;
-    background: #fff;
-    transition: 1s;
-    z-index: -1;
-    opacity: 0;
-    &.active {
-      opacity: 1;
-      z-index: 10;
-    }
-    .intro-con {
-      overflow: scroll;
-    }
-    & > div {
-      text-align: center;
-    }
-    .img img {
-      width: 100%;
-    }
-    .text-img {
-      margin-top: 1rem;
-      margin-bottom: 1.12rem;
-      text-align: center;
-      img {
-        width: 5.825rem;
-      }
-    }
-    .col-img {
-      text-align: left;
-      img {
-        margin-left: 0.8rem;
-        width: 3.57rem;
-      }
-    }
+    top: 4.4rem;
+    left: 1.5rem;
+    width: 4.37rem;
   }
   .intro2 {
     position: fixed;
-    width: 100%;
-    height: 0.6rem;
-    left: 0.65rem;
-    bottom: 1.2rem;
-    opacity: 0;
-    transition: 1s;
+    left: 0;
+    top: 0;
     z-index: -1;
-    img {
-      width: 3.57rem;
-    }
+    background: #fff;
+    width: 100%;
+    height: 100vh;
+    opacity: 0;
+    transition: opacity 1s;
     &.active {
+      z-index: 10;
       opacity: 1;
+    }
+    .bg {
+      width: 100vw;
+      height: 15rem;
+      position: absolute;
+      left: 0;
+      top: 0;
       z-index: 10;
     }
+    .img {
+      width: 5.75rem;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 6rem;
+    }
   }
-  .intro4 {
-    position: fixed;
-    z-index: -1;
-    width: 2.835rem;
+  .text2 {
+    opacity: 0;
+    right: 0.65rem;
+    top: 1.9rem;
+    opacity: 0;
+    transition: 1s;
+    &.active {
+      opacity: 1;
+    }
+    img {
+      width: 3.39rem;
+    }
+  }
+  .text3 {
+    bottom: 1.15rem;
+    left: 0.65rem;
+    width: 4.28rem;
+    opacity: 0;
+    &.active {
+      opacity: 1;
+    }
+  }
+  .text4 {
+    top: 1.96rem;
+    right: 0.65rem;
+    opacity: 0;
+    width: 3.585rem;
+    &.active {
+      opacity: 1;
+    }
+  }
+  .text5 {
     top: 1.7rem;
     right: 0.65rem;
-    .text-img {
-    }
-    .icon-video {
-      position: absolute;
-    }
+    opacity: 0;
+    width: 3.63rem;
     &.active {
-      z-index: 9;
+      opacity: 1;
     }
+  }
+  .play {
+    width: 0.695rem;
+    position: fixed;
+    left: 0.835rem;
+    top: 9.145rem;
+    z-index: 10;
+  }
+  .swiper-slide {
+    overflow: hidden;
+    .img {
+      transition: 2s;
+      transform: scale(1.1);
+      &.init {
+        transform: scale(1);
+      }
+    }
+    .img2 {
+      transform: scale(1.5);
+      // transform-origin: right center;
+      &.init {
+        transform: scale(1);
+      }
+    }
+  }
+  .audio {
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%);
+    bottom: 1.2rem;
+    z-index: 10;
+    img {
+      width: 0.7rem;
+    }
+  }
+  .video2 {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    z-index: 10;
+    transform: translateY(-50%);
   }
 }
 </style>

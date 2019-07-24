@@ -40,7 +40,6 @@ div {
     left: auto;
     right: 0.65rem;
   }
-  .swiper-button-next.swiper-button-disabled,
   .swiper-button-prev.swiper-button-disabled {
     opacity: 1;
     cursor: pointer;
@@ -72,6 +71,10 @@ div {
   &.active {
     transform: rotateZ(180deg);
   }
+}
+.icon-video {
+  position: absolute;
+  animation: scaleCom 2.5s infinite;
 }
 @keyframes scalePoint {
   0% {

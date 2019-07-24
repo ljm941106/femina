@@ -1,29 +1,29 @@
 <template>
   <div class="swiper-page step3 ">
     <head-top></head-top>
-    <div class="icon-to-top" v-show="currentIndex == 2 && !text2Show" @click="showText2"><img src="../img/to-top.png" alt="" /></div>
-    <div class="text text1" :class="{ active: text1Show && currentIndex == 1 }"><img src="../img/text-3-1.png" /></div>
-    <div class="text text2" :class="{ active: text2Show && currentIndex == 2 }"><img src="../img/text3-2.png" alt="" /></div>
-    <div class="text text3" :class="{ active: text3Show && currentIndex == 3 }"><img src="../img/text3-3.png" alt="" /></div>
-    <div class="text text4" :class="{ active: text4Show && currentIndex == 4 }"><img src="../img/text3-4.png" alt="" /></div>
-    <div class="text text5" :class="{ active: text5Show && currentIndex == 5 }"><img src="../img/text3-5.png" alt="" /></div>
+    <div class="icon-to-top" v-show="currentIndex == 1 && !text1Show" @click="showText1"><img src="../img/to-top.png" alt="" /></div>
+    <div class="text text1" :class="{ active: text0Show && currentIndex == 0 }"><img src="../img/text-3-1.png" /></div>
+    <div class="text text2" :class="{ active: text1Show && currentIndex == 1 }"><img src="../img/text3-2.png" alt="" /></div>
+    <div class="text text3" :class="{ active: text2Show && currentIndex == 2 }"><img src="../img/text3-3.png" alt="" /></div>
+    <div class="text text4" :class="{ active: text3Show && currentIndex == 3 }"><img src="../img/text3-4.png" alt="" /></div>
+    <div class="text text5" :class="{ active: text4Show && currentIndex == 4 }"><img src="../img/text3-5.png" alt="" /></div>
     <div class="swiper-container">
       <div class="swiper-wrapper">
         <div class="swiper-slide">
-          <img class="img" :class="{ init: img1Init }" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/327fa954346c7ac11494f3e313238e07.jpg" />
+          <img class="img" :class="{ init: img0Init }" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/327fa954346c7ac11494f3e313238e07.jpg" />
         </div>
-        <div class="swiper-slide" @click="hideText2">
-          <img class="img" :class="{ init: text2Show }" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/bac1b9adc94ad15899452cb9b87fa5ba.jpg" />
-        </div>
-        <div class="swiper-slide">
-          <img class="img" :class="{ init: img3Init }" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/8de0c3b0c6facb5933c11a8ad24f220a.jpg" />
+        <div class="swiper-slide" @click="hideText1">
+          <img class="img" :class="{ init: img1Init }" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/bac1b9adc94ad15899452cb9b87fa5ba.jpg" />
         </div>
         <div class="swiper-slide">
-          <img class="img" :class="{ init: img4Init }" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/a5a3cb56cf7844005fb5c0358132e97d.jpg" />
+          <img class="img" :class="{ init: img2Init }" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/8de0c3b0c6facb5933c11a8ad24f220a.jpg" />
+        </div>
+        <div class="swiper-slide">
+          <img class="img" :class="{ init: img3Init }" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/a5a3cb56cf7844005fb5c0358132e97d.jpg" />
         </div>
         <div class="swiper-slide" @click="hideVide1()">
-          <img class="img" :class="{ init: img5Init }" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/833777b6c020a8cf9f862018687894d1.jpg" />
-          <div class="play" @click.stop="showVideo1"><img  src="../img/step3-play.png" /></div>
+          <img class="img" :class="{ init: img4Init }" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/833777b6c020a8cf9f862018687894d1.jpg" />
+          <div class="icon-video play" @click.stop="showVideo1"><img src="../img/step3-play.png" /></div>
         </div>
       </div>
     </div>
@@ -43,21 +43,31 @@ export default {
   components: { headTop },
   data() {
     return {
-      currentIndex: 1,
+      currentIndex: 0,
+
+      text0Show: false,
+      img0Init: false,
+
       text1Show: false,
       img1Init: false,
+
       text2Show: false,
+      img2Init: false,
+
       text3Show: false,
       img3Init: false,
+
       text4Show: false,
       img4Init: false,
-      text5Show: false,
-      img5Init: false,
+
       isVideo1Show: false
     };
   },
   created() {},
   mounted() {
+    document.getElementById('video1').addEventListener('ended', () => {
+      this.isVideo1Show = false;
+    });
     const _this = this;
     let timeout;
     let touchStartX;
@@ -72,14 +82,11 @@ export default {
       // loop: true,
       on: {
         init: function() {
-          _this.text1Show = true;
-          _this.img1Init = true;
+          _this.text0Show = true;
+          _this.img0Init = true;
           timeout = setTimeout(() => {
-            _this.text1Show = false;
+            _this.text0Show = false;
           }, 4000);
-          //Swiper初始化了
-          // console.log("当前的slide序号是" + this.activeIndex);
-          // this.emit("transitionEnd"); //在初始化时触发一次transitionEnd事件，需要先设置transitionEnd
         },
         touchStart(event) {
           touchStartX = event.changedTouches[0].screenX;
@@ -87,25 +94,32 @@ export default {
         touchEnd(event) {
           touchEndX = event.changedTouches[0].screenX;
           if (touchEndX - touchStartX < -100 && _this.mySwiper.isEnd) {
-            _this.$router.push('step4');
           } else if (touchEndX - touchStartX > 100 && _this.mySwiper.isBeginning) {
             _this.$router.go(-1);
           }
         },
-        slideChangeTransitionEnd: function() {
-          // console.log(this.activeIndex);
-        },
+        slideChangeTransitionEnd: function() {},
         slideChangeTransitionStart: function() {
+          console.log(this.activeIndex);
+          _this.text0Show = false;
           _this.text1Show = false;
+          _this.text2Show = false;
           _this.text3Show = false;
           _this.text4Show = false;
-          _this.text5Show = false;
           _this.currentIndex = this.activeIndex;
-          if (this.activeIndex == 1 || this.activeIndex == 6) {
+
+          if (this.activeIndex == 1) {
             _this.text1Show = true;
             _this.img1Init = true;
             setTimeout(() => {
               _this.text1Show = false;
+            }, 4000);
+          }
+          if (this.activeIndex == 2) {
+            _this.text2Show = true;
+            _this.img2Init = true;
+            setTimeout(() => {
+              _this.text2Show = false;
             }, 4000);
           }
           if (this.activeIndex == 3) {
@@ -122,24 +136,17 @@ export default {
               _this.text4Show = false;
             }, 4000);
           }
-          if (this.activeIndex == 5) {
-            _this.text5Show = true;
-            _this.img5Init = true;
-            setTimeout(() => {
-              _this.text5Show = false;
-            }, 4000);
-          }
         },
         slideChange: function() {}
       }
     });
   },
   methods: {
-    showText2() {
-      this.text2Show = true;
+    showText1() {
+      this.text1Show = true;
     },
-    hideText2() {
-      this.text2Show = false;
+    hideText1() {
+      this.text1Show = false;
     },
     showVideo1() {
       console.log('show');
@@ -151,12 +158,11 @@ export default {
     },
     nextPage() {
       if (this.mySwiper.isEnd) {
-        this.$router.push('step4');
       }
     },
     prevPage() {
       if (this.mySwiper.isBeginning) {
-        this.$router.push('step2');
+        this.$router.go(-1);
       }
     }
   }

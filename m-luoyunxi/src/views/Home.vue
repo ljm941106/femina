@@ -66,8 +66,8 @@ export default {
   mounted() {
     let wWidth = document.documentElement.clientWidth;
     const u = navigator.userAgent;
-    this.isiOS =  !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-    this.isiOS = wWidth == 414 && !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    this.isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    // this.isiOS = wWidth == '414' && !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios plus终端
     if (this.isiOS) {
       this.canvasEnd = true;
       setTimeout(() => {
