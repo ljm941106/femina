@@ -10,7 +10,7 @@
     </div>
     <div class="intro2" :class="{ active: isIntro2Show }">
       <img class="bg" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/3d42aeee093b3eefa4cb6c28c844223f.png" alt="" />
-      <img class="img" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/0e86b5103cb7095640acaaeada681df1.png" alt="" />
+      <img class="img" src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/a44ad1122d7956aee029115cedb9c779.png" alt="" />
     </div>
     <div class="text text2" :class="{ active: text2Show && currentIndex == 1 }">
       <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/af3d5ae623465c15bd650f01c423f28e.png" alt="" />
@@ -121,6 +121,7 @@ export default {
           _this.text3Show = false;
           _this.text4Show = false;
           _this.text5Show = false;
+          _this.isVideoShow = false;
           _this.currentIndex = this.activeIndex;
           if (this.activeIndex != 3) {
             let video2 = document.getElementById('video2');

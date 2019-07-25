@@ -100,7 +100,7 @@ export default {
         },
         slideChangeTransitionEnd: function() {},
         slideChangeTransitionStart: function() {
-          console.log(this.activeIndex);
+          _this.isVideo1Show = false;
           _this.text0Show = false;
           _this.text1Show = false;
           _this.text2Show = false;
