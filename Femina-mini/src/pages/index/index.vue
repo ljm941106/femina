@@ -413,7 +413,7 @@ export default {
       height: 112rpx;
       display: flex;
       justify-content: center;
-      padding-top: 48.2rpx;
+      padding-top: 46.2rpx;
       font-size: 33.6rpx;
       background: url("https://ssl-yizhou.25bsx.com/public/icon/index-bg-none.png") center / cover;
       &:nth-child(2) {

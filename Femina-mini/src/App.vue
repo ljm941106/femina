@@ -7,7 +7,7 @@ export default {
     //    const logs = wx.getStorageSync('logs') || []
     //    logs.unshift(Date.now())
     //    wx.setStorageSync('logs', logs)
-
+    console.log(wx.getSystemInfoSync())
     fly.get(api.config).then(configRes => {
       if (configRes.code == 0) {
         let info = configRes.data;
