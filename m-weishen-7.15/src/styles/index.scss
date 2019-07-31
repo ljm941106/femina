@@ -484,7 +484,7 @@ div {
   .angel-con {
     .text {
       position: absolute;
-      top: 2.2rem;
+      top: 0.8rem;
       left: 1.6rem;
       width: 2.88rem;
       &.active {
@@ -493,17 +493,24 @@ div {
     }
     .text2 {
       position: absolute;
-      top: calc(6rem - 0.935rem);
+      top: 4rem;
       left: 50%;
       transform: translate(-50%);
       width: 1.72rem;
+      transform-origin: left;
       &.active {
         animation: roomInOnly 1.5s infinite;
       }
     }
+    .heart-big {
+      position: absolute;
+      top: 5rem;
+      left: 50%;
+      transform: translate(-50%);
+    }
     .angel {
       position: absolute;
-      top: 2rem;
+      top: 0.6rem;
       right: -1.735rem;
       width: 1.735rem;
       transition: 1s;
@@ -511,25 +518,28 @@ div {
         right: 0.9rem;
       }
       &.arrow0 {
-        transform: rotate(5deg);
+        transform: rotate(0deg);
       }
       &.arrow1 {
-        transform: rotate(0);
+        transform: rotate(-5deg);
       }
       &.arrow2 {
-        transform: rotate(-23deg);
+        transform: rotate(-30deg);
       }
       &.arrow3 {
         transform: rotate(-55deg);
       }
       &.arrow4 {
-        transform: rotate(-5deg);
+        transform: rotate(-8deg);
       }
       &.arrow5 {
         transform: rotate(-24deg);
       }
       &.arrow6 {
         transform: rotate(-50deg);
+      }
+      &.arrow7 {
+        transform: rotate(-12deg);
       }
     }
   }
@@ -542,62 +552,53 @@ div {
       display: block;
     }
     &.arrow0 {
-      left: 4.87rem;
-      top: 3rem;
-      transform: rotate(8deg);
+      left: 4.98rem;
+      top: 1.5rem;
+      transform: rotate(2deg);
       &.active {
         top: 7.4rem;
         left: 1.5rem;
       }
     }
     &.arrow1 {
-      left: 4.9rem;
-      top: 3.1rem;
-      transform: rotate(2deg);
+      left: 4.98rem;
+      top: 1.68rem;
+      transform: rotate(-5deg);
       &.active {
         top: 7.2rem;
         left: 2.5rem;
       }
     }
     &.arrow2 {
-      left: 5.2rem;
-      top: 3.2rem;
-      transform: rotate(-20deg);
-      &.active {
-        top: 6.9rem;
-        left: 4.88rem;
-      }
-    }
-    &.arrow2 {
-      left: 5.2rem;
-      top: 3.2rem;
-      transform: rotate(-20deg);
+      left: 5.32rem;
+      top: 1.68rem;
+      transform: rotate(-25deg);
       &.active {
         top: 6.9rem;
         left: 4.88rem;
       }
     }
     &.arrow3 {
-      left: 5.7rem;
-      top: 3.4rem;
-      transform: rotate(-45deg);
+      left: 5.63rem;
+      top: 1.68rem;
+      transform: rotate(-42deg);
       &.active {
         top: 7.1rem;
         left: 6.35rem;
       }
     }
     &.arrow4 {
-      left: 4.9rem;
-      top: 3.2rem;
-      transform: rotate(0deg);
+      left: 5rem;
+      top: 1.68rem;
+      transform: rotate(-2deg);
       &.active {
         top: 10.3rem;
         left: 1rem;
       }
     }
     &.arrow5 {
-      left: 5.2rem;
-      top: 3.2rem;
+      left: 5.25rem;
+      top: 1.68rem;
       transform: rotate(-18deg);
       &.active {
         top: 10.5rem;
@@ -605,12 +606,21 @@ div {
       }
     }
     &.arrow6 {
-      left: 5.6rem;
-      top: 3.2rem;
-      transform: rotate(-40deg);
+      left: 5.57rem;
+      top: 1.68rem;
+      transform: rotate(-42deg);
       &.active {
         top: 10.5rem;
         left: 6.35rem;
+      }
+    }
+    &.arrow7 {
+      left: 5.05rem;
+      top: 1.68rem;
+      transform: rotate(-2deg);
+      &.active {
+        top:4.3rem;
+        left: 3.7rem;
       }
     }
   }
@@ -735,8 +745,7 @@ div {
   width: 100vw;
   height: 100vh;
   overflow: scroll;
-  background: url(http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/1f6ef7f9769afeec23845a8c7b835a57.jpg) center
-    top no-repeat / cover;
+  background: url(http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/1f6ef7f9769afeec23845a8c7b835a57.jpg) center top no-repeat / cover;
   z-index: 10;
   .chat-bottom-con {
     height: 1.15rem;
@@ -876,8 +885,7 @@ div {
     margin: 0 auto 0.35rem;
     width: 1.555rem;
     height: 0.255rem;
-    background: url(http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/f3ea5985cbb0d4d452921c782bca45bf.png)
-      center / cover;
+    background: url(http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/f3ea5985cbb0d4d452921c782bca45bf.png) center / cover;
     .line {
       background: #ff0000;
       height: 0.115rem;

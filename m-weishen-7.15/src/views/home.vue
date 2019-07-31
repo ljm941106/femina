@@ -4,7 +4,9 @@
     <div class="swiper-container main-swiper">
       <div class="swiper-wrapper">
         <div class="swiper-slide p1">
-          <div class="img logo" :class="{ small: isVideoShow }"><img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/cdabff03751cca38a58b976c50da82dd.png" /></div>
+          <div class="img logo" :class="{ small: isVideoShow }">
+            <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/cdabff03751cca38a58b976c50da82dd.png" />
+          </div>
           <div class="img heart " v-if="!isVideoShow" @click="showVideo">
             <div style="height: 1.35rem;"><img class="wow zoomIn" data-wow-duration="1.5s" src="../img/heart.png" v-if="!isLoading" /></div>
           </div>
@@ -20,7 +22,9 @@
           </div>
         </div>
         <div class="swiper-slide main1">
-          <div class="main1-logo" :class="{ active: main1Actived }"><img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/95905aa00b4a0c0b1fb1c087db053c8f.png" /></div>
+          <div class="main1-logo" :class="{ active: main1Actived }">
+            <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/95905aa00b4a0c0b1fb1c087db053c8f.png" />
+          </div>
           <div class="main1-img">
             <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/a3912774b1011b648c47e113bb4b6cf8.png" />
             <!-- <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/16e92117a412d8a9a8a74edce061c3b9.png" /> -->
@@ -50,7 +54,9 @@
           <video id="video2" :class="{ active: video2Show }" preload="auto" controls="controls">
             <source src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/video/20190715-v2.mp4" type="video/mp4" />
           </video>
-          <div class="top" @click="toggleAllIntro()"><img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/5725dc0712bed14b673589cb6b8f6562.png" /></div>
+          <div class="top" @click="toggleAllIntro()">
+            <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/5725dc0712bed14b673589cb6b8f6562.png" />
+          </div>
           <div class="intro" :class="{ active: isIntroShow }">
             <p>
               在“养成系爱豆”当道的浮躁娱乐圈中，他们的出现可以说是特别的。虽然才出道半年，但是七位成员在站上舞台之前的故事很长，他们在毫无喘息的日子里不断努力，在无数的等待和挑战后，以威神V之名拭亮了耀眼的青
@@ -65,17 +71,27 @@
           <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/2e6eb729ae0c331e84b5d35db2d14460.jpg" />
           <!-- <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/e4ea2695c3f2e4101303bd1a89aed127.jpg" /> -->
           <div class="angel-con">
-            <div class="text" :class="{ active: isSlideToAngel }"><img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/3fc516d16e97a98b28e2b61b6fb22e75.png" /></div>
+            <div class="text" :class="{ active: isSlideToAngel }">
+              <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/3fc516d16e97a98b28e2b61b6fb22e75.png" />
+            </div>
             <div class="angel" :class="{ active: isSlideToAngel, ['arrow' + arrowIndex]: isAngelRotate }">
               <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/426e8f10a176c24b7cfaab6bfd7e1fb2.png" />
             </div>
             <div class="text2" :class="{ active: isSlideToAngel }">
               <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/ac9471dc6fefea3fe0e339fdca452725.png" />
             </div>
+            <div class="heart-big" @click="arrowHeart(7)">
+              <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/641a7ccb35d1bbe0769ec1b4c516a071.png" style="width: 0.755rem;" />
+            </div>
           </div>
           <!-- 心 -->
           <ul>
-            <li v-for="(i, index) in 7" :class="{ active: isSlideToAngel, shoot: isHeartShoot && index == arrowIndex }" @click="arrowHeart(index)" :key="'heart' + index">
+            <li
+              v-for="(i, index) in 7"
+              :class="{ active: isSlideToAngel, shoot: isHeartShoot && index == arrowIndex }"
+              @click="arrowHeart(index)"
+              :key="'heart' + index"
+            >
               <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/caeceac560b9f2b84faa46f22880a9a6.png" />
             </li>
           </ul>
@@ -88,9 +104,13 @@
           <div class="chat" @click="showChatCon(index)"><img src="../img/chat.png" /></div>
         </div>
         <div class="swiper-slide p1">
-          <div class="img logo small"><img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/cdabff03751cca38a58b976c50da82dd.png" /></div>
+          <div class="img logo small">
+            <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/cdabff03751cca38a58b976c50da82dd.png" />
+          </div>
           <div class="video3-con" @click="playVideo3()">
-            <video id="video3" preload="auto" controls="controls"><source src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/video/20190715-v3.mp4" type="video/mp4" /></video>
+            <video id="video3" preload="auto" controls="controls">
+              <source src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/video/20190715-v3.mp4" type="video/mp4" />
+            </video>
           </div>
           <div class="img all-person small"><img src="../img/all-white.jpg" /></div>
         </div>
@@ -111,7 +131,13 @@
     <!-- 人物的介绍text -->
     <div class="person-text-con" v-show="isPersonSwiperShow">
       <template v-for="(i, index) in personList">
-        <div class="text wow slideInLeft" data-wow-duration="1.5s" :key="i.name" v-show="personActiveIndex == index" :style="{ width: i.textImgWidth + 'rem' }">
+        <div
+          class="text wow slideInLeft"
+          data-wow-duration="1.5s"
+          :key="i.name"
+          v-show="personActiveIndex == index"
+          :style="{ width: i.textImgWidth + 'rem' }"
+        >
           <img :src="i.textImg" />
         </div>
       </template>
@@ -160,14 +186,14 @@
 </template>
 
 <script>
-import headTop from '../components/head.vue';
-import data from '../plugins/data.json';
+import headTop from "../components/head.vue";
+import data from "../plugins/data.json";
 export default {
-  name: 'home',
+  name: "home",
   components: { headTop },
   data() {
     return {
-      isLoading: true, //加载中...
+      isLoading: false, //加载中...
       loadingIndex: 10,
       loadingProgress: 0,
       isShowBack: false, //回退
@@ -182,8 +208,8 @@ export default {
       isArrowActive: false,
       isHeartShoot: false,
       isPersonSwiperShow: false,
-      personList: data['person-list'],
-      chatCon: data['chat-con'],
+      personList: data["person-list"],
+      chatCon: data["chat-con"],
       currentPersonIndex: -1, //用于显示采访内容的index
       personActiveIndex: 0, //当前活动的人物index
       isShowChat: false,
@@ -194,9 +220,9 @@ export default {
   computed: {
     backColor() {
       if (this.personActiveIndex == 2) {
-        return 'white';
+        return "white";
       } else {
-        return 'black';
+        return "black";
       }
     }
   },
@@ -230,12 +256,12 @@ export default {
   },
   mounted() {
     const _this = this;
-    this.mainSwiper = new Swiper('.main-swiper', {
+    this.mainSwiper = new Swiper(".main-swiper", {
       // direction: "vertical",
       autoHeight: true, //高度随内容变化
       navigation: {
-        nextEl: '.swiper-next-new',
-        prevEl: '.swiper-prev-new'
+        nextEl: ".swiper-next-new",
+        prevEl: ".swiper-prev-new"
       },
       on: {
         init: function() {},
@@ -286,11 +312,11 @@ export default {
       this.isVideoShow = true;
     },
     playVideo1() {
-      document.getElementById('video1').play();
+      document.getElementById("video1").play();
     },
     playVideo2() {
       this.video2Show = !this.video2Show;
-      let element = document.getElementById('video2');
+      let element = document.getElementById("video2");
       this.$nextTick(() => {
         if (this.video2Show) {
           // wx.createVideoContext("video2").requestFullScreen(90);
@@ -313,15 +339,15 @@ export default {
       }
     },
     playVideo3() {
-      document.getElementById('video3').play();
+      document.getElementById("video3").play();
     },
     toggleAllIntro() {
       this.isIntroShow = !this.isIntroShow;
     },
     pauseAllVideo() {
-      document.getElementById('video1').pause();
-      document.getElementById('video2').pause();
-      document.getElementById('video3').pause();
+      document.getElementById("video1").pause();
+      document.getElementById("video2").pause();
+      document.getElementById("video3").pause();
     },
     arrowHeart(index) {
       this.isAngelRotate = true;
@@ -342,12 +368,13 @@ export default {
               if (index == 6) targetIndex = 8;
               if (index == 4) targetIndex = 9;
               if (index == 3) targetIndex = 10;
+              if (index == 7) targetIndex = 11;
               this.personActiveIndex = targetIndex - 4;
               this.isPersonSwiperShow = true;
               this.isShowBack = true;
               this.mainSwiper.slideTo(targetIndex, 1000, false);
               //重置
-              this.arrowIndex = 0;
+              this.arrowIndex = -1;
               this.isArrowShow = false;
               this.isArrowActive = false;
               this.isHeartShoot = false;
