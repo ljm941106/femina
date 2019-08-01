@@ -619,7 +619,7 @@ div {
       top: 1.68rem;
       transform: rotate(-2deg);
       &.active {
-        top:4.3rem;
+        top: 4.3rem;
         left: 3.7rem;
       }
     }
@@ -890,7 +890,7 @@ div {
       background: #ff0000;
       height: 0.115rem;
       position: absolute;
-      top: 0.07rem;
+      top: 0.0665rem;
       left: 0.095rem;
     }
   }
@@ -908,7 +908,16 @@ div {
     animation: headLoading 4s ease infinite;
   }
 }
-
+.copyright {
+  background: url("http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/4020a099073812d4dd9cdf613543fc8a.jpg") center / cover;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  img:nth-child(1) {
+    margin-bottom: 1.2rem;
+  }
+}
 @keyframes headLoading {
   0% {
     transform: rotate(0deg);

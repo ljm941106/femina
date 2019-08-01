@@ -114,6 +114,10 @@
           </div>
           <div class="img all-person small"><img src="../img/all-white.jpg" /></div>
         </div>
+        <div class="swiper-slide copyright">
+          <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/e27ec6a9bbf8739f27fad3da800a1e19.png" style="width: 3.25rem;" alt="">
+          <img src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/magazine/496ba71cac52cf5e0441b6d334896372.png" style="width: 3.055rem;" alt="">
+        </div>
       </div>
     </div>
     <!-- 主要的前后 -->
@@ -193,7 +197,7 @@ export default {
   components: { headTop },
   data() {
     return {
-      isLoading: false, //加载中...
+      isLoading: true, //加载中...
       loadingIndex: 10,
       loadingProgress: 0,
       isShowBack: false, //回退
