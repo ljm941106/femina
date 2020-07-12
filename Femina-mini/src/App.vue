@@ -1,40 +1,36 @@
 <script>
-import fly from "./utils/fly";
-import api from "./utils/api";
+import fly from './utils/fly';
+import api from './utils/api';
 export default {
   async created() {
     // 调用API从本地缓存中获取数据
-    //    const logs = wx.getStorageSync('logs') || []
-    //    logs.unshift(Date.now())
-    //    wx.setStorageSync('logs', logs)
-    console.log(wx.getSystemInfoSync())
     fly.get(api.config).then(configRes => {
       if (configRes.code == 0) {
         let info = configRes.data;
-        wx.setStorageSync("config", info);
+        wx.setStorageSync('config', info);
       }
     });
 
-    setTimeout(() => {
-      let token = wx.getStorageSync("token");
-      if (!token) {
-        wx.navigateTo({
-          url: "/pages/login/main"
-        });
-      } else {
-        let res = fly
-          .post(api.getMyList, {
-            token: token
-          })
-          .then(res => {
-            if (res.code == 500) {
-              wx.navigateTo({
-                url: "/pages/login/main"
-              });
-            }
-          });
-      }
-    }, 1000);
+    // setTimeout(() => {
+    //   let token = wx.getStorageSync('token');
+    //   if (!token) {
+    //     wx.navigateTo({
+    //       url: '/pages/login/main'
+    //     });
+    //   } else {
+    //     let res = fly
+    //       .post(api.getMyList, {
+    //         token: token
+    //       })
+    //       .then(res => {
+    //         if (res.code == 500) {
+    //           wx.navigateTo({
+    //             url: '/pages/login/main'
+    //           });
+    //         }
+    //       });
+    //   }
+    // }, 1000);
   }
 };
 </script>

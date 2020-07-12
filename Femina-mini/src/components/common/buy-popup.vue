@@ -1,23 +1,21 @@
 <template>
   <div class="buy-popup" v-show="show">
-    <!--<transition name="fade">-->
     <div class="popup-bg" @click="hide"></div>
-    <!--</transition>-->
-    <!--<transition name="slide">-->
     <div class="popup-content">
-      <h3>{{buyTitle}}</h3>
+      <h3>{{ buyTitle }}</h3>
       <div class="buy-list">
         <radio-group class="radio-group" @change="radioChange">
           <label class="item" v-for="item in codeList" :key="item.id">
-            <radio :value="item.id" :checked="item.checked"/>
-            <span>× {{item.num}}本</span>
-            <span>￥{{item.price / 100}}</span>
+            <radio :value="item.id" :checked="item.checked" />
+            <span>× {{ item.num }}本</span>
+            <span>￥{{ item.price / 100 }}</span>
           </label>
         </radio-group>
         <div class="custom">
           其它数量：
-          <input type="text" v-model.number="customNum" @input="inputChange">&nbsp;本
-          <span>￥{{custumPrice}}</span>
+          <input type="text" v-model.number="customNum" @input="inputChange" />
+          &nbsp;本
+          <span>￥{{ custumPrice }}</span>
         </div>
         <div class="button-box">
           <div class="button" @click="hide">取消</div>
@@ -30,8 +28,8 @@
 </template>
 
 <script>
-import fly from "../../utils/fly";
-import api from "../../utils/api";
+import fly from '../../utils/fly';
+import api from '../../utils/api';
 export default {
   components: {},
   props: {
@@ -46,11 +44,11 @@ export default {
   data() {
     return {
       codeList: [], //code列表
-      price: "", //杂志价格
+      price: '', //杂志价格
       customNum: 0, //用户输入的数量
       customNumSubmit: 0, //用于上传的数量
       custumPrice: 0, //用户输入计算出的价格
-      codeId: "" //选择id
+      codeId: '' //选择id
     };
   },
   watch: {},
@@ -65,15 +63,16 @@ export default {
       this.customNum = 0;
       this.customNumSubmit = 0;
       this.custumPrice = 0;
-      this.info = wx.getStorageSync("config");
-      if (!this.info) return;
-      this.codeList = this.info.price_list;
-      this.price = this.info.price / 100;
+      let currentPrice = wx.getStorageSync('currentPrice');
+      if (!currentPrice) return;
+      this.codeList = currentPrice.list;
+      console.log(this.codeList);
+      this.price = currentPrice.price / 100;
       this.codeId = this.codeList[0].id;
-      this.$set(this.codeList[0], "checked", true);
+      this.$set(this.codeList[0], 'checked', true);
     },
     hide() {
-      this.$emit("hideBuyPopup");
+      this.$emit('hideBuyPopup');
     },
     radioChange(e, index) {
       console.log(e.mp.detail.value);
@@ -83,7 +82,7 @@ export default {
       });
       this.codeId = e.mp.detail.value;
       this.customNum = 0;
-      this.customNumSubmit = "";
+      this.customNumSubmit = '';
     },
     inputChange() {
       this.codeList.forEach(i => {
@@ -91,20 +90,20 @@ export default {
       });
       if (this.customNum > 100) {
         wx.showToast({
-          title: "一次购买数量不应超过100",
-          icon: "none",
+          title: '一次购买数量不应超过100',
+          icon: 'none',
           duration: 2000
         });
         this.customNum = 100;
       }
-      this.codeId = "";
+      this.codeId = '';
       this.custumPrice = (this.customNum * this.price).toFixed(2);
       this.customNumSubmit = this.customNum;
     },
     async submit() {
       wx.showLoading();
       let res = await fly.post(api.pay, {
-        token: wx.getStorageSync("token"),
+        token: wx.getStorageSync('token'),
         price_id: this.codeId,
         nums: this.customNumSubmit,
         magazine_id: this.magazineId,
@@ -113,7 +112,7 @@ export default {
       wx.hideLoading();
       if (res.code == 500) {
         wx.navigateTo({
-          url: "/pages/login/main"
+          url: '/pages/login/main'
         });
         return;
       }
@@ -122,16 +121,16 @@ export default {
         timeStamp: payInfo.timeStamp,
         nonceStr: payInfo.nonceStr,
         package: payInfo.package,
-        signType: "MD5",
+        signType: 'MD5',
         paySign: payInfo.paySign,
         success: res => {
-          this.$emit("buySuccess");
+          this.$emit('buySuccess');
         },
         fail: res => {
-          this.$emit("buyfail");
+          this.$emit('buyfail');
         },
         complete: res => {
-          this.$emit("buyComplete");
+          this.$emit('buyComplete');
         }
       });
     }
@@ -140,7 +139,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../mixin";
+@import '../../mixin';
 .fade-enter-active,
 .fade-leave-active {
   transition: 1s;
@@ -185,7 +184,7 @@ export default {
       height: 60rpx;
       border-bottom: 1px solid #d1d1d1;
       height: 80rpx;
-      input[type="radio"] {
+      input[type='radio'] {
         background: url(../../../static/cirlce-r.png) no-repeat center / cover;
         width: 38rpx;
         height: 38rpx;

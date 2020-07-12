@@ -1,6 +1,5 @@
 <template>
   <div class="login">
-    <!--<icon type="info" size="50" color="#C8191D" />-->
     <div class="logo-box">
       <div class="logo">
         <img src="../../../static/newlogo.png" style="width: 102rpx;height: 118rpx;" />

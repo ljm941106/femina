@@ -9,15 +9,15 @@
       :next-margin="swiperMargin"
       @change="swiperChange"
     >
-      <block v-for="(i,index) in banner" :key="i.id">
-        <swiper-item class="magazine" :class="{current:swiperIndex==index}" @click="gotoItem(i)">
+      <block v-for="(item, index) in banner" :key="item.id">
+        <swiper-item class="magazine" :class="{ current: swiperIndex == index }" @click="gotoItem(item)">
           <div class="img-box">
             <div class="img">
-              <img :src="i.img">
+              <img :src="item.img" />
               <div class="detail">
-                <img src="../../../static/logo-bg.png">
+                <img src="../../../static/logo-bg.png" />
                 <div class="button">预览</div>
-                <div class="num">{{i.sale}}人已订阅</div>
+                <div class="num">{{ item.sale }}人已订阅</div>
               </div>
             </div>
           </div>
@@ -25,63 +25,59 @@
       </block>
     </swiper>
     <div class="button-box">
-      <div class="button" @click="gotoItem(currentSwiper)">
-        <text>开始阅读</text>
-      </div>
-      <div class="button" @click.stop="gotoRank(currentSwiper)">
-        <text>粉丝订阅榜</text>
-      </div>
+      <div class="button" @click="gotoItem(currentSwiper)"><text>开始阅读</text></div>
+      <div class="button" @click.stop="gotoRank(currentSwiper)"><text>粉丝订阅榜</text></div>
     </div>
     <div class="index-list">
       <div class="menu">
-        <div class="item" :class="{active:index==currentIndex}" v-for="(i,index) in menuList" :key="i.id" @click="munuItemClick(index)">{{i.value}}</div>
+        <div class="item" :class="{ active: index == currentIndex }" v-for="(i, index) in menuList" :key="i.id" @click="munuItemClick(index)">{{ i.value }}</div>
       </div>
       <div class="list-box">
-        <div v-show="currentIndex==0">
+        <div v-show="currentIndex == 0">
           <div class="pro-list">
             <div class="item" v-for="i in list" :key="i.id" @click="gotoItem(i)">
-              <div class="tag" v-if="!i.buy&&!isiOS">
-                <div>购买</div>
-              </div>
+              <div class="tag" v-if="!i.buy && !isiOS"><div>购买</div></div>
               <div class="cover">
-                <img :src="i.img">
-                <span>{{i.name}}</span>
+                <img :src="i.img" />
+                <span>{{ i.name }}</span>
               </div>
-              <div class="intro">{{i.sale}}人订阅</div>
+              <div class="intro">{{ i.sale }}人订阅</div>
             </div>
           </div>
-          <div class="no-data" v-if="list.length==1">暂无更多期刊...</div>
+          <div class="no-data" v-if="list.length == 1">暂无更多期刊...</div>
         </div>
-        <div v-show="currentIndex==1">
+        <div v-show="currentIndex == 1">
           <div class="pro-list">
             <div class="item" v-for="i in myList" :key="i.id" @click="gotoItem(i)">
               <div class="cover">
-                <img :src="i.img">
-                <span>{{i.name}}</span>
+                <img :src="i.img" />
+                <span>{{ i.name }}</span>
               </div>
-              <div class="intro">{{i.sale}}人订阅</div>
+              <div class="intro">{{ i.sale }}人订阅</div>
             </div>
           </div>
-          <div class="no-data" v-if="myList.length==0">暂无期刊...</div>
+          <div class="no-data" v-if="myList.length == 0">暂无期刊...</div>
         </div>
-        <div v-show="currentIndex==2">
+        <div v-show="currentIndex == 2">
           <div class="coupon-list" v-if="!isiOS">
             <div class="des-button" @click="viewDes">阅读码使用说明</div>
             <div class="item" v-for="i in myCodeList" :key="i.id">
-              <div class="img">
-                <img :src="i.img">
-              </div>
+              <div class="img"><img :src="i.img" /></div>
               <div class="intro">
-                <h3>{{i.name}}</h3>
+                <h3>{{ i.name }}</h3>
                 <div class="code">
                   阅读码
-                  <br>
-                  {{i.code}}
+                  <br />
+                  {{ i.code }}
                 </div>
                 <div class="operation">
-                  <div class="button" :class="{disabled:i.status}" @click="toUseCode(i.pid,i.code,i.status)">
-                    <template v-if="i.status">已使用</template>
-                    <template v-else>去使用</template>
+                  <div class="button" :class="{ disabled: i.status }" @click="toUseCode(i.pid, i.code, i.status)">
+                    <template v-if="i.status">
+                      已使用
+                    </template>
+                    <template v-else>
+                      去使用
+                    </template>
                   </div>
                 </div>
               </div>
@@ -100,17 +96,14 @@
       :code="currentUseCode"
       :magazineId="currentMagazineId"
     ></code-input-popup>
-    <div class="loading" :class="{'hide-loading':lodingCompleted}">
-      <img src="../../../static/loding.gif">
-    </div>
   </div>
 </template>
 
 <script>
-import fly from "../../utils/fly";
-import api from "../../utils/api";
-import buyPopup from "../../components/common/buy-popup";
-import codeInputPopup from "../../components/common/code-input-popup";
+import fly from '../../utils/fly';
+import api from '../../utils/api';
+import buyPopup from '../../components/common/buy-popup';
+import codeInputPopup from '../../components/common/code-input-popup';
 export default {
   components: {
     buyPopup,
@@ -120,59 +113,58 @@ export default {
     return {
       menuList: [
         {
-          id: "all",
-          value: "全部杂志",
-          icon: require("../../../static/icon-home.png"),
-          iconActive: require("../../../static/icon-homed.png")
+          id: 'all',
+          value: '全部杂志',
+          icon: require('../../../static/icon-home.png'),
+          iconActive: require('../../../static/icon-homed.png')
         },
         {
-          id: "purchased",
-          value: "我的杂志",
-          icon: require("../../../static/icon-coupon-list.png"),
-          iconActive: require("../../../static/icon-coupon-listd.png")
+          id: 'purchased',
+          value: '我的杂志',
+          icon: require('../../../static/icon-coupon-list.png'),
+          iconActive: require('../../../static/icon-coupon-listd.png')
         },
         {
-          id: "code",
-          value: "阅读码",
-          icon: require("../../../static/icon-purchase.png"),
-          iconActive: require("../../../static/icon-purchased.png")
+          id: 'code',
+          value: '阅读码',
+          icon: require('../../../static/icon-purchase.png'),
+          iconActive: require('../../../static/icon-purchased.png')
         }
       ],
       banner: [],
       swiperIndex: 0,
       swiperMargin: 0,
-      currentSwiper: "",
+      currentSwiper: '',
       list: [],
-      firstItem: "",
+      firstItem: '',
       myList: [], //我已购买的期刊
       myCodeList: [],
       currentIndex: 0,
       isBuyPopupShow: false,
       isCodeInputPopup: false,
-      currentUseCode: "",
+      currentUseCode: '',
 
       indexPage: 1,
       myPage: 1,
       codePage: 1,
 
-      lodingCompleted: false,
       isiOS: false,
-      webViewSrc: ""
+      webViewSrc: ''
     };
   },
   mounted() {
     const systemRes = wx.getSystemInfoSync();
-    if (systemRes.system.indexOf("iOS") > -1) this.isiOS = true;
-    this.swiperMargin = systemRes.windowWidth / 750 * 55 + "px";
+    if (systemRes.system.indexOf('iOS') > -1) this.isiOS = true;
+    this.swiperMargin = (systemRes.windowWidth / 750) * 55 + 'px';
     if (this.$mp.query.id) {
       wx.navigateTo({
-        url: "/pages/preview/main?id=" + this.$mp.query.id + "&name=" + this.$mp.query.name
+        url: '/pages/preview/main?id=' + this.$mp.query.id + '&name=' + this.$mp.query.name
       });
     }
     this.timeStart = +new Date();
   },
   onShow() {
-    this.token = wx.getStorageSync("token");
+    this.token = wx.getStorageSync('token');
     if (this.list.length == 0) {
       this.initList();
     }
@@ -246,16 +238,6 @@ export default {
           this.firstItem = this.list[0];
           //        wx.hideLoading()
         });
-
-      this.$nextTick(() => {
-        if (+new Date() - this.timeStart > 3000) {
-          this.lodingCompleted = true;
-        } else {
-          setTimeout(() => {
-            this.lodingCompleted = true;
-          }, 3000);
-        }
-      });
     },
     async munuItemClick(index) {
       this.currentIndex = index;
@@ -268,7 +250,7 @@ export default {
             });
             if (myListRes.code == 500) {
               wx.navigateTo({
-                url: "/pages/login/main"
+                url: '/pages/login/main'
               });
               return;
             }
@@ -283,7 +265,7 @@ export default {
             });
             if (myCodeListRes.code == 500) {
               wx.navigateTo({
-                url: "/pages/login/main"
+                url: '/pages/login/main'
               });
               return;
             }
@@ -299,8 +281,8 @@ export default {
     },
     hideCodeInputPopup() {
       this.isCodeInputPopup = false;
-      this.currentUseCode = "";
-      this.currentMagazineId = "";
+      this.currentUseCode = '';
+      this.currentMagazineId = '';
     },
     showCodeInputPopup(magazineId) {
       this.currentMagazineId = magazineId;
@@ -308,20 +290,20 @@ export default {
     },
     gotoItem(item) {
       wx.navigateTo({
-        url: "/pages/preview/main" + "?id=" + item.id + "&name=" + item.name
+        url: '/pages/preview/main' + '?id=' + item.id + '&name=' + item.name
       });
-      wx.setStorageSync("rankBanner", item.rank_img);
+      wx.setStorageSync('rankBanner', item.rank_img);
     },
     gotoRank(item) {
       if (item.rank_enable) {
-        wx.setStorageSync("rankBanner", item.rank_img);
+        wx.setStorageSync('rankBanner', item.rank_img);
         wx.navigateTo({
-          url: "/pages/rank-list/main?id=" + item.id
+          url: '/pages/rank-list/main?id=' + item.id
         });
       } else {
         wx.showToast({
-          title: "暂未开启排行榜",
-          icon: "none",
+          title: '暂未开启排行榜',
+          icon: 'none',
           duration: 2000
         });
       }
@@ -338,7 +320,7 @@ export default {
     },
     viewDes() {
       wx.navigateTo({
-        url: "/pages/description/main?type=use"
+        url: '/pages/description/main?type=use'
       });
     },
     swiperChange(e) {
@@ -347,13 +329,13 @@ export default {
     }
   },
   onShareAppMessage: function(res) {
-    if (res.from === "button") {
+    if (res.from === 'button') {
       // 来自页面内转发按钮
       console.log(res.target);
     }
     return {
-      title: "指尖阅读，要你好看，伊周GO！",
-      path: "/pages/index/main",
+      title: '指尖阅读，要你好看，伊周GO！',
+      path: '/pages/index/main',
       success: function(res) {},
       fail: function(res) {
         // 转发失败
@@ -364,36 +346,7 @@ export default {
 </script>
 
 <style lang="scss">
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 1s;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-
-@import "../../mixin";
-
-.loading {
-  position: fixed;
-  left: 0;
-  top: 0;
-  background: #ffffff;
-  width: 100vw;
-  height: 100vh;
-  opacity: 1;
-  &.hide-loading {
-    display: none;
-  }
-  img {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
-}
+@import '../../mixin';
 
 .index {
   .swiper-banner {
@@ -415,9 +368,9 @@ export default {
       justify-content: center;
       padding-top: 46.2rpx;
       font-size: 33.6rpx;
-      background: url("https://ssl-yizhou.25bsx.com/public/icon/index-bg-none.png") center / cover;
+      background: url('https://ssl-yizhou.25bsx.com/public/icon/index-bg-none.png') center / cover;
       &:nth-child(2) {
-        background-image: url("https://ssl-yizhou.25bsx.com/public/icon/index-bg-rank.png");
+        background-image: url('https://ssl-yizhou.25bsx.com/public/icon/index-bg-rank.png');
         text {
           margin-left: 28rpx;
         }
@@ -437,7 +390,7 @@ export default {
       .img {
         width: 612rpx;
         height: 816rpx;
-        box-shadow: 0 0 18rpx 6rpx rgba(0, 0, 0, 0.2);
+        box-shadow: 0 0 10rpx 2rpx rgba(0, 0, 0, 0.2);
       }
     }
     .img-box {
@@ -523,7 +476,7 @@ export default {
           /*border-color: $pcolor;*/
           color: $pcolor;
           &:after {
-            content: "";
+            content: '';
             display: block;
             position: absolute;
             left: 50%;

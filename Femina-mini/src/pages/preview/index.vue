@@ -1,37 +1,26 @@
 <template>
   <div class="item">
-    <video
-      class="video"
-      id="videoPlay"
-      :direction="direction"
-      @fullscreenchange="fullscreenchange"
-      @ended="videoEnd"
-      :src="videoUrl"
-      controls
-      @play="onVideoplay"
-    />
+    <video class="video" id="videoPlay" :direction="direction" @fullscreenchange="fullscreenchange" @ended="videoEnd" :src="videoUrl" controls @play="onVideoplay" />
     <swiper v-if="render" class="swiper" :indicator-dots="indicatorDots" duration="300" @change="swiperChange">
       <block v-for="i in detail" :key="i.img">
-        <swiper-item class="swiper-item" @click="playVideo(i.cate,i.video,i.direction)">
-          <img mode="widthFix" :src="i.img">
-        </swiper-item>
+        <swiper-item class="swiper-item" @click="playVideo(i.cate, i.video, i.direction)"><img mode="widthFix" :src="i.img" /></swiper-item>
       </block>
     </swiper>
-    <div v-if="render" @click="playCurrentVideo">
-      <img v-if="isCurrentVideo" class="play-icon" src="../../../static/whitePlay.png">
-    </div>
-    <div class="swiper-indicator">{{swiperCurrentIndex+1}}/{{detail.length}}</div>
-    <div class="item-button-box" :class="[{single:isiOS}]">
-      <span class="button" :class="{single:isiOS}" v-if="isBuy" @click="gotoDetail">开始阅读</span>
-      <span class="button" :class="{single:isiOS}" v-else @click="showCodeInputPopup(id)">使用阅读码</span>
+    <div v-if="render" @click="playCurrentVideo"><img v-if="isCurrentVideo" class="play-icon" src="../../../static/whitePlay.png" /></div>
+    <div class="swiper-indicator">{{ swiperCurrentIndex + 1 }}/{{ detail.length }}</div>
+    <div class="item-button-box" :class="[{ single: isiOS }]">
+      <span class="button" :class="{ single: isiOS }" v-if="isBuy" @click="gotoDetail">开始阅读</span>
+      <span class="button" :class="{ single: isiOS }" v-else @click="showCodeInputPopup(id)">使用阅读码</span>
       <span class="button" v-if="!isiOS" @click="showBuyPopup">
-        <template v-if="isBuy">再次购买</template>
-        <template v-else>购买阅读</template>
+        <template v-if="isBuy">
+          再次购买
+        </template>
+        <template v-else>
+          购买阅读
+        </template>
       </span>
     </div>
-    <div class="rank-icon" v-if="isRank" @click.stop="gotoRank(id)">
-      <img src="../../../static/icon_rank.png">
-    </div>
+    <div class="rank-icon" v-if="isRank" @click.stop="gotoRank(id)"><img src="../../../static/icon_rank.png" /></div>
     <buy-popup
       :show="isBuyPopupShow"
       @hideBuyPopup="hideBuyPopup"
@@ -49,16 +38,16 @@
       :code="currentUseCode"
       :magazineId="currentMagazineId"
     ></code-input-popup>
-    <buy-middle v-if="isChooseGroup&&middleRender" :data="buyMiddleData" @groupChose="getGroupChose"></buy-middle>
+    <buy-middle v-if="isChooseGroup && middleRender" :data="buyMiddleData" @groupChose="getGroupChose"></buy-middle>
   </div>
 </template>
 
 <script>
-import fly from "../../utils/fly";
-import api from "../../utils/api";
-import BuyPopup from "../../components/common/buy-popup";
-import CodeInputPopup from "../../components/common/code-input-popup";
-import BuyMiddle from "../../components/common/buy-middle";
+import fly from '../../utils/fly';
+import api from '../../utils/api';
+import BuyPopup from '../../components/common/buy-popup';
+import CodeInputPopup from '../../components/common/code-input-popup';
+import BuyMiddle from '../../components/common/buy-middle';
 export default {
   components: {
     BuyPopup,
@@ -67,32 +56,32 @@ export default {
   },
   data() {
     return {
-      id: "",
+      id: '',
       isBuy: false,
       isRank: false,
-      detail: "",
+      detail: '',
       swiperCurrentIndex: 0,
       isCurrentVideo: false,
       indicatorDots: false, //swiper指示点
       isBuyPopupShow: false, //购买弹窗
       isCodeInputPopup: false, //输入code弹窗
-      videoUrl: "",
+      videoUrl: '',
       isiOS: false,
-      windowHeight: "",
-      buyTitle: "",
+      windowHeight: '',
+      buyTitle: '',
       render: false,
-      currentUseCode: "",
-      currentMagazineId: "",
+      currentUseCode: '',
+      currentMagazineId: '',
       middleRender: false,
       isChooseGroup: false,
-      buyMiddleData: "",
-      groupId: "",
-      webViewSrc: ""
+      buyMiddleData: '',
+      groupId: '',
+      webViewSrc: ''
     };
   },
   mounted() {
     const systemRes = wx.getSystemInfoSync();
-    if (systemRes.system.indexOf("iOS") > -1) this.isiOS = true;
+    if (systemRes.system.indexOf('iOS') > -1) this.isiOS = true;
     this.reset();
     this.init();
   },
@@ -100,23 +89,29 @@ export default {
   methods: {
     reset() {
       this.swiperCurrentIndex = 0;
-      this.detail = "";
+      this.detail = '';
       this.isCurrentVideo = false;
       this.isCodeInputPopup = false; //输入code弹窗
-      this.videoUrl = "";
+      this.videoUrl = '';
       this.render = false;
       this.isBuyPopupShow = false;
       this.isChooseGroup = false;
       this.middleRender = false;
     },
     async init() {
+      let token = wx.getStorageSync('token');
+      if (!token) {
+        wx.navigateTo({
+          url: '/pages/login/main'
+        });
+      }
       wx.showLoading();
       const _this = this;
       this.id = this.$mp.query.id;
 
-      this.token = wx.getStorageSync("token");
+      this.token = wx.getStorageSync('token');
       let res = await fly.post(api.preview, {
-        token: wx.getStorageSync("token"),
+        token: wx.getStorageSync('token'),
         magazine_id: this.id
       });
       if (res.code == 0) {
@@ -131,9 +126,11 @@ export default {
         this.render = true;
         this.contetnType = res.data.content_type;
         this.contetnUrl = res.data.content_url;
+        this.priceList = res.data.price;
+        this.enabledBuy = res.data.enable_buy;
         if (res.data.buy_type == 2) {
           let middleRes = await fly.post(api.middleGroup, {
-            token: wx.getStorageSync("token"),
+            token: wx.getStorageSync('token'),
             magazine_id: this.id
           });
           if (middleRes.code == 0) {
@@ -155,13 +152,23 @@ export default {
     //组合的购买
     getGroupChose(value, name) {
       this.groupId = value;
-      this.buyTitle = this.magazineName + "-" + name;
+      this.buyTitle = this.magazineName + '-' + name;
       this.isBuyPopupShow = true;
     },
     hideBuyPopup() {
       this.isBuyPopupShow = false;
     },
     showBuyPopup() {
+      if (!this.enabledBuy) {
+        wx.showToast({
+          title: '此杂志已经暂停购买了~下次记得赶早，更多资讯请关注公众号“伊周新潮流”哦~',
+          icon: 'none',
+          duration: 3000
+        });
+        return;
+      }
+
+      this.info = wx.setStorageSync('currentPrice', this.priceList);
       if (this.buyType == 2) {
         this.isChooseGroup = true;
       } else {
@@ -173,7 +180,7 @@ export default {
     },
     showCodeInputPopup(id) {
       this.isCodeInputPopup = true;
-      this.currentUseCode = "";
+      this.currentUseCode = '';
       this.currentMagazineId = id;
     },
     //阅读码通过
@@ -186,11 +193,11 @@ export default {
       if (this.contetnType == 2) {
         let webViewSrc = this.contetnType;
         wx.navigateTo({
-          url: "/pages/item/main?url=" + this.contetnUrl
+          url: '/pages/item/main?url=' + this.contetnUrl
         });
       } else {
         wx.navigateTo({
-          url: "/pages/item/main?id=" + this.id + "&name=" + this.buyTitle
+          url: '/pages/item/main?id=' + this.id + '&name=' + this.buyTitle
         });
       }
     },
@@ -198,10 +205,10 @@ export default {
     buySuccess() {
       this.isBuyPopupShow = false;
       const _this = this;
-      let modalcontent = "购买成功，是否立即使用";
-      if (_this.isBuy) modalcontent = "购买成功";
+      let modalcontent = '购买成功，是否立即使用';
+      if (_this.isBuy) modalcontent = '购买成功';
       wx.showModal({
-        title: "提示",
+        title: '提示',
         content: modalcontent,
         async success(res) {
           if (res.confirm) {
@@ -228,10 +235,10 @@ export default {
     },
     playCurrentVideo() {
       wx.showLoading({
-        title: "视频加载中..."
+        title: '视频加载中...'
       });
       setTimeout(() => {
-        this.theVideo = wx.createVideoContext("videoPlay");
+        this.theVideo = wx.createVideoContext('videoPlay');
         this.theVideo.play();
       }, 500);
     },
@@ -243,10 +250,10 @@ export default {
       this.videoUrl = video;
 
       wx.showLoading({
-        title: "视频加载中..."
+        title: '视频加载中...'
       });
       setTimeout(() => {
-        this.theVideo = wx.createVideoContext("videoPlay");
+        this.theVideo = wx.createVideoContext('videoPlay');
         this.theVideo.play();
       }, 500);
     },
@@ -263,20 +270,20 @@ export default {
     },
     //视频播放结束，退出全屏并停止播放
     videoEnd() {
-      this.theVideo = wx.createVideoContext("videoPlay");
+      this.theVideo = wx.createVideoContext('videoPlay');
       this.theVideo.exitFullScreen();
       this.theVideo.stop();
     },
     //退出全屏播放之后暂停视频播放
     fullscreenchange(e) {
       if (!e.mp.detail.fullScreen) {
-        this.theVideo = wx.createVideoContext("videoPlay");
+        this.theVideo = wx.createVideoContext('videoPlay');
         this.theVideo.pause();
       }
     },
     gotoRank(id, banner) {
       wx.navigateTo({
-        url: "/pages/rank-list/main?id=" + id + "&name=" + this.buyTitle
+        url: '/pages/rank-list/main?id=' + id + '&name=' + this.buyTitle
       });
     }
   },
@@ -284,13 +291,13 @@ export default {
     this.reset();
   },
   onShareAppMessage: function(res) {
-    if (res.from === "button") {
+    if (res.from === 'button') {
       // 来自页面内转发按钮
       console.log(res.target);
     }
     return {
-      title: "指尖阅读，要你好看，伊周GO！",
-      path: "/pages/preview/main?id=" + this.id + "&name=" + this.buyTitle,
+      title: '指尖阅读，要你好看，伊周GO！',
+      path: '/pages/preview/main?id=' + this.id + '&name=' + this.buyTitle,
       success: function(res) {},
       fail: function(res) {
         // 转发失败
@@ -304,7 +311,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../mixin";
+@import '../../mixin';
 .item {
   position: relative;
   .swiper {
@@ -353,7 +360,7 @@ export default {
     }
     &:after {
       position: absolute;
-      content: "";
+      content: '';
       display: block;
       width: 1px;
       background: #ffffff;
