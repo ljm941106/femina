@@ -54,4 +54,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.weui-toast_text .weui-toast__content {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+</style>

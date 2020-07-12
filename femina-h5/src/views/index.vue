@@ -1,5 +1,5 @@
 <template>
-  <div class="index" :class="{'over-hidden':isBuyMiddleShow}">
+  <div class="index" :class="{ 'over-hidden': isBuyMiddleShow }">
     <!-- <div class="logo-con">
       <h2>伊周电子刊·订阅</h2>
       <div class="logo">
@@ -8,73 +8,72 @@
     </div>-->
     <div class="swiper-container" v-if="swiperRender">
       <div class="swiper-wrapper">
-        <div class="swiper-slide" v-for="(i,index) in bannerList" :key="i.id" @click="preview(i.id)">
+        <div class="swiper-slide" v-for="(i, index) in bannerList" :key="i.id" @click="preview(i.id)">
           <div class="img-box">
-            <div class="img" :class="{active:swiperActiveIndex==index}">
-              <img :src="i.img">
-            </div>
+            <div class="img" :class="{ active: swiperActiveIndex == index }"><img :src="i.img" /></div>
           </div>
           <div class="detail">
-            <img src="../assets/logo-bg.png">
+            <img src="../assets/logo-bg.png" />
             <div class="button">预览</div>
-            <div class="num">{{i.sale}}人已订阅</div>
+            <div class="num">{{ i.sale }}人已订阅</div>
           </div>
         </div>
       </div>
     </div>
     <div class="banner-button-box">
-      <div class="button" @click="preview(currentSwiper.id)">
-        <span>预览</span>
-      </div>
-      <div class="button" @click.stop="showBuyModal(currentSwiper)">
-        <span>购买阅读码</span>
-      </div>
+      <div class="button" @click="preview(currentSwiper.id)"><span>预览</span></div>
+      <div class="button" @click.stop="showBuyModal(currentSwiper)"><span>购买阅读码</span></div>
     </div>
     <div class="shop">
       <div class="menu">
-        <div class="item" :class="{active:index==currentIndex}" v-for="(i,index) in menuList" :key="i.id" @click="menuItemClick(index)">{{i.value}}</div>
+        <div class="item" :class="{ active: index == currentIndex }" v-for="(i, index) in menuList" :key="i.id" @click="menuItemClick(index)">{{ i.value }}</div>
       </div>
       <div class="list-con">
-        <div class="pro-list" v-show="currentIndex==0">
+        <div class="pro-list" v-show="currentIndex == 0">
           <div class="item-first">
-            <div class="img">
-              <img :src="firstItem.img">
-            </div>
+            <div class="img"><img :src="firstItem.img" /></div>
             <div class="intro">
               <div class="new">
-                <img src="../assets/icon-hot.png" style="width: .25rem;height: .3rem;">&nbsp;NEW
+                <img src="../assets/icon-hot.png" style="width: .25rem;height: .3rem;" />
+                &nbsp;NEW
               </div>
-              <h3>{{firstItem.name}}</h3>
+              <h3>{{ firstItem.name }}</h3>
               <div class="detail">
-                <span>￥{{price}}</span>
-                <i>销量:{{firstItem.sale}}</i>
+                <span>￥{{ price }}</span>
+                <i>销量:{{ firstItem.sale }}</i>
               </div>
               <div class="operation">
                 <div class="button" @click="preview(firstItem.id)">预览</div>
                 <div class="button" @click="showBuyModal(firstItem)">
-                  <template v-if="firstItem.buy">再次购买</template>
-                  <template v-else>购买阅读码</template>
+                  <template v-if="firstItem.buy">
+                    再次购买
+                  </template>
+                  <template v-else>
+                    购买阅读码
+                  </template>
                 </div>
               </div>
             </div>
           </div>
-          <template v-for="(i,index) in proList">
-            <div class="item" v-if="index>0" :key="i.id">
-              <div class="img">
-                <img :src="i.img">
-              </div>
+          <template v-for="(i, index) in proList">
+            <div class="item" v-if="index > 0" :key="i.id">
+              <div class="img"><img :src="i.img" /></div>
               <div class="intro">
-                <h3>{{i.name}}</h3>
+                <h3>{{ i.name }}</h3>
                 <div class="detail-box">
                   <div class="detail">
-                    <span>￥{{price}}</span>
-                    <i>销量:{{i.sale}}</i>
+                    <span>￥{{ price }}</span>
+                    <i>销量:{{ i.sale }}</i>
                   </div>
                   <div class="operation">
                     <div class="button" @click="preview(i.id)">预览</div>
                     <div class="button" @click="showBuyModal(i)">
-                      <template v-if="i.buy">再次购买</template>
-                      <template v-else>购买阅读码</template>
+                      <template v-if="i.buy">
+                        再次购买
+                      </template>
+                      <template v-else>
+                        购买阅读码
+                      </template>
                     </div>
                   </div>
                 </div>
@@ -82,23 +81,25 @@
             </div>
           </template>
         </div>
-        <div class="coupon-list" v-show="currentIndex==1">
+        <div class="coupon-list" v-show="currentIndex == 1">
           <div class="des-button" @click="viewDes">阅读码使用说明</div>
           <div class="item" v-for="i in codeList" :key="i.id">
-            <div class="img">
-              <img :src="i.img">
-            </div>
+            <div class="img"><img :src="i.img" /></div>
             <div class="intro">
-              <h3>{{i.name}}</h3>
+              <h3>{{ i.name }}</h3>
               <div class="code">
                 阅读码：
-                <i :id="'clipboard'+i.id">{{i.code}}</i>
+                <i :id="'clipboard' + i.id">{{ i.code }}</i>
               </div>
               <div class="operation">
                 <!--<div class="button">使用说明</div>-->
-                <div class="button clipboard-button" :data-clipboard-target="'#clipboard'+i.id" :class="{disabled:i.status}">
-                  <template v-if="i.status">已使用</template>
-                  <template v-else>去使用</template>
+                <div class="button clipboard-button" :data-clipboard-target="'#clipboard' + i.id" :class="{ disabled: i.status }">
+                  <template v-if="i.status">
+                    已使用
+                  </template>
+                  <template v-else>
+                    去使用
+                  </template>
                 </div>
               </div>
             </div>
@@ -106,20 +107,23 @@
         </div>
       </div>
     </div>
+
+    <!-- 购买弹窗 -->
     <div class="modal-con" v-if="isBuyModal">
       <div class="modal-b" @click="hideModal"></div>
       <div class="modal">
-        <h3>{{buyTitle}}</h3>
+        <h3>{{ buyTitle }}</h3>
         <div class="buy-list">
           <label class="item" v-for="i in buyDetailInfo" :key="i.id">
-            <input type="radio" v-model="codeId" :value="i.id" @change="radioChange">
-            <span>× {{i.num}}本</span>
-            <span>￥{{i.price / 100}}</span>
+            <input type="radio" v-model="codeId" :value="i.id" @change="radioChange" />
+            <span>× {{ i.num }}本</span>
+            <span>￥{{ i.price / 100 }}</span>
           </label>
           <div class="custom">
             其它数量：
-            <input type="text" v-model.number="customNum" @input="inputChange">&nbsp;本
-            <span>￥{{custumPrice}}</span>
+            <input type="text" v-model.number="customNum" @input="inputChange" />
+            &nbsp;本
+            <span>￥{{ custumPrice }}</span>
           </div>
           <div class="button-box">
             <div class="button" @click="hideModal">取消</div>
@@ -131,9 +135,7 @@
         </div>
       </div>
     </div>
-    <div class="loading" v-if="isLoading">
-      <img src="../assets/loding.gif">
-    </div>
+    <div class="loading" v-if="isLoading"><img src="../assets/loding.gif" /></div>
     <buy-middle v-if="isBuyMiddleShow" :data="currentBuyData" @groupChose="getGroupChose"></buy-middle>
   </div>
 </template>
@@ -326,14 +328,12 @@ export default {
       let configRes = await configRequest;
       if (configRes.code == 0) {
         let info = configRes.data;
-        this.price = info.price / 100;
         this.banner = info.h5_banner;
-        this.buyDetailInfo = info.price_list;
-        this.codeId = this.buyDetailInfo[0].id;
+        this.price = info.price / 100; //杂志单本架构
 
-        this.infoBuy = info.buy;
+        this.infoBuy = info.buy; //购买说明
         db.set("infoBuy", this.infoBuy);
-        this.infoUse = info.use;
+        this.infoUse = info.use; //使用说明
         db.set("infoUse", this.infoUse);
       }
       //产品列表
@@ -379,14 +379,40 @@ export default {
       this.groupId = value;
     },
     async showBuyModal(item) {
+      if (!item.enable_buy) {
+        this.$vux.toast.show({
+          text: "此杂志已经暂停购买了~下次记得赶早，更多资讯请关注公众号“伊周新潮流”哦~",
+          type: "text",
+          width: "18em"
+        });
+        return;
+      }
+
       this.proId = item.id;
       this.itemName = item.name;
       this.buyTitle = item.name;
       this.isBuy = item.buy;
+
+      // 获取购买价格配置
+      this.$vux.toast.show({
+        text: "加载中...",
+        type: "text"
+      });
+
+      let priceRes = await this.$http.post(this, api.preview, {
+        token: db.get("token"),
+        magazine_id: item.id
+      });
+      this.$vux.toast.hide();
+      this.buyDetailInfo = priceRes.data.price.list;
+      this.codeId = this.buyDetailInfo[0].id;
+      this.price = priceRes.data.price.price / 100; //杂志单本价格
+
       if (item.buy_type == 1) {
         this.isBuyModal = true;
         this.groupId = "";
       } else {
+        // 组合购买
         this.$vux.toast.show({
           text: "加载中...",
           type: "text"
@@ -579,9 +605,9 @@ export default {
       justify-content: center;
       padding-top: 0.56rem;
       font-size: 3.36rem;
-      background: url("https://ssl-yizhou.25bsx.com/public/icon/index-bg-none.png") center / cover;
+      background: url("https://mini.yizhou.com.cn/public/icon/index-bg-none.png") center / cover;
       &:nth-child(2) {
-        background-image: url("https://ssl-yizhou.25bsx.com/public/icon/index-bg-rank.png");
+        background-image: url("https://mini.yizhou.com.cn/public/icon/index-bg-rank.png");
         span {
           margin-left: 0.28rem;
         }
