@@ -368,9 +368,9 @@ export default {
       justify-content: center;
       padding-top: 46.2rpx;
       font-size: 33.6rpx;
-      background: url('https://ssl-yizhou.25bsx.com/public/icon/index-bg-none.png') center / cover;
+       background: url("https://mini.yizhou.com.cn/public/icon/index-bg-none.png") center / cover;
       &:nth-child(2) {
-        background-image: url('https://ssl-yizhou.25bsx.com/public/icon/index-bg-rank.png');
+         background-image: url("https://mini.yizhou.com.cn/public/icon/index-bg-rank.png");
         text {
           margin-left: 28rpx;
         }
