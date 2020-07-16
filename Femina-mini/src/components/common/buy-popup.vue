@@ -65,8 +65,7 @@ export default {
       this.custumPrice = 0;
       let currentPrice = wx.getStorageSync('currentPrice');
       if (!currentPrice) return;
-      this.codeList = currentPrice.list;
-      console.log(this.codeList);
+      this.codeList = currentPrice;
       this.price = currentPrice.price / 100;
       this.codeId = this.codeList[0].id;
       this.$set(this.codeList[0], 'checked', true);

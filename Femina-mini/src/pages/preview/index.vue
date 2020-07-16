@@ -22,6 +22,7 @@
     </div>
     <div class="rank-icon" v-if="isRank" @click.stop="gotoRank(id)"><img src="../../../static/icon_rank.png" /></div>
     <buy-popup
+     v-if="isBuyPopupShow"
       :show="isBuyPopupShow"
       @hideBuyPopup="hideBuyPopup"
       :magazineId="id"
@@ -32,6 +33,7 @@
     ></buy-popup>
     <code-input-popup
       ref="codeUse"
+      v-if="isCodeInputPopup"
       :show="isCodeInputPopup"
       @hideCodeInputPopup="hideCodeInputPopup"
       @codePassed="codePassed"
@@ -126,7 +128,7 @@ export default {
         this.render = true;
         this.contetnType = res.data.content_type;
         this.contetnUrl = res.data.content_url;
-        this.priceList = res.data.price;
+        this.priceList = res.data.price.list;
         this.enabledBuy = res.data.enable_buy;
         if (res.data.buy_type == 2) {
           let middleRes = await fly.post(api.middleGroup, {

@@ -87,9 +87,10 @@
         </div>
       </div>
     </div>
-    <buy-popup :show="isBuyPopupShow" @show="buyPopupShow"></buy-popup>
+    <buy-popup v-if="isBuyPopupShow" :show="isBuyPopupShow" @show="buyPopupShow"></buy-popup>
     <code-input-popup
       ref="codeUse"
+      v-if="isCodeInputPopup"
       :show="isCodeInputPopup"
       @hideCodeInputPopup="hideCodeInputPopup"
       @codePassed="codePassed"
@@ -100,10 +101,10 @@
 </template>
 
 <script>
-import fly from '../../utils/fly';
-import api from '../../utils/api';
-import buyPopup from '../../components/common/buy-popup';
-import codeInputPopup from '../../components/common/code-input-popup';
+import fly from "../../utils/fly";
+import api from "../../utils/api";
+import buyPopup from "../../components/common/buy-popup";
+import codeInputPopup from "../../components/common/code-input-popup";
 export default {
   components: {
     buyPopup,
@@ -113,66 +114,69 @@ export default {
     return {
       menuList: [
         {
-          id: 'all',
-          value: '全部杂志',
-          icon: require('../../../static/icon-home.png'),
-          iconActive: require('../../../static/icon-homed.png')
+          id: "all",
+          value: "全部杂志",
+          icon: require("../../../static/icon-home.png"),
+          iconActive: require("../../../static/icon-homed.png")
         },
         {
-          id: 'purchased',
-          value: '我的杂志',
-          icon: require('../../../static/icon-coupon-list.png'),
-          iconActive: require('../../../static/icon-coupon-listd.png')
+          id: "purchased",
+          value: "我的杂志",
+          icon: require("../../../static/icon-coupon-list.png"),
+          iconActive: require("../../../static/icon-coupon-listd.png")
         },
         {
-          id: 'code',
-          value: '阅读码',
-          icon: require('../../../static/icon-purchase.png'),
-          iconActive: require('../../../static/icon-purchased.png')
+          id: "code",
+          value: "阅读码",
+          icon: require("../../../static/icon-purchase.png"),
+          iconActive: require("../../../static/icon-purchased.png")
         }
       ],
       banner: [],
       swiperIndex: 0,
       swiperMargin: 0,
-      currentSwiper: '',
+      currentSwiper: "",
       list: [],
-      firstItem: '',
       myList: [], //我已购买的期刊
       myCodeList: [],
       currentIndex: 0,
       isBuyPopupShow: false,
       isCodeInputPopup: false,
-      currentUseCode: '',
+      currentUseCode: "",
 
       indexPage: 1,
       myPage: 1,
       codePage: 1,
 
       isiOS: false,
-      webViewSrc: ''
+      webViewSrc: ""
     };
   },
-  mounted() {
+  onLoad() {
     const systemRes = wx.getSystemInfoSync();
-    if (systemRes.system.indexOf('iOS') > -1) this.isiOS = true;
-    this.swiperMargin = (systemRes.windowWidth / 750) * 55 + 'px';
+    if (systemRes.system.indexOf("iOS") > -1) this.isiOS = true;
+    this.swiperMargin = (systemRes.windowWidth / 750) * 55 + "px";
     if (this.$mp.query.id) {
       wx.navigateTo({
-        url: '/pages/preview/main?id=' + this.$mp.query.id + '&name=' + this.$mp.query.name
+        url: "/pages/preview/main?id=" + this.$mp.query.id + "&name=" + this.$mp.query.name
       });
     }
     this.timeStart = +new Date();
+    fly
+      .post(api.getBanner, {
+        token: this.token
+      })
+      .then(data => {
+        this.banner = data.data.list;
+        this.currentSwiper = this.banner[0];
+      });
   },
   onShow() {
-    this.token = wx.getStorageSync('token');
-    if (this.list.length == 0) {
-      this.initList();
-    }
+    this.token = wx.getStorageSync("token");
+    this.currentIndex = 0;
+    this.initList();
   },
   async onPullDownRefresh() {
-    this.indexPage = 1;
-    this.myPage = 1;
-    this.codePage = 1;
     this.initList();
     wx.stopPullDownRefresh();
   },
@@ -216,61 +220,76 @@ export default {
   },
   methods: {
     async initList() {
-      fly
-        .post(api.getBanner, {
-          token: this.token
-        })
-        .then(data => {
-          this.banner = data.data.list;
-          this.currentSwiper = this.banner[0];
-        });
-      //      wx.showLoading()
       this.indexPage = 1;
       this.myPage = 1;
       this.codePage = 1;
       //所有产品
       fly
         .post(api.getList, {
-          token: this.token
+          token: this.token,
+          page: this.indexPage
         })
-        .then(listRes => {
-          this.list = listRes.data.list;
-          this.firstItem = this.list[0];
-          //        wx.hideLoading()
+        .then(data => {
+          this.list = data.data.list;
+        });
+
+      fly
+        .post(api.getList, {
+          token: this.token,
+          page: this.myPage
+        })
+        .then(data => {
+          this.myList = data.data.list;
+        });
+
+      fly
+        .post(api.getCode, {
+          token: this.token,
+          page: this.codePage
+        })
+        .then(data => {
+          this.myCodeList = data.data.list;
         });
     },
     async munuItemClick(index) {
       this.currentIndex = index;
       switch (index) {
-        case 1:
-          if (this.myList.length == 0) {
-            //已经购买的期刊
-            let myListRes = await fly.post(api.getMyList, {
-              token: this.token
-            });
-            if (myListRes.code == 500) {
-              wx.navigateTo({
-                url: '/pages/login/main'
-              });
-              return;
-            }
-            this.myList = myListRes.data.list;
-          }
+        case 0: //已经购买的期刊
+          // if (this.list.length == 0) {
+          let indexRes = await fly.post(api.getList, {
+            token: this.token,
+            page: this.indexPage
+          });
+          this.list = indexRes.data.list;
+          // }
           break;
-        case 2:
-          if (this.myCodeList.length == 0) {
-            //已经购买的阅读码
-            let myCodeListRes = await fly.post(api.getCode, {
-              token: this.token
+        case 1: //已经购买的期刊
+          // if (this.myList.length == 0) {
+          let myListRes = await fly.post(api.getMyList, {
+            token: this.token
+          });
+          if (myListRes.code == 500) {
+            wx.navigateTo({
+              url: "/pages/login/main"
             });
-            if (myCodeListRes.code == 500) {
-              wx.navigateTo({
-                url: '/pages/login/main'
-              });
-              return;
-            }
-            this.myCodeList = myCodeListRes.data.list;
+            return;
           }
+          this.myList = myListRes.data.list;
+          // }
+          break;
+        case 2: //已经购买的阅读码
+          // if (this.myCodeList.length == 0) {
+          let myCodeListRes = await fly.post(api.getCode, {
+            token: this.token
+          });
+          if (myCodeListRes.code == 500) {
+            wx.navigateTo({
+              url: "/pages/login/main"
+            });
+            return;
+          }
+          this.myCodeList = myCodeListRes.data.list;
+          // }
           break;
         default:
           break;
@@ -281,8 +300,8 @@ export default {
     },
     hideCodeInputPopup() {
       this.isCodeInputPopup = false;
-      this.currentUseCode = '';
-      this.currentMagazineId = '';
+      this.currentUseCode = "";
+      this.currentMagazineId = "";
     },
     showCodeInputPopup(magazineId) {
       this.currentMagazineId = magazineId;
@@ -290,20 +309,20 @@ export default {
     },
     gotoItem(item) {
       wx.navigateTo({
-        url: '/pages/preview/main' + '?id=' + item.id + '&name=' + item.name
+        url: "/pages/preview/main" + "?id=" + item.id + "&name=" + item.name
       });
-      wx.setStorageSync('rankBanner', item.rank_img);
+      wx.setStorageSync("rankBanner", item.rank_img);
     },
     gotoRank(item) {
       if (item.rank_enable) {
-        wx.setStorageSync('rankBanner', item.rank_img);
+        wx.setStorageSync("rankBanner", item.rank_img);
         wx.navigateTo({
-          url: '/pages/rank-list/main?id=' + item.id
+          url: "/pages/rank-list/main?id=" + item.id
         });
       } else {
         wx.showToast({
-          title: '暂未开启排行榜',
-          icon: 'none',
+          title: "暂未开启排行榜",
+          icon: "none",
           duration: 2000
         });
       }
@@ -320,7 +339,7 @@ export default {
     },
     viewDes() {
       wx.navigateTo({
-        url: '/pages/description/main?type=use'
+        url: "/pages/description/main?type=use"
       });
     },
     swiperChange(e) {
@@ -329,13 +348,13 @@ export default {
     }
   },
   onShareAppMessage: function(res) {
-    if (res.from === 'button') {
+    if (res.from === "button") {
       // 来自页面内转发按钮
       console.log(res.target);
     }
     return {
-      title: '指尖阅读，要你好看，伊周GO！',
-      path: '/pages/index/main',
+      title: "指尖阅读，要你好看，伊周GO！",
+      path: "/pages/index/main",
       success: function(res) {},
       fail: function(res) {
         // 转发失败
@@ -346,7 +365,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../mixin';
+@import "../../mixin";
 
 .index {
   .swiper-banner {
@@ -368,9 +387,9 @@ export default {
       justify-content: center;
       padding-top: 46.2rpx;
       font-size: 33.6rpx;
-       background: url("https://mini.yizhou.com.cn/public/icon/index-bg-none.png") center / cover;
+      background: url("https://mini.yizhou.com.cn/public/icon/index-bg-none.png") center / cover;
       &:nth-child(2) {
-         background-image: url("https://mini.yizhou.com.cn/public/icon/index-bg-rank.png");
+        background-image: url("https://mini.yizhou.com.cn/public/icon/index-bg-rank.png");
         text {
           margin-left: 28rpx;
         }
@@ -476,7 +495,7 @@ export default {
           /*border-color: $pcolor;*/
           color: $pcolor;
           &:after {
-            content: '';
+            content: "";
             display: block;
             position: absolute;
             left: 50%;

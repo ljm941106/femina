@@ -1,5 +1,5 @@
 export default {
-  appid: "wx1aae5f0db078030f",
+  appid: "wxd4eaa18cf9bde6dc",
   domain: "http://h5.yizhou.com.cn",
   
   getH5Token: "api/login/getH5Token",

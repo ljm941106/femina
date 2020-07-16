@@ -109,7 +109,7 @@
           </div>
           <div class="video3-con" @click="playVideo3()">
             <video id="video3" preload="auto" controls="controls">
-              <source src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/video/20190715-v3.mp4" type="video/mp4" />
+              <source src="http://static-yizhou.oss-cn-beijing.aliyuncs.com/video/20190802.mp4" type="video/mp4" />
             </video>
           </div>
           <div class="img all-person small"><img src="../img/all-white.jpg" /></div>

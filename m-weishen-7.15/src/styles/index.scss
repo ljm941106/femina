@@ -379,7 +379,6 @@ div {
   50% {
     transform: scale(1.5);
   }
-
   100% {
     transform: scale(1);
   }
@@ -391,6 +390,19 @@ div {
 
   50% {
     transform: scale(1.2) translate(-50%);
+  }
+
+  100% {
+    transform: scale(1) translate(-50%);
+  }
+}
+@keyframes roomInHeart {
+  0% {
+    transform: scale(1) translate(-50%);
+  }
+
+  50% {
+    transform: scale(1.5) translate(-50%);
   }
 
   100% {
@@ -410,7 +422,19 @@ div {
     transform: scale(1);
   }
 }
+@keyframes roomInSmall {
+  0% {
+    transform: scale(1);
+  }
 
+  50% {
+    transform: scale(2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
 #video2 {
   position: fixed;
   left: 50%;
@@ -451,7 +475,7 @@ div {
     top: 8.08rem;
     left: 1.2rem;
     &.active {
-      animation: roomIn 2s 1.5s 2;
+      animation: roomInSmall 1.5s 1.5s infinite;
     }
     &.shoot {
       animation: roomBig 1.5s 1;
@@ -499,7 +523,7 @@ div {
       width: 1.72rem;
       transform-origin: left;
       &.active {
-        animation: roomInOnly 1.5s infinite;
+        // animation: roomInOnly 1.5s infinite;
       }
     }
     .heart-big {
@@ -507,6 +531,8 @@ div {
       top: 5rem;
       left: 50%;
       transform: translate(-50%);
+      transform-origin: left;
+      animation: roomInHeart 1.5s infinite;
     }
     .angel {
       position: absolute;
