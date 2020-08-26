@@ -62,10 +62,18 @@ export default {
         });
         return;
       }
+      if (!this.currentMagazineId) {
+        wx.showToast({
+          title: "未获取到杂志,请稍后重试",
+          icon: "none",
+          duration: 3000
+        });
+        return;
+      }
       wx.showLoading();
       let res = await fly.post(api.useCode, {
         token: wx.getStorageSync("token"),
-        magazine_id: this.currentMagazineId,
+        magazine_id: this.currentMagazineId || wx.getStorageSync("currentMagazineId"),
         code: this.currentCode
       });
       wx.hideLoading();

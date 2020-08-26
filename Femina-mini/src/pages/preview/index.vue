@@ -183,7 +183,8 @@ export default {
     showCodeInputPopup(id) {
       this.isCodeInputPopup = true;
       this.currentUseCode = '';
-      this.currentMagazineId = id;
+      this.currentMagazineId = this.id;
+      wx.setStorageSync("currentMagazineId",this.currentMagazineId)
     },
     //阅读码通过
     codePassed() {
